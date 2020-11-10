@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 // Import components
 import Todo from './Todo';
 
 const TodoList = () => {
-  return <div>moi</div>;
+  return (
+    <div className='list-container'>
+      <ul>
+        <Todo />
+      </ul>
+    </div>
+  );
 };
 
 export default TodoList;
