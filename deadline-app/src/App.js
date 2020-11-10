@@ -2,6 +2,7 @@ import React from 'react';
 import './scss/Main.scss';
 // Import components
 import Form from './components/Form';
+import TodoList from './components/Todolist';
 
 function App() {
   return (
