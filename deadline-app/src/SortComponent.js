@@ -2,10 +2,18 @@ import React from "react";
 
 function SortButton(props) {
   const handleClick = (e) => {
+    props.onClick(props.label);
+  };
+
+  return <button onClick={handleClick}>{props.label}</button>;
+}
+
+function SortButtonListComponent(props) {
+  const handleSorting = (buttonLabel) => {
     const arr = props.tasklist.slice();
 
     arr.sort((a, b) => {
-      switch (props.label) {
+      switch (buttonLabel) {
         case "Name":
           return a.name.localeCompare(b.name);
         case "Priority":
@@ -20,40 +28,18 @@ function SortButton(props) {
     props.updateTasklist(arr);
   };
 
-  return <button onClick={handleClick}>{props.label}</button>;
-}
-
-function SortButtonListComponent(props) {
-  /*
-  const handleClick = (label, e) => {
-    alert(`Button ${label} was clicked`);
-  };
-  */
-
   return (
     <div>
       <h2>Sort by:</h2>
       <ul className="sortbuttonlist">
         <li>
-          <SortButton
-            label="Name"
-            tasklist={props.tasklist}
-            updateTasklist={props.updateTasklist}
-          />
+          <SortButton label="Name" onClick={handleSorting} />
         </li>
         <li>
-          <SortButton
-            label="Priority"
-            tasklist={props.tasklist}
-            updateTasklist={props.updateTasklist}
-          />
+          <SortButton label="Priority" onClick={handleSorting} />
         </li>
         <li>
-          <SortButton
-            label="isDone"
-            tasklist={props.tasklist}
-            updateTasklist={props.updateTasklist}
-          />
+          <SortButton label="isDone" onClick={handleSorting} />
         </li>
       </ul>
     </div>
