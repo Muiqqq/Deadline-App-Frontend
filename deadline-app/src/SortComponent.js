@@ -14,13 +14,26 @@ class SortButtonListComponent extends React.Component {
     this.state = {};
   }
 
+  handleClick = (label, e) => {
+    alert(`Button ${label} was clicked`);
+  };
+
   render() {
     return (
-      <ul className="sortbuttonlist">
-        <li>TEST</li>
-        <li>TEST2</li>
-        <li>TEST3</li>
-      </ul>
+      <div>
+        <h2>Sort by:</h2>
+        <ul className="sortbuttonlist">
+          <li>
+            <SortButton label="Name" onClick={this.handleClick} />
+          </li>
+          <li>
+            <SortButton label="Priority" onClick={this.handleClick} />
+          </li>
+          <li>
+            <SortButton label="isDone" onClick={this.handleClick} />
+          </li>
+        </ul>
+      </div>
     );
   }
 }
