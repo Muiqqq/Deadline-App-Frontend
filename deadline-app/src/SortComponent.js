@@ -1,5 +1,13 @@
 import React from "react";
 
+function SortButton(props) {
+  const handleClick = (e) => {
+    props.onClick(props.label);
+  };
+
+  return <button onClick={handleClick}>{props.label}</button>;
+}
+
 class SortButtonListComponent extends React.Component {
   constructor(props) {
     super(props);
