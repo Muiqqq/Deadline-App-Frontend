@@ -5,7 +5,7 @@ class MockListComponent {
     super(props);
 
     this.state = {
-      list: [
+      tasklist: [
         {
           id: 1,
           name: "B. Milk for the crocs.",
@@ -37,3 +37,5 @@ class MockListComponent {
     };
   }
 }
+
+export default MockListComponent;
