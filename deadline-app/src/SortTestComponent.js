@@ -1,6 +1,6 @@
 import React from "react";
 
-class MockListComponent {
+class MockListComponent extends React.Component {
   constructor(props) {
     super(props);
 
