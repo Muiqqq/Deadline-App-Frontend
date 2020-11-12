@@ -8,6 +8,30 @@ function SortButton(props) {
   return <button onClick={handleClick}>{props.label}</button>;
 }
 
+function SortButtonListComponent(props) {
+  const handleClick = (label, e) => {
+    alert(`Button ${label} was clicked`);
+  };
+
+  return (
+    <div>
+      <h2>Sort by:</h2>
+      <ul className="sortbuttonlist">
+        <li>
+          <SortButton label="Name" onClick={handleClick} />
+        </li>
+        <li>
+          <SortButton label="Priority" onClick={handleClick} />
+        </li>
+        <li>
+          <SortButton label="isDone" onClick={handleClick} />
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+/*
 class SortButtonListComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -37,5 +61,5 @@ class SortButtonListComponent extends React.Component {
     );
   }
 }
-
+*/
 export default SortButtonListComponent;
