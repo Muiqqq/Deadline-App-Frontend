@@ -4,19 +4,18 @@ function SortButton(props) {
   const handleClick = (e) => {
     const arr = props.tasklist.slice();
 
-    switch (props.label) {
-      case "Name":
-        arr.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "Priority":
-        arr.sort((a, b) => a.priority - b.priority);
-        break;
-      case "isDone":
-        arr.sort((a, b) => b.isdone - a.isdone);
-        break;
-      default:
-        alert("Something went wrong");
-    }
+    arr.sort((a, b) => {
+      switch (props.label) {
+        case "Name":
+          return a.name.localeCompare(b.name);
+        case "Priority":
+          return a.priority - b.priority;
+        case "isDone":
+          return b.isdone - a.isdone;
+        default:
+          return 0;
+      }
+    });
 
     props.updateTasklist(arr);
   };
