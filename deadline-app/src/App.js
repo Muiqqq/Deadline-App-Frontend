@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./scss/Main.scss";
 // Import components
 import TodoForm from "./components/TodoForm";

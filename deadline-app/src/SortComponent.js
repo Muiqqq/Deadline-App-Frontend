@@ -9,22 +9,36 @@ function SortButton(props) {
 }
 
 function SortButtonListComponent(props) {
+  /*
   const handleClick = (label, e) => {
     alert(`Button ${label} was clicked`);
   };
+  */
 
   return (
     <div>
       <h2>Sort by:</h2>
       <ul className="sortbuttonlist">
         <li>
-          <SortButton label="Name" onClick={handleClick} />
+          <SortButton
+            label="Name"
+            tasklist={props.tasklist}
+            updateTasklist={props.updateTasklist}
+          />
         </li>
         <li>
-          <SortButton label="Priority" onClick={handleClick} />
+          <SortButton
+            label="Priority"
+            tasklist={props.tasklist}
+            updateTasklist={props.updateTasklist}
+          />
         </li>
         <li>
-          <SortButton label="isDone" onClick={handleClick} />
+          <SortButton
+            label="isDone"
+            tasklist={props.tasklist}
+            updateTasklist={props.updateTasklist}
+          />
         </li>
       </ul>
     </div>
