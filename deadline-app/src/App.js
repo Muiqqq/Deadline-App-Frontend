@@ -1,8 +1,8 @@
-import React from 'react';
-import './scss/Main.scss';
+import React from "react";
+import "./scss/Main.scss";
 // Import components
-import TodoForm from './components/TodoForm';
-import TodoList from './components/Todolist';
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/Todolist";
 
 class App extends React.Component {
   constructor(props) {
@@ -24,12 +24,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className='container'>
-        <div className='app'>
-          <div className='form'>
+      <div className="container">
+        <div className="app">
+          <div className="form">
             <TodoForm onFormSubmit={this.handleSubmit} />
           </div>
-          <div className='todo-list'>
+          <div className="todo-list">
             <TodoList todos={this.state.todos} />
           </div>
         </div>
