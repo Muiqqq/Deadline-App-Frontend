@@ -1,39 +1,29 @@
 import React from "react";
+function MockListComponent(props) {
+  const renderList = () => {
+    const arr = props.tasklist.map((element) => {
+      return (
+        <li key={element.id}>
+          <h4>{element.isdone.toString()}</h4>
+          <h4>pr: {element.priority}</h4>
+          <h4>{element.name}</h4>
+          <h4>{element.date}</h4>
+        </li>
+      );
+    });
+    return <ul>{arr}</ul>;
+  };
 
+  return <div className="mocklist">{renderList()}</div>;
+}
+
+/*
 class MockListComponent extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tasklist: [
-        {
-          id: 1,
-          name: "B. Milk for the crocs.",
-          description: "-",
-          date: "YYYY-MM-DD",
-          priority: 3,
-          tasklistname: "TaskListA",
-          isdone: false,
-        },
-        {
-          id: 2,
-          name: "C. Milk for the cats.",
-          description: "-",
-          date: "YYYY-MM-DD",
-          priority: 1,
-          tasklistname: "TaskListA",
-          isdone: false,
-        },
-        {
-          id: 3,
-          name: "A. Milk for the hedgehogs.",
-          description: "-",
-          date: "YYYY-MM-DD",
-          priority: 2,
-          tasklistname: "TaskListA",
-          isdone: false,
-        },
-      ],
+      tasklist: props.tasklist,
     };
   }
 
@@ -57,5 +47,6 @@ class MockListComponent extends React.Component {
     );
   }
 }
+*/
 
 export default MockListComponent;
