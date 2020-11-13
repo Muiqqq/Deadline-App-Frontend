@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function SortButton(props) {
   const handleClick = (e) => {
@@ -9,7 +9,44 @@ function SortButton(props) {
 }
 
 function SortButtonListComponent(props) {
-  const handleSorting = (buttonLabel) => {
+  const [sortAscending, setSortAscending] = useState(true);
+  const [previouslyClicked, setPreviouslyClicked] = useState(null);
+
+  const tasklist = props.tasklist.slice();
+  const updateTasklist = props.updateTasklist;
+
+  // Sort handling
+  useEffect(() => {
+    const arr = tasklist.slice();
+
+    arr.sort((a, b) => {
+      switch (previouslyClicked) {
+        case "Name":
+          return sortAscending
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+        case "Priority":
+          return sortAscending
+            ? a.priority - b.priority
+            : b.priority - a.priority;
+        case "isDone":
+          return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
+        default:
+          return 0;
+      }
+    });
+    updateTasklist(arr);
+  }, [sortAscending, previouslyClicked, tasklist, updateTasklist]);
+
+  const handleClick = (buttonLabel) => {
+    if (buttonLabel === previouslyClicked) {
+      setSortAscending(!sortAscending);
+    } else {
+      setSortAscending(true);
+    }
+
+    setPreviouslyClicked(buttonLabel);
+    /*
     const arr = props.tasklist.slice();
 
     arr.sort((a, b) => {
@@ -26,6 +63,7 @@ function SortButtonListComponent(props) {
     });
 
     props.updateTasklist(arr);
+    */
   };
 
   return (
@@ -33,13 +71,13 @@ function SortButtonListComponent(props) {
       <h2>Sort by:</h2>
       <ul className="sortbuttonlist">
         <li>
-          <SortButton label="Name" onClick={handleSorting} />
+          <SortButton label="Name" onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="Priority" onClick={handleSorting} />
+          <SortButton label="Priority" onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="isDone" onClick={handleSorting} />
+          <SortButton label="isDone" onClick={handleClick} />
         </li>
       </ul>
     </div>
