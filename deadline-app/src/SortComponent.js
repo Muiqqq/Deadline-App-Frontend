@@ -33,7 +33,7 @@ function SortButtonListComponent(props) {
           return sortAscending
             ? a.priority - b.priority
             : b.priority - a.priority;
-        case "isDone":
+        case "Completed":
           return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
         default:
           return 0;
@@ -84,7 +84,7 @@ function SortButtonListComponent(props) {
           <SortButton label="Priority" onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="isDone" onClick={handleClick} />
+          <SortButton label="Completed" onClick={handleClick} />
         </li>
       </ul>
     </div>
