@@ -4,6 +4,7 @@ import "./scss/Main.scss";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/Todolist";
 
+<<<<<<< HEAD
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -12,6 +13,47 @@ class App extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+=======
+function StateContainer(props) {
+  const [tasklist, setTasklist] = useState([
+    {
+      id: 1,
+      name: "B. Milk for the crocs.",
+      description: "-",
+      date: "2001-09-11",
+      priority: 3,
+      tasklistname: "TaskListA",
+      isdone: false,
+    },
+    {
+      id: 2,
+      name: "C. Milk for the cats.",
+      description: "-",
+      date: "2001-09-13",
+      priority: 1,
+      tasklistname: "TaskListA",
+      isdone: false,
+    },
+    {
+      id: 3,
+      name: "A. Milk for the hedgehogs.",
+      description: "-",
+      date: "2002-01-01",
+      priority: 2,
+      tasklistname: "TaskListA",
+      isdone: true,
+    },
+    {
+      id: 4,
+      name: "Dont stay awake for the whole night.",
+      description: "-",
+      date: "2002-12-12",
+      priority: 1,
+      tasklistname: "TaskListA",
+      isdone: true,
+    },
+  ]);
+>>>>>>> a581a04 (Add proper dates for tasklist in StateContainer.)
 
   handleSubmit = (todo) => {
     // Changes
