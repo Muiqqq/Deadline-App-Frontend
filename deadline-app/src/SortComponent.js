@@ -21,6 +21,10 @@ function SortButtonListComponent(props) {
 
     arr.sort((a, b) => {
       switch (previouslyClicked) {
+        case "Date":
+          return sortAscending
+            ? new Date(a.date.concat("Z")) - new Date(b.date.concat("Z"))
+            : new Date(b.date.concat("Z")) - new Date(a.date.concat("Z"));
         case "Name":
           return sortAscending
             ? a.name.localeCompare(b.name)
@@ -70,6 +74,9 @@ function SortButtonListComponent(props) {
     <div>
       <h2>Sort by:</h2>
       <ul className="sortbuttonlist">
+        <li>
+          <SortButton label="Date" onClick={handleClick} />
+        </li>
         <li>
           <SortButton label="Name" onClick={handleClick} />
         </li>
