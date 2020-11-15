@@ -31,11 +31,13 @@ ul {
 // Form component styling
 .form {
   width: 500px;
-  margin: 1rem;
+  margin: 2rem;
+
   form {
     display: flex;
     flex-direction: column;
     width: 500px;
+    padding-right: 1rem;
 
     input,
     textarea {
@@ -74,7 +76,7 @@ ul {
 
 // TodoList component styling
 .todo-list {
-  margin: 1rem 2rem;
+  margin: 2rem 2rem;
 
   .list {
     li {
