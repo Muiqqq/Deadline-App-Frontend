@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SortButtonListComponent from "./SortComponent";
+import SortButtonListComponent from "../components/SortComponent";
 import Tasklist from "./SortTestComponent";
 
 function SortTest(props) {
