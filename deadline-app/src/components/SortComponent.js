@@ -54,8 +54,8 @@ function SortButtonListComponent(props) {
 
   return (
     <div>
-      <h2>Sort by:</h2>
       <ul className="sortbuttonlist">
+        Sort by:
         <li>
           <SortButton label="Date" onClick={handleClick} />
         </li>
