@@ -1,3 +1,5 @@
+$bg-color: #2a3c44;
+
 // Global reset
 * {
   margin: 0;
@@ -5,10 +7,25 @@
   box-sizing: border-box;
 }
 
+// Global styling
 body {
   color: #fff;
-  background-color: #2a3c44;
+  background-color: $bg-color;
   font-family: 'Lato', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  max-width: 1270px;
+  margin: auto;
+}
+
+// App styling
+.app {
+  display: flex;
 }
 
 // Form component styling
@@ -20,9 +37,20 @@ body {
     flex-direction: column;
     width: 500px;
 
-    input {
-      padding: 1rem 0;
+    input,
+    textarea {
+      padding: 1rem 0.3rem;
       margin: 0.5rem 0rem;
+      background-color: #3e5a66;
+      color: rgb(197, 197, 197);
+      border: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: rgb(197, 197, 197);
+      opacity: 1; /* Firefox */
     }
 
     #priority {
@@ -40,6 +68,19 @@ body {
       color: #fff;
       border: none;
       background-color: #21a06d;
+    }
+  }
+}
+
+// TodoList component styling
+.todo-list {
+  margin: 1rem 2rem;
+
+  .list {
+    li {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+      border-bottom: 1px solid rgb(122, 122, 122);
     }
   }
 }

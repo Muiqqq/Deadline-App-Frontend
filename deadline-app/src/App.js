@@ -8,25 +8,31 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [{ name: 'task 1', date: 'dfs' }, { name: 'task 13' }],
+      todos: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit = (todo) => {
-    const temp = { ...this.state };
-    temp.todos.push(todo);
+    // Changes
+    const temp = [...this.state.todos];
+    temp.push(todo);
+    // End of changes
     this.setState({ todos: temp });
     console.log(this.state.todos);
   };
 
   render() {
     return (
-      <div className='app'>
-        <div className='form'>
-          <TodoForm onFormSubmit={this.handleSubmit} />
+      <div className='container'>
+        <div className='app'>
+          <div className='form'>
+            <TodoForm onFormSubmit={this.handleSubmit} />
+          </div>
+          <div className='todo-list'>
+            <TodoList todos={this.state.todos} />
+          </div>
         </div>
-        <TodoList todos={this.state.todos} />
       </div>
     );
   }
