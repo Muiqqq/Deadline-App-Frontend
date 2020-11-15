@@ -40,7 +40,7 @@ function SortButtonListComponent(props) {
       }
     });
     updateTasklist(arr);
-  }, [sortAscending, previouslyClicked, tasklist, updateTasklist]);
+  }, [sortAscending, previouslyClicked, updateTasklist]);
 
   const handleClick = (buttonLabel) => {
     if (buttonLabel === previouslyClicked) {
