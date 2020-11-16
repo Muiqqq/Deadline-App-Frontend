@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 function SortButton(props) {
   const handleClick = (e) => {
     props.onClick(props.label);
   };
 
-  return <button onClick={handleClick}>{props.label}</button>;
+  return (
+    <button className='btn py-05' onClick={handleClick}>
+      {props.label}
+    </button>
+  );
 }
 
 function SortButtonListComponent(props) {
@@ -21,19 +25,19 @@ function SortButtonListComponent(props) {
 
     arr.sort((a, b) => {
       switch (previouslyClicked) {
-        case "Date":
+        case 'Date':
           return sortAscending
-            ? new Date(a.date.concat("Z")) - new Date(b.date.concat("Z"))
-            : new Date(b.date.concat("Z")) - new Date(a.date.concat("Z"));
-        case "Name":
+            ? new Date(a.date.concat('Z')) - new Date(b.date.concat('Z'))
+            : new Date(b.date.concat('Z')) - new Date(a.date.concat('Z'));
+        case 'Name':
           return sortAscending
             ? a.name.localeCompare(b.name)
             : b.name.localeCompare(a.name);
-        case "Priority":
+        case 'Priority':
           return sortAscending
             ? a.priority - b.priority
             : b.priority - a.priority;
-        case "Completed":
+        case 'Completed':
           return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
         default:
           return 0;
@@ -54,19 +58,19 @@ function SortButtonListComponent(props) {
 
   return (
     <div>
-      <ul className="sortbuttonlist">
+      <ul className='sortbuttonlist'>
         Sort by:
         <li>
-          <SortButton label="Date" onClick={handleClick} />
+          <SortButton label='Date' onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="Name" onClick={handleClick} />
+          <SortButton label='Name' onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="Priority" onClick={handleClick} />
+          <SortButton label='Priority' onClick={handleClick} />
         </li>
         <li>
-          <SortButton label="Completed" onClick={handleClick} />
+          <SortButton label='Completed' onClick={handleClick} />
         </li>
       </ul>
     </div>
