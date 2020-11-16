@@ -11,7 +11,7 @@ $bg-color: #2a3c44;
 body {
   color: #fff;
   background-color: $bg-color;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 ul {
@@ -84,5 +84,14 @@ ul {
       padding-top: 0.5rem;
       border-bottom: 1px solid rgb(122, 122, 122);
     }
+  }
+}
+
+// Sort component styling (temporary)
+.sortbuttonlist {
+  display: flex;
+
+  li {
+    padding-left: 1rem;
   }
 }

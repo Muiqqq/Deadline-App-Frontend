@@ -1,8 +1,9 @@
-import React from 'react';
-import './scss/Main.scss';
+import React from "react";
+import "./scss/Main.scss";
 // Import components
-import TodoForm from './components/TodoForm';
-import TodoList from './components/Todolist';
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/Todolist";
+import SortComponent from "./components/SortComponent";
 
 class App extends React.Component {
   constructor(props) {
@@ -22,14 +23,22 @@ class App extends React.Component {
     console.log(this.state.todos);
   };
 
+  handleSort = (sortedTodos) => {
+    this.setState({ todos: sortedTodos });
+  };
+
   render() {
     return (
-      <div className='container'>
-        <div className='app'>
-          <div className='form'>
+      <div className="container">
+        <div className="app">
+          <div className="form">
             <TodoForm onFormSubmit={this.handleSubmit} />
           </div>
-          <div className='todo-list'>
+          <div className="todo-list">
+            <SortComponent
+              tasklist={this.state.todos}
+              updateTasklist={this.handleSort}
+            />
             <TodoList todos={this.state.todos} />
           </div>
         </div>
