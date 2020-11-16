@@ -1,6 +1,115 @@
+$bg-color: #2a3c44;
+
 // Global reset
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+// Global styling
+body {
+  color: #fff;
+  background-color: $bg-color;
+  font-family: 'Lato', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+// Custom components
+.btn {
+  color: #fff;
+  border: none;
+  background-color: #21a06d;
+}
+
+.container {
+  max-width: 1270px;
+  margin: auto;
+}
+
+.py-05 {
+  padding: 0.5rem;
+}
+
+// App styling
+.app {
+  display: flex;
+}
+
+// Form component styling
+.form {
+  width: 500px;
+  margin: 2rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding-right: 1rem;
+
+    input,
+    textarea {
+      padding: 1rem 0.3rem;
+      margin: 0.5rem 0rem;
+      background-color: #3e5a66;
+      color: rgb(197, 197, 197);
+      border: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: rgb(197, 197, 197);
+      opacity: 1; /* Firefox */
+    }
+
+    #priority {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .input-description {
+      padding-bottom: 2rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 1rem;
+      color: #fff;
+      border: none;
+      background-color: #21a06d;
+    }
+  }
+}
+
+// TodoList component styling
+.todo-list {
+  margin: 2rem 2rem;
+
+  .list {
+    margin-top: 1rem;
+    li {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+      border-bottom: 1px solid rgb(122, 122, 122);
+
+      p {
+        display: inline-block;
+        padding-right: 1rem;
+      }
+    }
+  }
+}
+
+// Sort component styling (temporary)
+.sortbuttonlist {
+  display: flex;
+  align-items: center;
+
+  li {
+    padding-left: 1rem;
+  }
 }
