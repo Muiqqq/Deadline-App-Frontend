@@ -11,7 +11,7 @@ $bg-color: #2a3c44;
 body {
   color: #fff;
   background-color: $bg-color;
-  font-family: "Lato", sans-serif;
+  font-family: 'Lato', sans-serif;
 }
 
 ul {
@@ -83,6 +83,11 @@ ul {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
       border-bottom: 1px solid rgb(122, 122, 122);
+
+      p {
+        display: inline-block;
+        padding-right: 1rem;
+      }
     }
   }
 }
