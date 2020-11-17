@@ -95,6 +95,15 @@ ul {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
       border-bottom: 1px solid rgb(122, 122, 122);
+      display: flex;
+      justify-content: space-between;
+
+      .remove-button {
+        background-color: $bg-color;
+        border: none;
+        color: #fff;
+        outline: none;
+      }
 
       p {
         display: inline-block;
