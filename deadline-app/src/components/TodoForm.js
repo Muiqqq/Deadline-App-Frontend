@@ -8,7 +8,7 @@ class TodoForm extends React.Component {
     this.state = {
       name: '',
       date: '',
-      priority: '3',
+      priority: '',
       list: '',
       description: '',
       isdone: false,
@@ -36,13 +36,17 @@ class TodoForm extends React.Component {
     this.setState({
       name: '',
       date: '',
-      priority: '3',
+      priority: '',
       list: '',
       description: '',
       isdone: false,
       id: Math.random() * 1000,
     });
   }
+
+  handleRadioButtonSelection = (e) => {
+    this.setState({ priority: e.target.value });
+  };
 
   render() {
     return (
