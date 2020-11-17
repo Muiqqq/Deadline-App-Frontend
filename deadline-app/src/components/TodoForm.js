@@ -8,7 +8,7 @@ function TodoForm(props) {
     props.onInputChange(e);
   };
 
-  const submitHandler = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (props.todoFormState.name === '') return;
     props.onFormSubmit(props.todoFormState);
@@ -61,7 +61,7 @@ function TodoForm(props) {
         value={props.todoFormState.description}
         placeholder='Description'
       />
-      <button onClick={submitHandler} className='form-button' type='submit'>
+      <button onClick={handleSubmit} className='form-button' type='submit'>
         {props.submitButtonLabel}
       </button>
     </form>
