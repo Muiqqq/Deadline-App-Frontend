@@ -1,5 +1,7 @@
 import React from 'react';
 
+// NOTE! TodoForm now generates random id for added items for item removal to work.
+// Refactor this when using database.
 class TodoForm extends React.Component {
   constructor(props) {
     super(props);
