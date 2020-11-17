@@ -30,11 +30,21 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
       <button onClick={markCompleted} className='btn-flat task-completed'>
         <i className='fas fa-check'></i>
       </button>
+      <EditButton />
       <button onClick={removeItem} className='btn-flat'>
         <i className='fas fa-trash'></i>
       </button>
     </li>
   );
 };
+
+// Change later to a more permanent solution
+function EditButton(props) {
+  return (
+    <button className='btn-flat'>
+      <i className='fas fa-edit'></i>
+    </button>
+  );
+}
 
 export default Todo;
