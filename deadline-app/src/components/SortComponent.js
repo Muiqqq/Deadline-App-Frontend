@@ -21,9 +21,7 @@ function SortButtonListComponent(props) {
 
   // Sort handling
   useEffect(() => {
-    const arr = tasklist.slice();
-
-    arr.sort((a, b) => {
+    tasklist.sort((a, b) => {
       switch (previouslyClicked) {
         case 'Date':
           return sortAscending
@@ -43,7 +41,7 @@ function SortButtonListComponent(props) {
           return 0;
       }
     });
-    updateTasklist(arr);
+    updateTasklist(tasklist);
   }, [sortAscending, previouslyClicked, updateTasklist]);
 
   const handleClick = (buttonLabel) => {
