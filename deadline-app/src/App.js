@@ -77,6 +77,10 @@ class App extends React.Component {
     });
   };
 
+  editHandler = (todoToEdit) => {
+    this.setState({ todoFormState: todoToEdit });
+  };
+
   render() {
     return (
       <div className='container'>
@@ -97,6 +101,7 @@ class App extends React.Component {
               todos={this.state.todos}
               deleteHandler={this.deleteHandler}
               completeHandler={this.completeHandler}
+              editHandler={this.editHandler}
             />
           </div>
         </div>
