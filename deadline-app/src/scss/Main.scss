@@ -98,10 +98,11 @@ ul {
       display: flex;
       justify-content: space-between;
 
-      button {
+      .remove-button {
         background-color: $bg-color;
         border: none;
         color: #fff;
+        outline: none;
       }
 
       p {

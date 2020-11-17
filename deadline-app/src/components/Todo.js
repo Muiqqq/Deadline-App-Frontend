@@ -13,7 +13,7 @@ const Todo = ({ todo, todos, deleteHandler }) => {
       <p>{todo.priority}</p>
       <p>{todo.date}</p>
       <p>{todo.name}</p>
-      <button onClick={removeItem}>
+      <button onClick={removeItem} className='remove-button'>
         <i className='fas fa-trash'></i>
       </button>
     </li>
