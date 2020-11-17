@@ -14,6 +14,11 @@ function TodoForm(props) {
     props.onFormSubmit(props.todoFormState);
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    props.onFormCancel();
+  };
+
   return (
     <form>
       <input
@@ -63,6 +68,9 @@ function TodoForm(props) {
       />
       <button onClick={handleSubmit} className='form-button' type='submit'>
         {props.submitButtonLabel}
+      </button>
+      <button onClick={handleCancel} className='form-button' type='submit'>
+        Cancel
       </button>
     </form>
   );
