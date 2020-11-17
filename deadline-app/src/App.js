@@ -10,16 +10,49 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [],
+      todoFormState: {
+        name: '',
+        date: '',
+        priority: '',
+        list: '',
+        descritpion: '',
+        isdone: false,
+        id: Math.random() * 1000,
+      },
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleTodoFormInputChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    let todoFormState = { ...this.state.todoFormState };
+    todoFormState[name] = value;
+    this.setState({
+      todoFormState: todoFormState,
+    });
+  };
 
   handleSubmit = (todo) => {
     // Changes
     const temp = [...this.state.todos];
     temp.push(todo);
     // End of changes
-    this.setState({ todos: temp });
+    this.setState({ todos: temp, todoFormState: this.resetTodoFormState() });
+  };
+
+  resetTodoFormState = () => {
+    let todoformstate = { ...this.state.todoFormState };
+    todoformstate.name = '';
+    todoformstate.date = '';
+    todoformstate.priority = '';
+    todoformstate.list = '';
+    todoformstate.description = '';
+    todoformstate.isdone = false;
+    todoformstate.id = Math.random() * 1000;
+    return todoformstate;
   };
 
   handleSort = (sortedTodos) => {
@@ -49,7 +82,11 @@ class App extends React.Component {
       <div className='container'>
         <div className='app'>
           <div className='form'>
-            <TodoForm onFormSubmit={this.handleSubmit} />
+            <TodoForm
+              todoFormState={this.state.todoFormState}
+              onInputChange={this.handleTodoFormInputChange}
+              onFormSubmit={this.handleSubmit}
+            />
           </div>
           <div className='todo-list'>
             <SortComponent
