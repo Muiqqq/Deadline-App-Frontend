@@ -32,6 +32,18 @@ class App extends React.Component {
     });
   };
 
+  completeHandler = (elementIndex) => {
+    console.log(elementIndex);
+    const temp = [...this.state.todos];
+    temp[elementIndex] = {
+      ...temp[elementIndex],
+      isdone: !temp[elementIndex].isdone,
+    };
+    this.setState({
+      todos: temp,
+    });
+  };
+
   render() {
     return (
       <div className='container'>
@@ -47,6 +59,7 @@ class App extends React.Component {
             <TodoList
               todos={this.state.todos}
               deleteHandler={this.deleteHandler}
+              completeHandler={this.completeHandler}
             />
           </div>
         </div>
