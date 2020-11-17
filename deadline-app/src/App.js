@@ -1,9 +1,9 @@
-import React from "react";
-import "./scss/Main.scss";
+import React from 'react';
+import './scss/Main.scss';
 // Import components
-import TodoForm from "./components/TodoForm";
-import TodoList from "./components/Todolist";
-import SortComponent from "./components/SortComponent";
+import TodoForm from './components/TodoForm';
+import TodoList from './components/Todolist';
+import SortComponent from './components/SortComponent';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,26 +20,34 @@ class App extends React.Component {
     temp.push(todo);
     // End of changes
     this.setState({ todos: temp });
-    console.log(this.state.todos);
   };
 
   handleSort = (sortedTodos) => {
     this.setState({ todos: sortedTodos });
   };
 
+  deleteHandler = (filtered) => {
+    this.setState({
+      todos: filtered,
+    });
+  };
+
   render() {
     return (
-      <div className="container">
-        <div className="app">
-          <div className="form">
+      <div className='container'>
+        <div className='app'>
+          <div className='form'>
             <TodoForm onFormSubmit={this.handleSubmit} />
           </div>
-          <div className="todo-list">
+          <div className='todo-list'>
             <SortComponent
               tasklist={this.state.todos}
               updateTasklist={this.handleSort}
             />
-            <TodoList todos={this.state.todos} />
+            <TodoList
+              todos={this.state.todos}
+              deleteHandler={this.deleteHandler}
+            />
           </div>
         </div>
       </div>

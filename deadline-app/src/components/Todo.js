@@ -1,14 +1,26 @@
 import React from 'react';
 
-const Todo = ({ todo }) => {
-  const deleteHandler = () => {};
+const Todo = ({ todo, todos, deleteHandler }) => {
+  // const removeItem = (e) => {
+  //   deleteHandler(item)
+  // };
+  const removeItem = () => {
+    // setTodos(todos.filter((el) => el.id !== todo.id));
+    deleteHandler(
+      todos.filter((el) => {
+        console.log(el.id);
+        console.log(todo.id);
+        return el.id !== todo.id;
+      })
+    );
+  };
   return (
     <li className='todo-item'>
-      <p>{todo[2]}</p>
-      <p>{todo[1]}</p>
-      <p>{todo[0]}</p>
-      <button onClick={deleteHandler}>
-        <i class='fas fa-trash'></i>
+      <p>{todo.priority}</p>
+      <p>{todo.date}</p>
+      <p>{todo.name}</p>
+      <button onClick={removeItem}>
+        <i className='fas fa-trash'></i>
       </button>
     </li>
   );

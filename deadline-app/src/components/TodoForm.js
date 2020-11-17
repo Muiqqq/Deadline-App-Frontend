@@ -9,6 +9,7 @@ class TodoForm extends React.Component {
       priority: '3',
       list: '',
       description: '',
+      id: Math.random() * 1000,
     };
 
     this.inputChange = this.inputChange.bind(this);
@@ -35,6 +36,7 @@ class TodoForm extends React.Component {
       priority: '3',
       list: '',
       description: '',
+      id: Math.random() * 1000,
     });
   }
 
