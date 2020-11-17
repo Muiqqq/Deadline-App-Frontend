@@ -18,8 +18,12 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
     return;
   };
 
+  const setClassNameDependingOnIsDoneStatus = () => {
+    return todo.isdone ? 'todo-item completed' : 'todo-item';
+  };
+
   return (
-    <li className={className}>
+    <li className={setClassNameDependingOnIsDoneStatus()}>
       <p>{todo.priority}</p>
       <p>{todo.date}</p>
       <p>{todo.name}</p>
