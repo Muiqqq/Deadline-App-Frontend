@@ -64,9 +64,27 @@ class TodoForm extends React.Component {
         <label>
           Priority
           <div id='priority'>
-            <input type='radio' id='low' name='priority' />
-            <input type='radio' id='medium' name='priority' />
-            <input type='radio' id='high' name='priority' />
+            <input
+              onChange={this.inputChange}
+              type='radio'
+              id='low'
+              value='3'
+              name='priority'
+            />
+            <input
+              onChange={this.inputChange}
+              type='radio'
+              id='medium'
+              value='2'
+              name='priority'
+            />
+            <input
+              onChange={this.inputChange}
+              type='radio'
+              id='high'
+              value='1'
+              name='priority'
+            />
           </div>
         </label>
         <input
