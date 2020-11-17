@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
+const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   // const [className, setClassName] = useState('todo-item');
   const removeItem = () => {
     deleteHandler(
@@ -18,6 +18,10 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
     return;
   };
 
+  const handleEdit = () => {
+    editHandler(todo);
+  };
+
   const setClassNameDependingOnIsDoneStatus = () => {
     return todo.isdone ? 'todo-item completed' : 'todo-item';
   };
@@ -30,7 +34,7 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
       <button onClick={markCompleted} className='btn-flat task-completed'>
         <i className='fas fa-check'></i>
       </button>
-      <EditButton />
+      <EditButton onClick={handleEdit} />
       <button onClick={removeItem} className='btn-flat'>
         <i className='fas fa-trash'></i>
       </button>
@@ -41,7 +45,7 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
 // Change later to a more permanent solution
 function EditButton(props) {
   return (
-    <button className='btn-flat'>
+    <button className='btn-flat' onClick={props.onClick}>
       <i className='fas fa-edit'></i>
     </button>
   );
