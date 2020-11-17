@@ -5,6 +5,11 @@ import TodoForm from './components/TodoForm';
 import TodoList from './components/Todolist';
 import SortComponent from './components/SortComponent';
 
+const todoFormButtonLabel = {
+  ADD: 'Add',
+  EDIT: 'Edit',
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -19,9 +24,8 @@ class App extends React.Component {
         isdone: false,
         id: Math.random() * 1000,
       },
-      todoFormSubmitButtonLabel: 'Add',
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleTodoFormInputChange = (event) => {
@@ -37,11 +41,27 @@ class App extends React.Component {
   };
 
   handleSubmit = (todo) => {
-    // Changes
-    const temp = [...this.state.todos];
-    temp.push(todo);
-    // End of changes
-    this.setState({ todos: temp, todoFormState: this.resetTodoFormState() });
+    let temp = [...this.state.todos];
+    if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
+      const indexOfEditedTodo = temp.findIndex(
+        (element) => element.id === todo.id
+      );
+      temp[indexOfEditedTodo] = todo;
+    } else {
+      temp = temp.concat(todo);
+    }
+    this.setState({
+      todos: temp,
+      todoFormState: this.resetTodoFormState(),
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      todoFormState: this.resetTodoFormState(),
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+    });
   };
 
   resetTodoFormState = () => {
@@ -79,7 +99,10 @@ class App extends React.Component {
   };
 
   editHandler = (todoToEdit) => {
-    this.setState({ todoFormState: todoToEdit });
+    this.setState({
+      todoFormState: todoToEdit,
+      todoFormSubmitButtonLabel: todoFormButtonLabel.EDIT,
+    });
   };
 
   render() {
@@ -92,6 +115,7 @@ class App extends React.Component {
               todoFormState={this.state.todoFormState}
               onInputChange={this.handleTodoFormInputChange}
               onFormSubmit={this.handleSubmit}
+              onFormCancel={this.handleCancel}
             />
           </div>
           <div className='todo-list'>
