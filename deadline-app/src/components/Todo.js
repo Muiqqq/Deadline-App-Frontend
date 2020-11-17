@@ -11,8 +11,11 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
   };
 
   const markCompleted = (e) => {
-    setClassName('todo-item completed');
-    completeHandler(todos.findIndex((el) => el.id === todo.id));
+    if (todo.isdone !== true) {
+      setClassName('todo-item completed');
+      completeHandler(todos.findIndex((el) => el.id === todo.id));
+    }
+    return;
   };
 
   return (
