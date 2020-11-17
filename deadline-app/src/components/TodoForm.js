@@ -62,7 +62,7 @@ function TodoForm(props) {
         placeholder='Description'
       />
       <button onClick={submitHandler} className='form-button' type='submit'>
-        Add
+        {props.submitButtonLabel}
       </button>
     </form>
   );

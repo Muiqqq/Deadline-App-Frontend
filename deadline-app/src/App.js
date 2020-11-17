@@ -19,6 +19,7 @@ class App extends React.Component {
         isdone: false,
         id: Math.random() * 1000,
       },
+      todoFormSubmitButtonLabel: 'Add',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -87,6 +88,7 @@ class App extends React.Component {
         <div className='app'>
           <div className='form'>
             <TodoForm
+              submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
               onInputChange={this.handleTodoFormInputChange}
               onFormSubmit={this.handleSubmit}
