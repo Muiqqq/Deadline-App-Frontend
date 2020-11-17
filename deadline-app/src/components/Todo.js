@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
-  const [className, setClassName] = useState('todo-item');
+  // const [className, setClassName] = useState('todo-item');
   const removeItem = () => {
     deleteHandler(
       todos.filter((el) => {
@@ -12,14 +12,18 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
 
   const markCompleted = (e) => {
     if (todo.isdone !== true) {
-      setClassName('todo-item completed');
+      // setClassName('todo-item completed');
       completeHandler(todos.findIndex((el) => el.id === todo.id));
     }
     return;
   };
 
+  const setClassNameDependingOnIsDoneStatus = () => {
+    return todo.isdone ? 'todo-item completed' : 'todo-item';
+  };
+
   return (
-    <li className={className}>
+    <li className={setClassNameDependingOnIsDoneStatus()}>
       <p>{todo.priority}</p>
       <p>{todo.date}</p>
       <p>{todo.name}</p>
