@@ -2,7 +2,7 @@ import React from 'react';
 // Import components
 import Todo from './Todo';
 
-const TodoList = ({ todos, deleteHandler }) => {
+const TodoList = ({ todos, deleteHandler, completeHandler }) => {
   const todoItems = todos.map((todo, index) => {
     return (
       <Todo
@@ -10,6 +10,7 @@ const TodoList = ({ todos, deleteHandler }) => {
         todo={todo}
         todos={todos}
         deleteHandler={deleteHandler}
+        completeHandler={completeHandler}
       />
     );
   });

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Todo = ({ todo, todos, deleteHandler }) => {
+const Todo = ({ todo, todos, deleteHandler, completeHandler }) => {
+  const [className, setClassName] = useState('todo-item');
   const removeItem = () => {
     deleteHandler(
       todos.filter((el) => {
@@ -8,12 +9,24 @@ const Todo = ({ todo, todos, deleteHandler }) => {
       })
     );
   };
+
+  const markCompleted = (e) => {
+    if (todo.isdone !== true) {
+      setClassName('todo-item completed');
+      completeHandler(todos.findIndex((el) => el.id === todo.id));
+    }
+    return;
+  };
+
   return (
-    <li className='todo-item'>
+    <li className={className}>
       <p>{todo.priority}</p>
       <p>{todo.date}</p>
       <p>{todo.name}</p>
-      <button onClick={removeItem} className='remove-button'>
+      <button onClick={markCompleted} className='btn-flat task-completed'>
+        <i className='fas fa-check'></i>
+      </button>
+      <button onClick={removeItem} className='btn-flat'>
         <i className='fas fa-trash'></i>
       </button>
     </li>

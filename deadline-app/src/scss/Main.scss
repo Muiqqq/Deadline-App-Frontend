@@ -24,6 +24,12 @@ ul {
   border: none;
   background-color: #21a06d;
 }
+.btn-flat {
+  background-color: $bg-color;
+  border: none;
+  color: #fff;
+  outline: none;
+}
 
 .container {
   max-width: 1270px;
@@ -98,19 +104,17 @@ ul {
       display: flex;
       justify-content: space-between;
 
-      .remove-button {
-        background-color: $bg-color;
-        border: none;
-        color: #fff;
-        outline: none;
-      }
-
       p {
         display: inline-block;
         padding-right: 1rem;
       }
     }
   }
+}
+
+// Task completed
+.completed > * {
+  color: grey;
 }
 
 // Sort component styling (temporary)

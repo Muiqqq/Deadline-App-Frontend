@@ -11,6 +11,7 @@ class TodoForm extends React.Component {
       priority: '3',
       list: '',
       description: '',
+      isdone: false,
       id: Math.random() * 1000,
     };
 
@@ -38,6 +39,7 @@ class TodoForm extends React.Component {
       priority: '3',
       list: '',
       description: '',
+      isdone: false,
       id: Math.random() * 1000,
     });
   }
