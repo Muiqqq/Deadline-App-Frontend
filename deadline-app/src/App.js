@@ -10,6 +10,9 @@ const todoFormButtonLabel = {
   EDIT: 'Edit',
 };
 
+// NOTE! todoFormState now generates random id for added items for
+// item removal to work.
+// Refactor this when using database.
 class App extends React.Component {
   constructor(props) {
     super(props);

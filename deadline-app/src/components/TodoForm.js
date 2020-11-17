@@ -1,8 +1,5 @@
 import React from 'react';
 
-// NOTE! TodoForm now generates random id for added items for item removal to work.
-// Refactor this when using database.
-
 function TodoForm(props) {
   const inputChange = (e) => {
     props.onInputChange(e);
