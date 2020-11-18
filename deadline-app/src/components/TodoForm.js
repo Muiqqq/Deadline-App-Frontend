@@ -1,6 +1,12 @@
 import React from 'react';
 
 function TodoForm(props) {
+  const priorityValues = {
+    LOW: '3',
+    MEDIUM: '2',
+    HIGH: '1',
+  };
+
   const inputChange = (e) => {
     props.onInputChange(e);
   };
@@ -14,6 +20,10 @@ function TodoForm(props) {
   const handleCancel = (e) => {
     e.preventDefault();
     props.onFormCancel();
+  };
+
+  const checkPriorityValue = (value) => {
+    return props.todoFormState.priority === value;
   };
 
   return (
@@ -34,18 +44,39 @@ function TodoForm(props) {
       />
       <label>
         Priority
-        <div id='priority' onChange={inputChange}>
+        <div id='priority'>
           <div>
             <label for='3'>Low</label>
-            <input type='radio' id='low' name='priority' value='3' />
+            <input
+              type='radio'
+              id='low'
+              name='priority'
+              value={priorityValues.LOW}
+              checked={checkPriorityValue(priorityValues.LOW)}
+              onChange={inputChange}
+            />
           </div>
           <div>
             <label for='2'>Medium</label>
-            <input type='radio' id='medium' name='priority' value='2' />
+            <input
+              type='radio'
+              id='medium'
+              name='priority'
+              value={priorityValues.MEDIUM}
+              checked={checkPriorityValue(priorityValues.MEDIUM)}
+              onChange={inputChange}
+            />
           </div>
           <div>
             <label for='1'>High</label>
-            <input type='radio' id='high' name='priority' value='1' />
+            <input
+              type='radio'
+              id='high'
+              name='priority'
+              value={priorityValues.HIGH}
+              checked={checkPriorityValue(priorityValues.HIGH)}
+              onChange={inputChange}
+            />
           </div>
         </div>
       </label>
