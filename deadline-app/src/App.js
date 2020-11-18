@@ -12,9 +12,6 @@ const todoFormButtonLabel = {
 
 // Todo:
 // Cleanup
-// Select priority when editing a todo
-// Style for cancel button (place it next to submit instead of below)
-//    (color to red?)
 // Rename a bunch of functions and variables for clarity?
 // Start extracting components where necessary, again for clarity.
 // Move component specific functions under objects?
