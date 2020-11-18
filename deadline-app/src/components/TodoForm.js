@@ -46,7 +46,7 @@ function TodoForm(props) {
         Priority
         <div id='priority'>
           <div>
-            <label for='3'>Low</label>
+            <label htmlFor='low'>Low</label>
             <input
               type='radio'
               id='low'
@@ -57,7 +57,7 @@ function TodoForm(props) {
             />
           </div>
           <div>
-            <label for='2'>Medium</label>
+            <label htmlFor='medium'>Medium</label>
             <input
               type='radio'
               id='medium'
@@ -68,7 +68,7 @@ function TodoForm(props) {
             />
           </div>
           <div>
-            <label for='1'>High</label>
+            <label htmlFor='high'>High</label>
             <input
               type='radio'
               id='high'
