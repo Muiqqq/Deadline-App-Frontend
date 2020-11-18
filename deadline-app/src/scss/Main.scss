@@ -1,4 +1,6 @@
 $bg-color: #2a3c44;
+$btn-green: #21a06d;
+$btn-red: #e73d3d;
 
 // Global reset
 * {
@@ -22,7 +24,7 @@ ul {
 .btn {
   color: #fff;
   border: none;
-  background-color: #21a06d;
+  background-color: $btn-green;
 }
 .btn-flat {
   background-color: $bg-color;
@@ -91,12 +93,22 @@ ul {
       padding-bottom: 2rem;
     }
 
-    button {
+    .submitbuttons button {
       margin-top: 1rem;
       padding: 1rem;
       color: #fff;
       border: none;
-      background-color: #21a06d;
+    }
+
+    #submit {
+      background-color: $btn-green;
+      width: 70%;
+      margin-right: 5%;
+    }
+
+    #cancel {
+      background-color: $btn-red;
+      width: 25%;
     }
   }
 }

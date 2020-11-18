@@ -63,12 +63,24 @@ function TodoForm(props) {
         value={props.todoFormState.description}
         placeholder='Description'
       />
-      <button onClick={handleSubmit} className='form-button' type='submit'>
-        {props.submitButtonLabel}
-      </button>
-      <button onClick={handleCancel} className='form-button' type='submit'>
-        Cancel
-      </button>
+      <div className='submitbuttons'>
+        <button
+          onClick={handleSubmit}
+          id='submit'
+          className='form-button'
+          type='submit'
+        >
+          {props.submitButtonLabel}
+        </button>
+        <button
+          onClick={handleCancel}
+          id='cancel'
+          className='form-button'
+          type='submit'
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }
