@@ -29,22 +29,30 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
       <p>{todo.priority}</p>
       <p>{todo.date}</p>
       <p>{todo.name}</p>
-      <button onClick={markCompleted} className='btn-flat task-completed'>
-        <i className='fas fa-check'></i>
-      </button>
-      <EditButton onClick={handleEdit} />
-      <button onClick={removeItem} className='btn-flat'>
-        <i className='fas fa-trash'></i>
-      </button>
+      <CustomButton
+        className='btn-flat task-completed'
+        onClick={markCompleted}
+        icon='fas fa-check'
+      />
+      <CustomButton
+        className='btn-flat'
+        onClick={handleEdit}
+        icon='fas fa-edit'
+      />
+      <CustomButton
+        className='btn-flat'
+        onClick={removeItem}
+        icon='fas fa-trash'
+      />
     </li>
   );
 };
 
 // Change later to a more permanent solution
-function EditButton(props) {
+function CustomButton(props) {
   return (
-    <button className='btn-flat' onClick={props.onClick}>
-      <i className='fas fa-edit'></i>
+    <button className={props.className} onClick={props.onClick}>
+      <i className={props.icon}></i>
     </button>
   );
 }
