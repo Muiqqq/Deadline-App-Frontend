@@ -21,9 +21,7 @@ function SortButtonListComponent(props) {
 
   // Sort handling
   useEffect(() => {
-    const arr = tasklist.slice();
-
-    arr.sort((a, b) => {
+    tasklist.sort((a, b) => {
       switch (previouslyClicked) {
         case 'Date':
           return sortAscending
@@ -43,7 +41,15 @@ function SortButtonListComponent(props) {
           return 0;
       }
     });
-    updateTasklist(arr);
+    updateTasklist(tasklist);
+
+    // Below is necessary to stop eslint from complaining about
+    // a missing dependency for useEffect().
+    // The missing dependency is the tasklist being sorted, but
+    // having it in the dep array causes an infinite loop.
+    // Not having it there seems to work just fine (so far).
+
+    // eslint-disable-next-line
   }, [sortAscending, previouslyClicked, updateTasklist]);
 
   const handleClick = (buttonLabel) => {

@@ -5,21 +5,86 @@ import TodoForm from './components/TodoForm';
 import TodoList from './components/Todolist';
 import SortComponent from './components/SortComponent';
 
+const todoFormButtonLabel = {
+  ADD: 'Add',
+  EDIT: 'Edit',
+};
+
+// Todo:
+// Cleanup
+// Rename a bunch of functions and variables for clarity?
+// Start extracting components where necessary, again for clarity.
+// Move component specific functions under objects?
+//    App is becoming cluttered, not to mention passing props
+//    to child components.
+
+// NOTE! todoFormState now generates random id for added items for
+// item removal to work.
+// Refactor this when using database.
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       todos: [],
+      todoFormState: {
+        name: '',
+        date: '',
+        priority: '',
+        list: '',
+        descritpion: '',
+        isdone: false,
+        id: Math.random() * 1000,
+      },
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  handleTodoFormInputChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    let todoFormState = { ...this.state.todoFormState };
+    todoFormState[name] = value;
+    this.setState({
+      todoFormState: todoFormState,
+    });
+  };
+
   handleSubmit = (todo) => {
-    // Changes
-    const temp = [...this.state.todos];
-    temp.push(todo);
-    // End of changes
-    this.setState({ todos: temp });
+    let temp = [...this.state.todos];
+    if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
+      const indexOfEditedTodo = temp.findIndex(
+        (element) => element.id === todo.id
+      );
+      temp[indexOfEditedTodo] = todo;
+    } else {
+      temp = temp.concat(todo);
+    }
+    this.setState({
+      todos: temp,
+      todoFormState: this.resetTodoFormState(),
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      todoFormState: this.resetTodoFormState(),
+      todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+    });
+  };
+
+  resetTodoFormState = () => {
+    let todoformstate = { ...this.state.todoFormState };
+    todoformstate.name = '';
+    todoformstate.date = '';
+    todoformstate.priority = '';
+    todoformstate.list = '';
+    todoformstate.description = '';
+    todoformstate.isdone = false;
+    todoformstate.id = Math.random() * 1000;
+    return todoformstate;
   };
 
   handleSort = (sortedTodos) => {
@@ -44,12 +109,25 @@ class App extends React.Component {
     });
   };
 
+  editHandler = (todoToEdit) => {
+    this.setState({
+      todoFormState: todoToEdit,
+      todoFormSubmitButtonLabel: todoFormButtonLabel.EDIT,
+    });
+  };
+
   render() {
     return (
       <div className='container'>
         <div className='app'>
           <div className='form'>
-            <TodoForm onFormSubmit={this.handleSubmit} />
+            <TodoForm
+              submitButtonLabel={this.state.todoFormSubmitButtonLabel}
+              todoFormState={this.state.todoFormState}
+              onInputChange={this.handleTodoFormInputChange}
+              onFormSubmit={this.handleSubmit}
+              onFormCancel={this.handleCancel}
+            />
           </div>
           <div className='todo-list'>
             <SortComponent
@@ -60,6 +138,7 @@ class App extends React.Component {
               todos={this.state.todos}
               deleteHandler={this.deleteHandler}
               completeHandler={this.completeHandler}
+              editHandler={this.editHandler}
             />
           </div>
         </div>
