@@ -1,4 +1,5 @@
 import React from 'react';
+import Collapsible from './Collapsible';
 
 const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   const removeItem = () => {
@@ -8,6 +9,9 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   };
 
   const markCompleted = (e) => {
+    // Prevents task from collapsing when clicking the checkmark button.
+    e.stopPropagation();
+
     if (todo.isdone !== true) {
       // Filtering happens now in App.js as TodoComponent now has only
       // todos from certain list
@@ -26,24 +30,32 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
 
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
-      <p>{todo.priority}</p>
-      <p>{todo.date}</p>
-      <p>{todo.name}</p>
-      <CustomButton
-        className='btn-flat task-completed'
-        onClick={markCompleted}
-        icon='fas fa-check'
-      />
-      <CustomButton
-        className='btn-flat'
-        onClick={handleEdit}
-        icon='fas fa-edit'
-      />
-      <CustomButton
-        className='btn-flat'
-        onClick={removeItem}
-        icon='fas fa-trash'
-      />
+      <Collapsible
+        header={
+          <>
+            <p className='todo-priority'>{todo.priority}</p>
+            <p className='todo-date'>{todo.date}</p>
+            <p className='todo-name'>{todo.name}</p>
+            <CustomButton
+              className='btn-flat task-completed'
+              onClick={markCompleted}
+              icon='fas fa-check'
+            />
+          </>
+        }
+      >
+        <p className='todo-description'>{todo.description}</p>
+        <CustomButton
+          className='btn-flat'
+          onClick={handleEdit}
+          icon='fas fa-edit'
+        />
+        <CustomButton
+          className='btn-flat'
+          onClick={removeItem}
+          icon='fas fa-trash'
+        />
+      </Collapsible>
     </li>
   );
 };
