@@ -19,9 +19,9 @@ import React, { useState, useEffect } from 'react';
 function Collapsible(props) {
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [props.closeOnChangeOf]);
+  // useEffect(() => {
+  //   setOpen(false);
+  // }, [props.closeOnChangeOf]);
 
   const toggleCollapsed = (e) => {
     setOpen(!open);
