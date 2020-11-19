@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /*
   Collapsible is a simple wrapper to allow showing/hiding of content.
@@ -18,6 +18,10 @@ import React, { useState } from 'react';
 */
 function Collapsible(props) {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [props.closeOnChangeOf]);
 
   const toggleCollapsed = (e) => {
     setOpen(!open);

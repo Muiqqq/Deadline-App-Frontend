@@ -31,6 +31,7 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
+        closeOnChangeOf={todos}
         header={
           <>
             <p className='todo-priority'>{todo.priority}</p>
