@@ -45,17 +45,27 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
           </>
         }
       >
-        <p className='todo-description'>{todo.description}</p>
-        <CustomButton
-          className='btn-flat'
-          onClick={handleEdit}
-          icon='fas fa-edit'
-        />
-        <CustomButton
-          className='btn-flat'
-          onClick={removeItem}
-          icon='fas fa-trash'
-        />
+        <div className='toolbar'>
+          <p>This needs serious work</p>
+          <CustomButton
+            id='edit'
+            className='btn py-05'
+            onClick={handleEdit}
+            label='Edit'
+            icon='fas fa-edit'
+          />
+          <CustomButton
+            id='delete'
+            className='btn py-05'
+            onClick={removeItem}
+            label='Delete'
+            icon='fas fa-trash'
+          />
+        </div>
+        <div>
+          <p>Description:</p>
+          <p className='todo-description'>{todo.description}</p>
+        </div>
       </Collapsible>
     </li>
   );
@@ -64,7 +74,8 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
 // Change later to a more permanent solution
 function CustomButton(props) {
   return (
-    <button className={props.className} onClick={props.onClick}>
+    <button id={props.id} className={props.className} onClick={props.onClick}>
+      {props.label}
       <i className={props.icon}></i>
     </button>
   );
