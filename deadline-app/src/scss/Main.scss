@@ -20,6 +20,19 @@ ul {
   list-style: none;
 }
 
+// Global collapsible styling
+.collapsible {
+  display: flex;
+  flex-flow: row wrap;
+
+  &-header {
+    width: 100%;
+  }
+  &-content {
+    width: 100%;
+  }
+}
+
 // Custom components
 .btn {
   color: #fff;
@@ -116,6 +129,7 @@ ul {
 // TodoList component styling
 .todo-list {
   margin: 2rem 2rem;
+  width: 400px;
 
   .list {
     margin-top: 1rem;
@@ -123,12 +137,49 @@ ul {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
       border-bottom: 1px solid rgb(122, 122, 122);
-      display: flex;
-      justify-content: space-between;
 
-      p {
-        display: inline-block;
-        padding-right: 1rem;
+      .collapsible > * {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      // How tasks are displayed
+      // background-color is there for debugging :)
+      .collapsible-header {
+        $gapBetween: 5%;
+
+        justify-content: unset;
+
+        .todo-priority {
+          width: 5%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-date {
+          width: 25%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-name {
+          max-width: 55%;
+          overflow-wrap: break-word;
+          margin-right: auto;
+          margin-left: 0;
+          background-color: #3e5a66;
+        }
+
+        .task-completed {
+          margin-left: $gapBetween;
+          //background-color: #3e5a66;
+        }
+      }
+
+      .collapsible-content {
+        > * {
+          margin-top: 1rem;
+        }
       }
     }
   }
@@ -142,6 +193,7 @@ ul {
 // Sort component styling (temporary)
 .sortbuttonlist {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   li {
