@@ -40,6 +40,7 @@ class App extends React.Component {
         id: Math.random() * 1000,
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      collapsibleStates: [],
     };
   }
 
@@ -57,18 +58,22 @@ class App extends React.Component {
 
   handleSubmit = (todo) => {
     let todos = [...this.state.todos];
+    let collapsibleStates = [...this.state.collapsibleStates];
     if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
       const indexOfEditedTodo = todos.findIndex(
         (element) => element.id === todo.id
       );
       todos[indexOfEditedTodo] = todo;
     } else {
+      const obj = { id: todo.id, open: false };
+      collapsibleStates = collapsibleStates.concat(obj);
       todos = todos.concat(todo);
     }
     this.setState({
       todos: todos,
       todoFormState: this.resetTodoFormState(),
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      collapsibleStates: collapsibleStates,
     });
   };
 
@@ -93,6 +98,14 @@ class App extends React.Component {
 
   handleSort = (sortedTodos) => {
     this.setState({ todos: sortedTodos });
+  };
+
+  collapseHandler = (todoid) => {
+    let collapsibleStates = [...this.state.collapsibleStates];
+    collapsibleStates.forEach((element) => {
+      element.open = todoid === element.id ? true : false;
+    });
+    this.setState({ collapsibleStates: collapsibleStates });
   };
 
   // Filtering happens here where we have access to whole list
@@ -154,6 +167,7 @@ class App extends React.Component {
               deleteHandler={this.deleteHandler}
               completeHandler={this.completeHandler}
               editHandler={this.editHandler}
+              collapseHandler={this.collapseHandler}
             />
           </div>
         </div>
