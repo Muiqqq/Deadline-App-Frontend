@@ -91,6 +91,8 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
+  // Filtering happens here where we have access to whole list
+  // of todos
   deleteHandler = (todoId) => {
     const temp = this.state.todos.filter((el) => {
       console.log(el);
@@ -101,6 +103,9 @@ class App extends React.Component {
     });
   };
 
+  // Filtering happens here where we have access to whole list
+  // of todos
+  // NOTE: unmarking marked todos doesn't work for some reason
   completeHandler = (todoId) => {
     console.log(todoId);
     const temp = [...this.state.todos];
