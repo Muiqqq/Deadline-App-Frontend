@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /*
   Collapsible is a simple wrapper to allow showing/hiding of content.
