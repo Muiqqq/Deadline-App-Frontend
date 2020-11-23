@@ -168,6 +168,7 @@ class App extends React.Component {
               completeHandler={this.completeHandler}
               editHandler={this.editHandler}
               collapseHandler={this.collapseHandler}
+              collapsibleStates={this.state.collapsibleStates}
             />
           </div>
         </div>

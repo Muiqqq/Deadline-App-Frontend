@@ -8,6 +8,7 @@ const TodoList = ({
   completeHandler,
   editHandler,
   collapseHandler,
+  collapsibleStates,
 }) => {
   const todoItems = todos.map((todo, index) => {
     return (
@@ -19,6 +20,7 @@ const TodoList = ({
         completeHandler={completeHandler}
         editHandler={editHandler}
         collapseHandler={collapseHandler}
+        collapsibleStates={collapsibleStates}
       />
     );
   });
