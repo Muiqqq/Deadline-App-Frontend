@@ -2,7 +2,7 @@ import React from 'react';
 import './scss/Main.scss';
 // Import components
 import TodoForm from './components/TodoForm';
-import TodoList from './components/Todolist';
+import ListComponent from './components/ListComponent';
 import SortComponent from './components/SortComponent';
 
 const todoFormButtonLabel = {
@@ -91,19 +91,25 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
-  deleteHandler = (filtered) => {
+  deleteHandler = (todoId) => {
+    const temp = this.state.todos.filter((el) => {
+      console.log(el);
+      return el.id !== todoId;
+    });
     this.setState({
-      todos: filtered,
+      todos: temp,
     });
   };
 
-  completeHandler = (elementIndex) => {
-    console.log(elementIndex);
+  completeHandler = (todoId) => {
+    console.log(todoId);
     const temp = [...this.state.todos];
-    temp[elementIndex] = {
-      ...temp[elementIndex],
-      isdone: !temp[elementIndex].isdone,
+    let idx = temp.findIndex((x) => x.id === todoId);
+    temp[idx] = {
+      ...temp[idx],
+      isdone: !temp[idx].isdone,
     };
+    console.log(temp);
     this.setState({
       todos: temp,
     });
@@ -134,7 +140,7 @@ class App extends React.Component {
               tasklist={this.state.todos}
               updateTasklist={this.handleSort}
             />
-            <TodoList
+            <ListComponent
               todos={this.state.todos}
               deleteHandler={this.deleteHandler}
               completeHandler={this.completeHandler}
