@@ -180,6 +180,10 @@ ul {
       // How collapsible content is shown
       .collapsible-content {
         display: block;
+        height: auto;
+        max-height: 200px;
+        transition: max-height 0.3s linear;
+        overflow: hidden;
 
         > * {
           margin-right: 1rem;
@@ -215,7 +219,11 @@ ul {
         .todo-description {
           background-color: #3e5a66;
           padding: 1rem;
+          overflow: hidden;
         }
+      }
+      .collapsible-content.collapsed {
+        max-height: 0;
       }
     }
   }
