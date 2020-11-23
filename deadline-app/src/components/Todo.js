@@ -1,7 +1,14 @@
 import React from 'react';
 import Collapsible from './Collapsible';
 
-const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
+const Todo = ({
+  todo,
+  todos,
+  deleteHandler,
+  completeHandler,
+  editHandler,
+  collapseHandler,
+}) => {
   const removeItem = () => {
     // Filtering happens now in App.js as TodoComponent now has only
     // todos from certain list
@@ -32,6 +39,7 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
         closeOnChangeOf={todos}
+        onClick={collapseHandler}
         header={
           <>
             <p className='todo-priority'>{todo.priority}</p>
