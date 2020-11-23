@@ -5,16 +5,6 @@ import React, { useState, useEffect } from 'react';
   Collapsible's header prop is the content which is always visible,
   the 'header' or 'toggler' part of the component.
   This 'header' element can be clicked to toggle the collapsible content.
-  
-  Example of use:
-  <Collapsible header={<div><p>This can be any React component!</p></div>} >
-    <div>
-       <p>
-           Any content here within the Collapsible tags will be
-           the collapsible content
-       </p>
-    </div>
-  </Collapsible>
 */
 function Collapsible(props) {
   const handleClick = () => {
