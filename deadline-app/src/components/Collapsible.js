@@ -32,7 +32,13 @@ function Collapsible(props) {
       <div className='collapsible-header' onClick={toggleCollapsed}>
         {props.header}
       </div>
-      <div className='collapsible-content'>{open ? props.children : null}</div>
+      <div
+        className={
+          open ? 'collapsible-content' : 'collapsible-content collapsed'
+        }
+      >
+        {open ? props.children : null}
+      </div>
     </div>
   );
 }
