@@ -17,27 +17,21 @@ import React, { useState, useEffect } from 'react';
   </Collapsible>
 */
 function Collapsible(props) {
-  const [open, setOpen] = useState(false);
-
-  // useEffect(() => {
-  //   setOpen(false);
-  // }, [props.closeOnChangeOf]);
-
-  const toggleCollapsed = (e) => {
-    setOpen(!open);
+  const handleClick = () => {
+    props.onClick(props.id);
   };
 
   return (
     <div className='collapsible'>
-      <div className='collapsible-header' onClick={toggleCollapsed}>
+      <div className='collapsible-header' onClick={handleClick}>
         {props.header}
       </div>
       <div
         className={
-          open ? 'collapsible-content' : 'collapsible-content collapsed'
+          props.open ? 'collapsible-content' : 'collapsible-content collapsed'
         }
       >
-        {open ? props.children : null}
+        {props.open ? props.children : null}
       </div>
     </div>
   );
