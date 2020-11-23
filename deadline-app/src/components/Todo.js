@@ -8,6 +8,7 @@ const Todo = ({
   completeHandler,
   editHandler,
   collapseHandler,
+  collapsibleStates,
 }) => {
   const removeItem = () => {
     // Filtering happens now in App.js as TodoComponent now has only
@@ -35,10 +36,16 @@ const Todo = ({
     return todo.isdone ? 'todo-item completed' : 'todo-item';
   };
 
+  const setCollapsed = () => {
+    let collapsibleState = collapsibleStates.find(({ id }) => id === todo.id);
+    return collapsibleState.open;
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
-        closeOnChangeOf={todos}
+        id={todo.id}
+        open={setCollapsed()}
         onClick={collapseHandler}
         header={
           <>
