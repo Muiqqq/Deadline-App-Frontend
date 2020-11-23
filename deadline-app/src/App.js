@@ -17,6 +17,10 @@ const todoFormButtonLabel = {
 // Move component specific functions under objects?
 //    App is becoming cluttered, not to mention passing props
 //    to child components.
+// More styling for collapsible tasks. (buttons etc.)
+// Make collapsible elements close automatically (or perhaps
+// add a expand/collapse all button?)
+// Confirmation dialog for delete button?
 
 // NOTE! todoFormState now generates random id for added items for
 // item removal to work.
@@ -52,17 +56,17 @@ class App extends React.Component {
   };
 
   handleSubmit = (todo) => {
-    let temp = [...this.state.todos];
+    let todos = [...this.state.todos];
     if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
-      const indexOfEditedTodo = temp.findIndex(
+      const indexOfEditedTodo = todos.findIndex(
         (element) => element.id === todo.id
       );
-      temp[indexOfEditedTodo] = todo;
+      todos[indexOfEditedTodo] = todo;
     } else {
-      temp = temp.concat(todo);
+      todos = todos.concat(todo);
     }
     this.setState({
-      todos: temp,
+      todos: todos,
       todoFormState: this.resetTodoFormState(),
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
     });
