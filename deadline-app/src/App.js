@@ -103,7 +103,7 @@ class App extends React.Component {
   collapseHandler = (todoid) => {
     let collapsibleStates = [...this.state.collapsibleStates];
     collapsibleStates.forEach((element) => {
-      element.open = todoid === element.id ? true : false;
+      element.open = todoid === element.id ? !element.open : false;
     });
     this.setState({ collapsibleStates: collapsibleStates });
   };
