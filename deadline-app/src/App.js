@@ -18,8 +18,6 @@ const todoFormButtonLabel = {
 //    App is becoming cluttered, not to mention passing props
 //    to child components.
 // More styling for collapsible tasks. (buttons etc.)
-// Make collapsible elements close automatically (or perhaps
-// add a expand/collapse all button?)
 // Confirmation dialog for delete button?
 
 // NOTE! todoFormState now generates random id for added items for
