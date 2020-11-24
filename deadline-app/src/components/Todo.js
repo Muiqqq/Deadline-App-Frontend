@@ -1,19 +1,11 @@
 import React from 'react';
 import Collapsible from './Collapsible';
 
-const Todo = ({
-  todo,
-  todos,
-  deleteHandler,
-  completeHandler,
-  editHandler,
-  collapseHandler,
-  collapsibleStates,
-}) => {
+const Todo = ({ todo, todos, todoHandler, collapsibleStates }) => {
   const removeItem = () => {
     // Filtering happens now in App.js as TodoComponent now has only
     // todos from certain list
-    deleteHandler(todo.id);
+    todoHandler.delete(todo.id);
   };
 
   const markCompleted = (e) => {
@@ -23,13 +15,13 @@ const Todo = ({
     if (todo.isdone !== true) {
       // Filtering happens now in App.js as TodoComponent now has only
       // todos from certain list
-      completeHandler(todo.id);
+      todoHandler.complete(todo.id);
     }
     return;
   };
 
   const handleEdit = () => {
-    editHandler(todo);
+    todoHandler.edit(todo);
   };
 
   const setClassNameDependingOnIsDoneStatus = () => {
@@ -46,7 +38,7 @@ const Todo = ({
       <Collapsible
         id={todo.id}
         open={setCollapsed()}
-        onClick={collapseHandler}
+        onClick={todoHandler.collapse}
         header={
           <>
             <p className='todo-priority'>{todo.priority}</p>
