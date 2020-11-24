@@ -2,14 +2,7 @@ import React from 'react';
 // Import components
 import TodoList from './Todolist';
 
-const ListComponent = ({
-  todos,
-  deleteHandler,
-  completeHandler,
-  editHandler,
-  collapseHandler,
-  collapsibleStates,
-}) => {
+const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
   const list = [];
   todos.forEach((todo) => {
     if (!list.includes(todo.list)) {
@@ -27,10 +20,7 @@ const ListComponent = ({
         <h3>{listItem}</h3>
         <TodoList
           todos={x}
-          deleteHandler={deleteHandler}
-          completeHandler={completeHandler}
-          editHandler={editHandler}
-          collapseHandler={collapseHandler}
+          todoHandler={todoHandler}
           collapsibleStates={collapsibleStates}
         />
       </ul>

@@ -18,10 +18,10 @@ function Collapsible(props) {
       </div>
       <div
         className={
-          props.open ? 'collapsible-content' : 'collapsible-content collapsed'
+          props.isOpen ? 'collapsible-content' : 'collapsible-content collapsed'
         }
       >
-        {props.open ? props.children : null}
+        {props.isOpen ? props.children : null}
       </div>
     </div>
   );

@@ -63,7 +63,7 @@ class App extends React.Component {
       );
       todos[indexOfEditedTodo] = todo;
     } else {
-      const obj = { id: todo.id, open: false };
+      const obj = { id: todo.id, isOpen: false };
       collapsibleStates = collapsibleStates.concat(obj);
       todos = todos.concat(todo);
     }
@@ -98,48 +98,50 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
-  collapseHandler = (todoid) => {
-    let collapsibleStates = [...this.state.collapsibleStates];
-    collapsibleStates.forEach((element) => {
-      element.open = todoid === element.id ? !element.open : false;
-    });
-    this.setState({ collapsibleStates: collapsibleStates });
-  };
+  todoHandler = {
+    collapse: (todoId) => {
+      let collapsibleStates = [...this.state.collapsibleStates];
+      collapsibleStates.forEach((element) => {
+        element.isOpen = todoId === element.id ? !element.isOpen : false;
+      });
+      this.setState({ collapsibleStates: collapsibleStates });
+    },
 
-  // Filtering happens here where we have access to whole list
-  // of todos
-  deleteHandler = (todoId) => {
-    const temp = this.state.todos.filter((el) => {
-      console.log(el);
-      return el.id !== todoId;
-    });
-    this.setState({
-      todos: temp,
-    });
-  };
+    // Filtering happens here where we have access to whole list
+    // of todos
+    delete: (todoId) => {
+      const temp = this.state.todos.filter((el) => {
+        console.log(el);
+        return el.id !== todoId;
+      });
+      this.setState({
+        todos: temp,
+      });
+    },
 
-  // Filtering happens here where we have access to whole list
-  // of todos
-  // NOTE: unmarking marked todos doesn't work for some reason
-  completeHandler = (todoId) => {
-    console.log(todoId);
-    const temp = [...this.state.todos];
-    let idx = temp.findIndex((x) => x.id === todoId);
-    temp[idx] = {
-      ...temp[idx],
-      isdone: !temp[idx].isdone,
-    };
-    console.log(temp);
-    this.setState({
-      todos: temp,
-    });
-  };
+    // Filtering happens here where we have access to whole list
+    // of todos
+    // NOTE: unmarking marked todos doesn't work for some reason
+    complete: (todoId) => {
+      console.log(todoId);
+      const temp = [...this.state.todos];
+      let idx = temp.findIndex((x) => x.id === todoId);
+      temp[idx] = {
+        ...temp[idx],
+        isdone: !temp[idx].isdone,
+      };
+      console.log(temp);
+      this.setState({
+        todos: temp,
+      });
+    },
 
-  editHandler = (todoToEdit) => {
-    this.setState({
-      todoFormState: todoToEdit,
-      todoFormSubmitButtonLabel: todoFormButtonLabel.EDIT,
-    });
+    edit: (todoToEdit) => {
+      this.setState({
+        todoFormState: todoToEdit,
+        todoFormSubmitButtonLabel: todoFormButtonLabel.EDIT,
+      });
+    },
   };
 
   render() {
@@ -162,10 +164,7 @@ class App extends React.Component {
             />
             <ListComponent
               todos={this.state.todos}
-              deleteHandler={this.deleteHandler}
-              completeHandler={this.completeHandler}
-              editHandler={this.editHandler}
-              collapseHandler={this.collapseHandler}
+              todoHandler={this.todoHandler}
               collapsibleStates={this.state.collapsibleStates}
             />
           </div>
