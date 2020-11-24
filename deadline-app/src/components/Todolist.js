@@ -8,7 +8,6 @@ const TodoList = ({ todos, todoHandler, collapsibleStates }) => {
       <Todo
         key={index}
         todo={todo}
-        todos={todos}
         todoHandler={todoHandler}
         collapsibleStates={collapsibleStates}
       />

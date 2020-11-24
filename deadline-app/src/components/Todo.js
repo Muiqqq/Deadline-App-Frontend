@@ -1,7 +1,7 @@
 import React from 'react';
 import Collapsible from './Collapsible';
 
-const Todo = ({ todo, todos, todoHandler, collapsibleStates }) => {
+const Todo = ({ todo, todoHandler, collapsibleStates }) => {
   const removeItem = () => {
     // Filtering happens now in App.js as TodoComponent now has only
     // todos from certain list
