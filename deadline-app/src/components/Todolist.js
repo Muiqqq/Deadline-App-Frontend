@@ -3,10 +3,10 @@ import React from 'react';
 import Todo from './Todo';
 
 const TodoList = ({ todos, todoHandler, collapsibleStates }) => {
-  const todoItems = todos.map((todo, index) => {
+  const todoItems = todos.map((todo) => {
     return (
       <Todo
-        key={index}
+        key={todo.id}
         todo={todo}
         todoHandler={todoHandler}
         collapsibleStates={collapsibleStates}
