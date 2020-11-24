@@ -2,16 +2,16 @@ import React from 'react';
 
 const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   const removeItem = () => {
-    deleteHandler(
-      todos.filter((el) => {
-        return el.id !== todo.id;
-      })
-    );
+    // Filtering happens now in App.js as TodoComponent now has only
+    // todos from certain list
+    deleteHandler(todo.id);
   };
 
   const markCompleted = (e) => {
     if (todo.isdone !== true) {
-      completeHandler(todos.findIndex((el) => el.id === todo.id));
+      // Filtering happens now in App.js as TodoComponent now has only
+      // todos from certain list
+      completeHandler(todo.id);
     }
     return;
   };

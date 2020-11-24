@@ -15,11 +15,7 @@ const TodoList = ({ todos, deleteHandler, completeHandler, editHandler }) => {
       />
     );
   });
-  return (
-    <div className='list'>
-      <ul>{todoItems}</ul>
-    </div>
-  );
+  return <div className='list'>{todoItems}</div>;
 };
 
 export default TodoList;
