@@ -20,6 +20,29 @@ ul {
   list-style: none;
 }
 
+#submit {
+  background-color: $btn-green;
+}
+
+#cancel {
+  background-color: $btn-red;
+}
+
+// Global collapsible styling
+// Makes it so that the header and content
+// are their own rows.
+.collapsible {
+  display: flex;
+  flex-flow: row wrap;
+
+  &-header {
+    width: 100%;
+  }
+  &-content {
+    width: 100%;
+  }
+}
+
 // Custom components
 .btn {
   color: #fff;
@@ -101,13 +124,11 @@ ul {
     }
 
     #submit {
-      background-color: $btn-green;
       width: 70%;
       margin-right: 5%;
     }
 
     #cancel {
-      background-color: $btn-red;
       width: 25%;
     }
   }
@@ -116,6 +137,7 @@ ul {
 // TodoList component styling
 .todo-list {
   margin: 2rem 2rem;
+  width: 400px;
 
   .list {
     margin-top: 1rem;
@@ -123,12 +145,87 @@ ul {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
       border-bottom: 1px solid rgb(122, 122, 122);
-      display: flex;
-      justify-content: space-between;
 
-      p {
-        display: inline-block;
-        padding-right: 1rem;
+      // How tasks are displayed
+      // background-color is there for debugging :)
+      .collapsible-header {
+        $gapBetween: 5%;
+        display: flex;
+        justify-content: unset;
+
+        .todo-priority {
+          width: 5%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-date {
+          width: 25%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-name {
+          max-width: 55%;
+          overflow-wrap: break-word;
+          margin-right: auto;
+          margin-left: 0;
+          //background-color: #3e5a66;
+        }
+
+        .task-completed {
+          margin-left: $gapBetween;
+          //background-color: #3e5a66;
+        }
+      }
+
+      // How collapsible content is shown
+      .collapsible-content {
+        display: block;
+        height: auto;
+        max-height: 200px;
+        transition: max-height 0.3s linear;
+        overflow: hidden;
+
+        > * {
+          margin-right: 1rem;
+          margin-left: 1rem;
+        }
+
+        .toolbar {
+          margin-top: 1rem;
+          display: flex;
+
+          p {
+            padding: 0.5rem;
+          }
+
+          #edit {
+            margin-right: 0;
+            margin-left: auto;
+            background-color: #3e5a66;
+            i {
+              margin-left: 0.5rem;
+            }
+          }
+
+          #delete {
+            margin-left: 1rem;
+            background-color: #3e5a66;
+            i {
+              margin-left: 0.5rem;
+            }
+          }
+        }
+
+        .todo-description {
+          background-color: #3e5a66;
+          padding: 1rem;
+          overflow: hidden;
+        }
+      }
+      .collapsible-content.collapsed {
+        max-height: 0;
       }
     }
   }
@@ -142,6 +239,7 @@ ul {
 // Sort component styling (temporary)
 .sortbuttonlist {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   li {

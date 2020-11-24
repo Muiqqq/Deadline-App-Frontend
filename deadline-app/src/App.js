@@ -17,6 +17,8 @@ const todoFormButtonLabel = {
 // Move component specific functions under objects?
 //    App is becoming cluttered, not to mention passing props
 //    to child components.
+// More styling for collapsible tasks. (buttons etc.)
+// Confirmation dialog for delete button?
 
 // NOTE! todoFormState now generates random id for added items for
 // item removal to work.
@@ -36,6 +38,7 @@ class App extends React.Component {
         id: Math.random() * 1000,
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      collapsibleStates: [],
     };
   }
 
@@ -52,19 +55,23 @@ class App extends React.Component {
   };
 
   handleSubmit = (todo) => {
-    let temp = [...this.state.todos];
+    let todos = [...this.state.todos];
+    let collapsibleStates = [...this.state.collapsibleStates];
     if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
-      const indexOfEditedTodo = temp.findIndex(
+      const indexOfEditedTodo = todos.findIndex(
         (element) => element.id === todo.id
       );
-      temp[indexOfEditedTodo] = todo;
+      todos[indexOfEditedTodo] = todo;
     } else {
-      temp = temp.concat(todo);
+      const obj = { id: todo.id, open: false };
+      collapsibleStates = collapsibleStates.concat(obj);
+      todos = todos.concat(todo);
     }
     this.setState({
-      todos: temp,
+      todos: todos,
       todoFormState: this.resetTodoFormState(),
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      collapsibleStates: collapsibleStates,
     });
   };
 
@@ -89,6 +96,14 @@ class App extends React.Component {
 
   handleSort = (sortedTodos) => {
     this.setState({ todos: sortedTodos });
+  };
+
+  collapseHandler = (todoid) => {
+    let collapsibleStates = [...this.state.collapsibleStates];
+    collapsibleStates.forEach((element) => {
+      element.open = todoid === element.id ? !element.open : false;
+    });
+    this.setState({ collapsibleStates: collapsibleStates });
   };
 
   // Filtering happens here where we have access to whole list
@@ -150,6 +165,8 @@ class App extends React.Component {
               deleteHandler={this.deleteHandler}
               completeHandler={this.completeHandler}
               editHandler={this.editHandler}
+              collapseHandler={this.collapseHandler}
+              collapsibleStates={this.state.collapsibleStates}
             />
           </div>
         </div>

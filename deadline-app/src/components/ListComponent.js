@@ -7,6 +7,8 @@ const ListComponent = ({
   deleteHandler,
   completeHandler,
   editHandler,
+  collapseHandler,
+  collapsibleStates,
 }) => {
   const list = [];
   todos.forEach((todo) => {
@@ -28,6 +30,8 @@ const ListComponent = ({
           deleteHandler={deleteHandler}
           completeHandler={completeHandler}
           editHandler={editHandler}
+          collapseHandler={collapseHandler}
+          collapsibleStates={collapsibleStates}
         />
       </ul>
     );

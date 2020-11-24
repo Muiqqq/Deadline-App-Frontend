@@ -1,6 +1,15 @@
 import React from 'react';
+import Collapsible from './Collapsible';
 
-const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
+const Todo = ({
+  todo,
+  todos,
+  deleteHandler,
+  completeHandler,
+  editHandler,
+  collapseHandler,
+  collapsibleStates,
+}) => {
   const removeItem = () => {
     // Filtering happens now in App.js as TodoComponent now has only
     // todos from certain list
@@ -8,6 +17,9 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
   };
 
   const markCompleted = (e) => {
+    // Prevents task from collapsing when clicking the checkmark button.
+    e.stopPropagation();
+
     if (todo.isdone !== true) {
       // Filtering happens now in App.js as TodoComponent now has only
       // todos from certain list
@@ -24,26 +36,52 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
     return todo.isdone ? 'todo-item completed' : 'todo-item';
   };
 
+  const setCollapsed = () => {
+    let collapsibleState = collapsibleStates.find(({ id }) => id === todo.id);
+    return collapsibleState.open;
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
-      <p>{todo.priority}</p>
-      <p>{todo.date}</p>
-      <p>{todo.name}</p>
-      <CustomButton
-        className='btn-flat task-completed'
-        onClick={markCompleted}
-        icon='fas fa-check'
-      />
-      <CustomButton
-        className='btn-flat'
-        onClick={handleEdit}
-        icon='fas fa-edit'
-      />
-      <CustomButton
-        className='btn-flat'
-        onClick={removeItem}
-        icon='fas fa-trash'
-      />
+      <Collapsible
+        id={todo.id}
+        open={setCollapsed()}
+        onClick={collapseHandler}
+        header={
+          <>
+            <p className='todo-priority'>{todo.priority}</p>
+            <p className='todo-date'>{todo.date}</p>
+            <p className='todo-name'>{todo.name}</p>
+            <CustomButton
+              className='btn-flat task-completed'
+              onClick={markCompleted}
+              icon='fas fa-check'
+            />
+          </>
+        }
+      >
+        <div className='toolbar'>
+          <p>This needs serious work</p>
+          <CustomButton
+            id='edit'
+            className='btn py-05'
+            onClick={handleEdit}
+            label='Edit'
+            icon='fas fa-edit'
+          />
+          <CustomButton
+            id='delete'
+            className='btn py-05'
+            onClick={removeItem}
+            label='Delete'
+            icon='fas fa-trash'
+          />
+        </div>
+        <div>
+          <p>Description:</p>
+          <p className='todo-description'>{todo.description}</p>
+        </div>
+      </Collapsible>
     </li>
   );
 };
@@ -51,7 +89,8 @@ const Todo = ({ todo, todos, deleteHandler, completeHandler, editHandler }) => {
 // Change later to a more permanent solution
 function CustomButton(props) {
   return (
-    <button className={props.className} onClick={props.onClick}>
+    <button id={props.id} className={props.className} onClick={props.onClick}>
+      {props.label}
       <i className={props.icon}></i>
     </button>
   );

@@ -2,7 +2,14 @@ import React from 'react';
 // Import components
 import Todo from './Todo';
 
-const TodoList = ({ todos, deleteHandler, completeHandler, editHandler }) => {
+const TodoList = ({
+  todos,
+  deleteHandler,
+  completeHandler,
+  editHandler,
+  collapseHandler,
+  collapsibleStates,
+}) => {
   const todoItems = todos.map((todo, index) => {
     return (
       <Todo
@@ -12,6 +19,8 @@ const TodoList = ({ todos, deleteHandler, completeHandler, editHandler }) => {
         deleteHandler={deleteHandler}
         completeHandler={completeHandler}
         editHandler={editHandler}
+        collapseHandler={collapseHandler}
+        collapsibleStates={collapsibleStates}
       />
     );
   });
