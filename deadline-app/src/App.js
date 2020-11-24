@@ -63,7 +63,7 @@ class App extends React.Component {
       );
       todos[indexOfEditedTodo] = todo;
     } else {
-      const obj = { id: todo.id, open: false };
+      const obj = { id: todo.id, isOpen: false };
       collapsibleStates = collapsibleStates.concat(obj);
       todos = todos.concat(todo);
     }
@@ -102,7 +102,7 @@ class App extends React.Component {
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
       collapsibleStates.forEach((element) => {
-        element.open = todoId === element.id ? !element.open : false;
+        element.isOpen = todoId === element.id ? !element.isOpen : false;
       });
       this.setState({ collapsibleStates: collapsibleStates });
     },

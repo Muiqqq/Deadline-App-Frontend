@@ -30,14 +30,14 @@ const Todo = ({ todo, todos, todoHandler, collapsibleStates }) => {
 
   const setCollapsed = () => {
     let collapsibleState = collapsibleStates.find(({ id }) => id === todo.id);
-    return collapsibleState.open;
+    return collapsibleState.isOpen;
   };
 
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
         id={todo.id}
-        open={setCollapsed()}
+        isOpen={setCollapsed()}
         onClick={todoHandler.collapse}
         header={
           <>
