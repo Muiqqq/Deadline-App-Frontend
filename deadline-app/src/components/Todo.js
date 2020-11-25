@@ -11,13 +11,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
   const markCompleted = (e) => {
     // Prevents task from collapsing when clicking the checkmark button.
     e.stopPropagation();
-
-    if (!todo.isdone) {
-      // Filtering happens now in App.js as TodoComponent now has only
-      // todos from certain list
-      todoHandler.complete(todo.id);
-    }
-    return;
+    todoHandler.complete(todo.id);
   };
 
   const handleEdit = () => {
