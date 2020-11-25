@@ -9,17 +9,14 @@ const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
       list.push(todo.list);
     }
   });
-  console.log(list);
 
-  const jep = list.map((listItem) => {
-    const x = todos.filter((todo) => todo.list === listItem);
-    console.log(x);
-    console.log(todos);
+  const generateLists = list.map((listItem) => {
+    const filtered = todos.filter((todo) => todo.list === listItem);
     return (
       <ul>
         <h3>{listItem}</h3>
         <TodoList
-          todos={x}
+          todos={filtered}
           todoHandler={todoHandler}
           collapsibleStates={collapsibleStates}
         />
@@ -27,7 +24,7 @@ const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
     );
   });
 
-  return <div className='list'>{jep}</div>;
+  return <div className='list'>{generateLists}</div>;
 };
 
 export default ListComponent;
