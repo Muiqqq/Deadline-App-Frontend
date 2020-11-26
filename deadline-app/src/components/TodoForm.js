@@ -49,17 +49,16 @@ function TodoForm(props) {
           // className='date'
           value={props.todoFormState.date}
           required
-          // placeholder='Date'
         />
-        <label htmlFor='date' className='label-name ontop'>
+        <label htmlFor='date' className='label-name'>
           <span className='content-name'>Date</span>
         </label>
       </div>
-      <label>
-        Priority
-        <div id='priority'>
-          <div>
-            <label htmlFor='low'>Low</label>
+
+      <div id='priority'>
+        <label>
+          Priority
+          <div className='radio-container'>
             <input
               type='radio'
               id='low'
@@ -68,9 +67,9 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.LOW)}
               onChange={inputChange}
             />
-          </div>
-          <div>
-            <label htmlFor='medium'>Medium</label>
+            <label htmlFor='low' className='radio'>
+              Low
+            </label>
             <input
               type='radio'
               id='medium'
@@ -79,9 +78,9 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.MEDIUM)}
               onChange={inputChange}
             />
-          </div>
-          <div>
-            <label htmlFor='high'>High</label>
+            <label htmlFor='medium' className='radio'>
+              Medium
+            </label>
             <input
               type='radio'
               id='high'
@@ -90,9 +89,12 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.HIGH)}
               onChange={inputChange}
             />
+            <label htmlFor='high' className='radio'>
+              High
+            </label>
           </div>
-        </div>
-      </label>
+        </label>
+      </div>
       <div className='input-animation'>
         <input
           onChange={inputChange}

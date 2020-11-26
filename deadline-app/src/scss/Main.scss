@@ -85,22 +85,21 @@ ul {
       color: transparent;
     }
 
-    input[type='date']:after {
-      content: attr(placeholder);
-    }
-
     input,
     textarea {
-      padding: 1rem 0.3rem;
-      margin: 0.5rem 0rem;
+      padding-bottom: 1rem;
+      margin-bottom: 0.3rem;
       background-color: $bg-color;
       color: rgb(197, 197, 197);
       border: none;
+      font-size: 1.3rem;
+      font-weight: 200;
     }
 
     .input-animation {
       width: 500px;
       position: relative;
+      margin-top: 2rem;
       input {
         padding: 0;
         width: 100%;
@@ -118,7 +117,7 @@ ul {
         pointer-events: none;
         border-bottom: 1px solid rgb(168, 168, 168);
         color: rgb(168, 168, 168);
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
       label::after {
@@ -140,11 +139,15 @@ ul {
       }
 
       input:focus + .label-name .content-name,
-      input:valid + .label-name .content-name,
+      input:valid + .label-name .content-name {
+        transform: translateY(-160%);
+        font-size: 0.8rem;
+        color: $btn-green;
+      }
+
       input:focus::-webkit-datetime-edit {
         transform: translateY(-160%);
-        font-size: 0.7rem;
-        color: $btn-green;
+        color: rgb(197, 197, 197);
       }
 
       input:focus + .label-name::after,
@@ -162,16 +165,52 @@ ul {
     }
 
     #priority {
-      display: flex;
-      justify-content: space-around;
+      margin: 0.5rem 0;
+      margin-top: 2rem;
 
-      div {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      label:first-child {
+        color: rgb(197, 197, 197);
+      }
 
+      .radio-container {
+        margin-top: 1rem;
+
+        input[type='radio'] {
+          display: none;
+        }
         label {
           font-size: 0.75rem;
+          position: relative;
+          cursor: pointer;
+          padding-right: 2rem;
+        }
+        label::before {
+          content: '';
+          border: 1px solid rgb(168, 168, 168);
+          display: inline-block;
+          height: 22px;
+          width: 22px;
+          margin: -4px 15px;
+          margin-left: 0;
+          border-radius: 50%;
+        }
+
+        label::after {
+          content: '';
+          display: inline-block;
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: #21a06d00;
+          left: 4px;
+          top: -4px;
+          margin: 0 0;
+          border-radius: 50%;
+          transition: all 0.4s;
+        }
+
+        input[type='radio']:checked + label::after {
+          background: $btn-green;
         }
       }
     }
