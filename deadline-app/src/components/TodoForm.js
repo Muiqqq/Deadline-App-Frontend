@@ -28,20 +28,33 @@ function TodoForm(props) {
 
   return (
     <form>
-      <input
-        onChange={inputChange}
-        name='name'
-        value={props.todoFormState.name}
-        type='text'
-        placeholder='Name'
-      />
-      <input
-        onChange={inputChange}
-        name='date'
-        type='date'
-        value={props.todoFormState.date}
-        placeholder='Date'
-      />
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='name'
+          value={props.todoFormState.name}
+          type='text'
+          required
+          // placeholder='Name'
+        />
+        <label htmlFor='name' className='label-name'>
+          <span className='content-name'>Name</span>
+        </label>
+      </div>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='date'
+          type='date'
+          // className='date'
+          value={props.todoFormState.date}
+          required
+          // placeholder='Date'
+        />
+        <label htmlFor='date' className='label-name ontop'>
+          <span className='content-name'>Date</span>
+        </label>
+      </div>
       <label>
         Priority
         <div id='priority'>
@@ -80,20 +93,32 @@ function TodoForm(props) {
           </div>
         </div>
       </label>
-      <input
-        onChange={inputChange}
-        name='list'
-        type='text'
-        value={props.todoFormState.list}
-        placeholder='Task List'
-      />
-      <textarea
-        onChange={inputChange}
-        name='description'
-        type='text'
-        value={props.todoFormState.description}
-        placeholder='Description'
-      />
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='list'
+          type='text'
+          value={props.todoFormState.list}
+          required
+          // placeholder='Task List'
+        />
+        <label htmlFor='list' className='label-name'>
+          <span className='content-name'>Task List</span>
+        </label>
+      </div>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='description'
+          type='text'
+          value={props.todoFormState.description}
+          required
+          // placeholder='Description'
+        />
+        <label htmlFor='description' className='label-name'>
+          <span className='content-name'>Description</span>
+        </label>
+      </div>
       <div className='submitbuttons'>
         <button
           onClick={handleSubmit}

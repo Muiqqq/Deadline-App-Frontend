@@ -72,7 +72,6 @@ ul {
 
 // Form component styling
 .form {
-  width: 500px;
   margin: 2rem;
 
   form {
@@ -80,14 +79,79 @@ ul {
     flex-direction: column;
     width: 500px;
     padding-right: 1rem;
+    position: relative;
+    overflow: hidden;
+    input[value='']::-webkit-datetime-edit {
+      color: transparent;
+    }
+
+    input[type='date']:after {
+      content: attr(placeholder);
+    }
 
     input,
     textarea {
       padding: 1rem 0.3rem;
       margin: 0.5rem 0rem;
-      background-color: #3e5a66;
+      background-color: $bg-color;
       color: rgb(197, 197, 197);
       border: none;
+    }
+
+    .input-animation {
+      width: 500px;
+      position: relative;
+      input {
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+      }
+      label {
+        position: absolute;
+        bottom: 0px;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid rgb(168, 168, 168);
+        color: rgb(168, 168, 168);
+        font-size: 0.9rem;
+      }
+
+      label::after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        height: 100%;
+        width: 100%;
+        border-bottom: 3px solid $btn-green;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .content-name {
+        position: absolute;
+        bottom: 5px;
+        left: 0px;
+        transition: all 0.3s ease;
+      }
+
+      input:focus + .label-name .content-name,
+      input:valid + .label-name .content-name,
+      input:focus::-webkit-datetime-edit {
+        transform: translateY(-160%);
+        font-size: 0.7rem;
+        color: $btn-green;
+      }
+
+      input:focus + .label-name::after,
+      .form input:valid + .label-name::after,
+      input:focus::-webkit-datetime-edit {
+        transform: translateX(0%);
+      }
     }
 
     input::placeholder,
