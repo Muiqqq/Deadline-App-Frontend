@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import './scss/Main.scss';
 // Import components
 import TodoForm from './components/TodoForm';
