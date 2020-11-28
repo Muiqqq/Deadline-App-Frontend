@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './scss/Main.scss';
 // Import components
@@ -150,6 +150,7 @@ class App extends React.Component {
       <div className='container'>
         <div className='app'>
           <div className='form'>
+            <FetchTest />
             <TodoForm
               submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
@@ -172,6 +173,26 @@ class App extends React.Component {
         </div>
       </div>
     );
+  }
+}
+
+function FetchTest(props) {
+  // const [err, setErr] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(null);
+  const [data, setData] = useState([]);
+  const ax = axios.create({ baseURL: 'http://localhost:8080/api' });
+
+  useEffect(() => {
+    ax.get('/todos').then((res) => {
+      setIsLoaded(true);
+      setData(res);
+    });
+  }, []);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  } else {
+    return <div>{JSON.stringify(data.data)}</div>;
   }
 }
 
