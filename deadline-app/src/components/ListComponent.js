@@ -5,8 +5,9 @@ import TodoList from './Todolist';
 
 const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
   const [isLoaded, setIsLoaded] = useState(null);
-  const [lists, setLists] = useState([]);
-  const [tasks, setTasks] = useState([]);
+  const [statusMessage, setStatusMessage] = useState('Fetching data...');
+  const [lists, setLists] = useState({});
+  const [tasks, setTasks] = useState({});
   const list = [];
   todos.forEach((todo) => {
     if (!list.includes(todo.list)) {
@@ -14,33 +15,43 @@ const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
     }
   });
 
-  // Fetch lists
+  // Fetch todos and lists
   useEffect(() => {
-    axios.get('/lists').then((res) => {
-      if (res.status === 200) {
-        setLists(res.data);
-      } else {
-        // implement error handling if fetch failed
-      }
-    });
-  }, []);
+    axios
+      .get('/lists')
+      .then((res) => {
+        setLists(res);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setLists(err.response.data);
+        } else {
+          setStatusMessage('ERROR: Could not reach the API.');
+          throw err;
+        }
+      });
 
-  // Fetch todos
-  useEffect(() => {
-    axios.get('/todos').then((res) => {
-      if (res.status === 200) {
-        setTasks(res.data);
-      } else {
-        // implement error handling if fetch failed
-      }
-    });
+    axios
+      .get('/todos')
+      .then((res) => {
+        setTasks(res);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setTasks(err.response.data);
+        } else {
+          setStatusMessage('ERROR: Could not reach the API.');
+          throw err;
+        }
+      });
   }, []);
 
   // Send fetched todos and lists to parent
   useEffect(() => {
-    if (lists.length > 0 && tasks.length > 0) {
+    // Only run this if both lists and tasks have been fetched successfully.
+    if (lists.hasOwnProperty('data') && tasks.hasOwnProperty('data')) {
       setIsLoaded(true);
-      todoHandler.fetch(lists, tasks);
+      todoHandler.fetch(lists.data, tasks.data);
     }
   }, [todoHandler, lists, tasks]);
 
@@ -60,7 +71,7 @@ const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
   });
 
   if (!isLoaded) {
-    return <div className='list'>Fetching data...</div>;
+    return <div className='list'>{statusMessage}</div>;
   } else {
     return <div className='list'>{generateLists}</div>;
   }
