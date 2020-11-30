@@ -28,6 +28,7 @@ function TodoForm(props) {
 
   return (
     <form>
+      <h3>Add Deadline</h3>
       <div className='input-animation'>
         <input
           onChange={inputChange}
