@@ -25,8 +25,8 @@ function SortButtonListComponent(props) {
       switch (previouslyClicked) {
         case 'Date':
           return sortAscending
-            ? new Date(a.date.concat('Z')) - new Date(b.date.concat('Z'))
-            : new Date(b.date.concat('Z')) - new Date(a.date.concat('Z'));
+            ? new Date(a.date) - new Date(b.date)
+            : new Date(b.date) - new Date(a.date);
         case 'Name':
           return sortAscending
             ? a.name.localeCompare(b.name)
