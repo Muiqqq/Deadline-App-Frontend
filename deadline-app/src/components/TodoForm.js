@@ -28,25 +28,36 @@ function TodoForm(props) {
 
   return (
     <form>
-      <input
-        onChange={inputChange}
-        name='name'
-        value={props.todoFormState.name}
-        type='text'
-        placeholder='Name'
-      />
-      <input
-        onChange={inputChange}
-        name='date'
-        type='date'
-        value={props.todoFormState.date}
-        placeholder='Date'
-      />
-      <label>
-        Priority
-        <div id='priority'>
-          <div>
-            <label htmlFor='low'>Low</label>
+      <h3>Add Deadline</h3>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='name'
+          value={props.todoFormState.name}
+          type='text'
+          required
+        />
+        <label htmlFor='name' className='label-name'>
+          <span className='content-name'>Name</span>
+        </label>
+      </div>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='date'
+          type='date'
+          value={props.todoFormState.date}
+          required
+        />
+        <label htmlFor='date' className='label-name'>
+          <span className='content-name'>Date</span>
+        </label>
+      </div>
+
+      <div id='priority'>
+        <label>
+          Priority
+          <div className='radio-container'>
             <input
               type='radio'
               id='low'
@@ -55,9 +66,9 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.LOW)}
               onChange={inputChange}
             />
-          </div>
-          <div>
-            <label htmlFor='medium'>Medium</label>
+            <label htmlFor='low' className='radio'>
+              Low
+            </label>
             <input
               type='radio'
               id='medium'
@@ -66,9 +77,9 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.MEDIUM)}
               onChange={inputChange}
             />
-          </div>
-          <div>
-            <label htmlFor='high'>High</label>
+            <label htmlFor='medium' className='radio'>
+              Medium
+            </label>
             <input
               type='radio'
               id='high'
@@ -77,23 +88,36 @@ function TodoForm(props) {
               checked={checkPriorityValue(priorityValues.HIGH)}
               onChange={inputChange}
             />
+            <label htmlFor='high' className='radio'>
+              High
+            </label>
           </div>
-        </div>
-      </label>
-      <input
-        onChange={inputChange}
-        name='list'
-        type='text'
-        value={props.todoFormState.list}
-        placeholder='Task List'
-      />
-      <textarea
-        onChange={inputChange}
-        name='description'
-        type='text'
-        value={props.todoFormState.description}
-        placeholder='Description'
-      />
+        </label>
+      </div>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='list'
+          type='text'
+          value={props.todoFormState.list}
+          required
+        />
+        <label htmlFor='list' className='label-name'>
+          <span className='content-name'>Task List</span>
+        </label>
+      </div>
+      <div className='input-animation'>
+        <input
+          onChange={inputChange}
+          name='description'
+          type='text'
+          value={props.todoFormState.description}
+          required
+        />
+        <label htmlFor='description' className='label-name'>
+          <span className='content-name'>Description</span>
+        </label>
+      </div>
       <div className='submitbuttons'>
         <button
           onClick={handleSubmit}
