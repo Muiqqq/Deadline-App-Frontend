@@ -76,8 +76,8 @@ ul {
 .form {
   margin-top: 2rem;
   padding: 2rem;
-  border-right: 2px solid #197952;
 
+  // Form styling
   form {
     display: flex;
     flex-direction: column;
@@ -85,6 +85,8 @@ ul {
     padding-right: 1rem;
     position: relative;
     overflow: hidden;
+
+    // Render datetime input transparent if there is no value in the input field
     input[value='']::-webkit-datetime-edit {
       color: transparent;
     }
@@ -100,6 +102,7 @@ ul {
       font-weight: 200;
     }
 
+    // Animation of the input fields
     .input-animation {
       width: 500px;
       position: relative;
@@ -167,6 +170,7 @@ ul {
       opacity: 1; /* Firefox */
     }
 
+    // Priority i.e. radio button styling
     #priority {
       margin: 0.5rem 0;
       margin-top: 2rem;
@@ -175,6 +179,7 @@ ul {
         color: $light-grey;
       }
 
+      // Radio button styling and animation
       .radio-container {
         margin-top: 1rem;
 
