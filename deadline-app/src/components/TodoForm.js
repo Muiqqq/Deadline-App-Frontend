@@ -36,7 +36,6 @@ function TodoForm(props) {
           value={props.todoFormState.name}
           type='text'
           required
-          // placeholder='Name'
         />
         <label htmlFor='name' className='label-name'>
           <span className='content-name'>Name</span>
@@ -47,7 +46,6 @@ function TodoForm(props) {
           onChange={inputChange}
           name='date'
           type='date'
-          // className='date'
           value={props.todoFormState.date}
           required
         />
@@ -103,7 +101,6 @@ function TodoForm(props) {
           type='text'
           value={props.todoFormState.list}
           required
-          // placeholder='Task List'
         />
         <label htmlFor='list' className='label-name'>
           <span className='content-name'>Task List</span>
@@ -116,7 +113,6 @@ function TodoForm(props) {
           type='text'
           value={props.todoFormState.description}
           required
-          // placeholder='Description'
         />
         <label htmlFor='description' className='label-name'>
           <span className='content-name'>Description</span>
