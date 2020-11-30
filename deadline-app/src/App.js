@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import './scss/Main.scss';
 // Import components
 import TodoForm from './components/TodoForm';
@@ -100,6 +99,37 @@ class App extends React.Component {
   };
 
   todoHandler = {
+    fetch: (lists, tasks) => {
+      // console.log({ lists, tasks });
+      const getListName = (listid) => {
+        const list = lists.find((item) => {
+          return item.id === listid;
+        });
+        return list.name;
+      };
+
+      const todos = tasks.map((item) => {
+        item = {
+          id: item.id,
+          name: item.name,
+          date: item.date_deadline,
+          priority: item.priority,
+          listid: item.listid,
+          list: getListName(item.listid),
+          description: item.description,
+          isdone: item.is_done,
+          created: item.date_created,
+        };
+        return item;
+      });
+      let collapsibleStates = [...this.state.collapsibleStates];
+      for (const element of todos) {
+        const collapsibleStateObject = { id: element.id, isOpen: false };
+        collapsibleStates = collapsibleStates.concat(collapsibleStateObject);
+      }
+
+      this.setState({ todos: todos, collapsibleStates: collapsibleStates });
+    },
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
       collapsibleStates.forEach((element) => {
@@ -112,7 +142,7 @@ class App extends React.Component {
     // of todos
     delete: (todoId) => {
       const temp = this.state.todos.filter((el) => {
-        console.log(el);
+        // console.log(el);
         return el.id !== todoId;
       });
       this.setState({
@@ -150,7 +180,6 @@ class App extends React.Component {
       <div className='container'>
         <div className='app'>
           <div className='form'>
-            <FetchTest />
             <TodoForm
               submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
@@ -173,26 +202,6 @@ class App extends React.Component {
         </div>
       </div>
     );
-  }
-}
-
-function FetchTest(props) {
-  // const [err, setErr] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(null);
-  const [data, setData] = useState([]);
-  const ax = axios.create({ baseURL: 'http://localhost:8080/api' });
-
-  useEffect(() => {
-    ax.get('/todos').then((res) => {
-      setIsLoaded(true);
-      setData(res);
-    });
-  }, []);
-
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
-    return <div>{JSON.stringify(data.data)}</div>;
   }
 }
 
