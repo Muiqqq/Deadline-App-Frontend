@@ -99,6 +99,37 @@ class App extends React.Component {
   };
 
   todoHandler = {
+    fetch: (lists, tasks) => {
+      // console.log({ lists, tasks });
+      const getListName = (listid) => {
+        const list = lists.find((item) => {
+          return item.id === listid;
+        });
+        return list.name;
+      };
+
+      const todos = tasks.map((item) => {
+        item = {
+          id: item.id,
+          name: item.name,
+          date: item.date_deadline,
+          priority: item.priority,
+          listid: item.listid,
+          list: getListName(item.listid),
+          description: item.description,
+          isdone: item.is_done,
+          created: item.date_created,
+        };
+        return item;
+      });
+      let collapsibleStates = [...this.state.collapsibleStates];
+      for (const element of todos) {
+        const collapsibleStateObject = { id: element.id, isOpen: false };
+        collapsibleStates = collapsibleStates.concat(collapsibleStateObject);
+      }
+
+      this.setState({ todos: todos, collapsibleStates: collapsibleStates });
+    },
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
       collapsibleStates.forEach((element) => {
@@ -111,7 +142,7 @@ class App extends React.Component {
     // of todos
     delete: (todoId) => {
       const temp = this.state.todos.filter((el) => {
-        console.log(el);
+        // console.log(el);
         return el.id !== todoId;
       });
       this.setState({
