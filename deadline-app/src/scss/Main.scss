@@ -1,0 +1,359 @@
+// Variables
+$bg-color: #2a3c44;
+$btn-green: #21a06d;
+$btn-red: #e73d3d;
+$light-grey: rgb(207, 207, 207);
+
+// Global reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Global styling
+body {
+  color: #fff;
+  background-color: $bg-color;
+  font-family: 'Lato', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+#submit {
+  background-color: $btn-green;
+}
+
+#cancel {
+  background-color: $btn-red;
+}
+
+// Global collapsible styling
+// Makes it so that the header and content
+// are their own rows.
+.collapsible {
+  display: flex;
+  flex-flow: row wrap;
+
+  &-header {
+    width: 100%;
+  }
+  &-content {
+    width: 100%;
+  }
+}
+
+// Custom components
+.btn {
+  color: #fff;
+  border: none;
+  background-color: $btn-green;
+}
+.btn-flat {
+  background-color: $bg-color;
+  border: none;
+  color: #fff;
+  outline: none;
+}
+
+.container {
+  max-width: 1270px;
+  margin: auto;
+}
+
+.py-05 {
+  padding: 0.5rem;
+}
+
+// App styling
+.app {
+  display: flex;
+}
+
+// Form component styling
+.form {
+  margin-top: 2rem;
+  padding: 2rem;
+
+  // Form styling
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding-right: 1rem;
+    position: relative;
+    overflow: hidden;
+
+    // Render datetime input transparent if there is no value in the input field
+    input[value='']::-webkit-datetime-edit {
+      color: transparent;
+    }
+
+    input,
+    textarea {
+      padding-bottom: 1rem;
+      margin-bottom: 0.3rem;
+      background-color: $bg-color;
+      color: $light-grey;
+      border: none;
+      font-size: 1.3rem;
+      font-weight: 200;
+    }
+
+    // Animation of the input fields
+    .input-animation {
+      width: 500px;
+      position: relative;
+      margin-top: 2rem;
+      input {
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: 20px;
+        border: none;
+        outline: none;
+      }
+      label {
+        position: absolute;
+        bottom: 0px;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        border-bottom: 1px solid $light-grey;
+        color: $light-grey;
+        font-size: 1rem;
+      }
+
+      label::after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        bottom: -1px;
+        height: 100%;
+        width: 100%;
+        border-bottom: 3px solid $btn-green;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .content-name {
+        position: absolute;
+        bottom: 5px;
+        left: 0px;
+        transition: all 0.3s ease;
+      }
+
+      input:focus + .label-name .content-name,
+      input:valid + .label-name .content-name {
+        transform: translateY(-160%);
+        font-size: 0.8rem;
+        color: $btn-green;
+      }
+
+      input:focus::-webkit-datetime-edit {
+        transform: translateY(-160%);
+      }
+
+      input:focus + .label-name::after,
+      .form input:valid + .label-name::after,
+      input:focus::-webkit-datetime-edit {
+        transform: translateX(0%);
+      }
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: $light-grey;
+      opacity: 1; /* Firefox */
+    }
+
+    // Priority i.e. radio button styling
+    #priority {
+      margin: 0.5rem 0;
+      margin-top: 2rem;
+
+      label:first-child {
+        color: $light-grey;
+      }
+
+      // Radio button styling and animation
+      .radio-container {
+        margin-top: 1rem;
+
+        input[type='radio'] {
+          display: none;
+        }
+        label {
+          font-size: 0.75rem;
+          position: relative;
+          cursor: pointer;
+          padding-right: 2rem;
+        }
+        label::before {
+          content: '';
+          border: 1px solid $light-grey;
+          display: inline-block;
+          height: 22px;
+          width: 22px;
+          margin: -4px 15px;
+          margin-left: 0;
+          border-radius: 50%;
+        }
+
+        label::after {
+          content: '';
+          display: inline-block;
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: #21a06d00;
+          left: 4px;
+          top: -4px;
+          margin: 0 0;
+          border-radius: 50%;
+          transition: all 0.4s;
+        }
+
+        input[type='radio']:checked + label::after {
+          background: $btn-green;
+        }
+      }
+    }
+
+    .input-description {
+      padding-bottom: 2rem;
+    }
+
+    .submitbuttons button {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      color: #fff;
+      border: none;
+    }
+
+    #submit {
+      width: 70%;
+      margin-right: 5%;
+    }
+
+    #cancel {
+      width: 25%;
+    }
+  }
+}
+
+// TodoList component styling
+.todo-list {
+  margin: 2rem 2rem;
+  width: 400px;
+
+  .list {
+    margin-top: 1rem;
+    li {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+      border-bottom: 1px solid rgb(122, 122, 122);
+
+      // How tasks are displayed
+      // background-color is there for debugging :)
+      .collapsible-header {
+        $gapBetween: 5%;
+        display: flex;
+        justify-content: unset;
+
+        .todo-priority {
+          width: 5%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-date {
+          width: 25%;
+          //background-color: #3e5a66;
+          margin-right: $gapBetween;
+        }
+
+        .todo-name {
+          max-width: 55%;
+          overflow-wrap: break-word;
+          margin-right: auto;
+          margin-left: 0;
+          //background-color: #3e5a66;
+        }
+
+        .task-completed {
+          margin-left: $gapBetween;
+          //background-color: #3e5a66;
+        }
+      }
+
+      // How collapsible content is shown
+      .collapsible-content {
+        display: block;
+        height: auto;
+        max-height: 200px;
+        transition: max-height 0.3s linear;
+        overflow: hidden;
+
+        > * {
+          margin-right: 1rem;
+          margin-left: 1rem;
+        }
+
+        .toolbar {
+          margin-top: 1rem;
+          display: flex;
+
+          p {
+            padding: 0.5rem;
+          }
+
+          #edit {
+            margin-right: 0;
+            margin-left: auto;
+            background-color: #3e5a66;
+            i {
+              margin-left: 0.5rem;
+            }
+          }
+
+          #delete {
+            margin-left: 1rem;
+            background-color: #3e5a66;
+            i {
+              margin-left: 0.5rem;
+            }
+          }
+        }
+
+        .todo-description {
+          background-color: #3e5a66;
+          padding: 1rem;
+          overflow: hidden;
+        }
+      }
+      .collapsible-content.collapsed {
+        max-height: 0;
+      }
+    }
+  }
+}
+
+// Task completed
+.completed > * {
+  color: grey;
+}
+
+// Sort component styling (temporary)
+.sortbuttonlist {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  li {
+    padding-left: 1rem;
+  }
+}
