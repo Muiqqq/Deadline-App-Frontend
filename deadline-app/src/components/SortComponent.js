@@ -22,33 +22,38 @@ function SortButtonListComponent(props) {
   // Sort handling
   useEffect(() => {
     tasklist.sort((a, b) => {
-      switch (previouslyClicked) {
-        case 'Date':
-          // Nulls are sorted in 'reverse' order, it
-          // seems more logical this way, as now closest
-          // dates are first, not nulls.
-          return sortAscending
-            ? (a.date === null) - (b.date === null) ||
-                new Date(a.date) - new Date(b.date)
-            : (b.date === null) - (a.date === null) ||
-                new Date(b.date) - new Date(a.date);
-        case 'Name':
-          return sortAscending
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name);
-        case 'Priority':
-          // Value 0 for priority is also sorted in reverse
-          // order, for similar reasons as date null sorting.
-          // Value 0 represents 'no priority', so shouldn't
-          // be shown before 1, which is the highest priority.
-          return sortAscending
-            ? (a.priority === 0) - (b.priority === 0) || a.priority - b.priority
-            : (b.priority === 0) - (a.priority === 0) ||
-                b.priority - a.priority;
-        case 'Completed':
-          return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
-        default:
-          return 0;
+      if (a.list !== b.list) {
+        return a.list.localeCompare(b.list);
+      } else {
+        switch (previouslyClicked) {
+          case 'Date':
+            // Nulls are sorted in 'reverse' order, it
+            // seems more logical this way, as now closest
+            // dates are first, not nulls.
+            return sortAscending
+              ? (a.date === null) - (b.date === null) ||
+                  new Date(a.date) - new Date(b.date)
+              : (b.date === null) - (a.date === null) ||
+                  new Date(b.date) - new Date(a.date);
+          case 'Name':
+            return sortAscending
+              ? a.name.localeCompare(b.name)
+              : b.name.localeCompare(a.name);
+          case 'Priority':
+            // Value 0 for priority is also sorted in reverse
+            // order, for similar reasons as date null sorting.
+            // Value 0 represents 'no priority', so shouldn't
+            // be shown before 1, which is the highest priority.
+            return sortAscending
+              ? (a.priority === 0) - (b.priority === 0) ||
+                  a.priority - b.priority
+              : (b.priority === 0) - (a.priority === 0) ||
+                  b.priority - a.priority;
+          case 'Completed':
+            return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
+          default:
+            return 0;
+        }
       }
     });
     updateTasklist(tasklist);
