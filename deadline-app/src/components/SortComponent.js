@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+const SortButtonLabel = {
+  ISDONE: 'Completed',
+  DATE: 'Date',
+  NAME: 'Name',
+  PRIORITY: 'Priority',
+};
+
 function SortButton(props) {
   const handleClick = (e) => {
     props.onClick(props.label);
@@ -26,7 +33,7 @@ function SortButtonListComponent(props) {
         return a.list.localeCompare(b.list);
       } else {
         switch (previouslyClicked) {
-          case 'Date':
+          case SortButtonLabel.DATE:
             // Nulls are sorted in 'reverse' order, it
             // seems more logical this way, as now closest
             // dates are first, not nulls.
@@ -35,11 +42,11 @@ function SortButtonListComponent(props) {
                   new Date(a.date) - new Date(b.date)
               : (b.date === null) - (a.date === null) ||
                   new Date(b.date) - new Date(a.date);
-          case 'Name':
+          case SortButtonLabel.NAME:
             return sortAscending
               ? a.name.localeCompare(b.name)
               : b.name.localeCompare(a.name);
-          case 'Priority':
+          case SortButtonLabel.PRIORITY:
             // Value 0 for priority is also sorted in reverse
             // order, for similar reasons as date null sorting.
             // Value 0 represents 'no priority', so shouldn't
@@ -49,7 +56,7 @@ function SortButtonListComponent(props) {
                   a.priority - b.priority
               : (b.priority === 0) - (a.priority === 0) ||
                   b.priority - a.priority;
-          case 'Completed':
+          case SortButtonLabel.ISDONE:
             return sortAscending ? b.isdone - a.isdone : a.isdone - b.isdone;
           default:
             return 0;
