@@ -65,8 +65,11 @@ class App extends React.Component {
         }
       })
       .catch((err) => {
-        if (err.response) {
-          this.setState({ lists: err.response.data, areListsLoaded: true });
+        // console.log(err.response);
+        if (err.response && err.response.status === 404) {
+          this.setState({
+            areListsLoaded: true,
+          });
         } else {
           this.setState({ statusMessage: 'ERROR: Could not reach the api' });
         }
@@ -108,8 +111,11 @@ class App extends React.Component {
         }
       })
       .catch((err) => {
-        if (err.response) {
-          this.setState({ todos: err.response.data, areTodosLoaded: true });
+        // console.log(err.response);
+        if (err.response && err.response.status === 404) {
+          this.setState({
+            areTodosLoaded: true,
+          });
         } else {
           this.setState({ statusMessage: 'ERROR: Could not reach the api' });
         }
@@ -117,6 +123,8 @@ class App extends React.Component {
   }
 
   componentDidUpdate() {
+    // If data has initially been fetched successfully,
+    // flip isLoaded to true, so todos can be rendered.
     if (
       this.state.areTodosLoaded &&
       this.state.areListsLoaded &&
