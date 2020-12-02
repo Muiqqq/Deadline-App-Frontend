@@ -1,5 +1,6 @@
 import React from 'react';
 import './scss/Main.scss';
+import axios from './config/axiosconfig';
 // Import components
 import TodoForm from './components/TodoForm';
 import ListComponent from './components/ListComponent';
@@ -9,6 +10,8 @@ const todoFormButtonLabel = {
   ADD: 'Add',
   EDIT: 'Edit',
 };
+
+const DEFAULT_LIST = 'deadlines';
 
 // Todo:
 // Cleanup
@@ -28,6 +31,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       todos: [],
+      lists: [],
       todoFormState: {
         name: '',
         date: '',
@@ -54,18 +58,97 @@ class App extends React.Component {
     });
   };
 
-  handleSubmit = (todo) => {
+  // TODO: REMOVE DUPLICATE CODE, MOVE INITIAL FETCHING AXIOS
+  // STUFF FROM LISTCOMPONENT TO THIS FILE!!!
+  // and fix spaghett
+  getListId = async (listname) => {
+    let lists = [...this.state.lists];
+    const list = lists.find((item) => {
+      if (listname === '') {
+        listname = DEFAULT_LIST;
+      }
+      return item.name.toLowerCase() === listname.toLowerCase();
+    });
+    if (list) {
+      // console.log(list.id);
+      return list.id;
+    } else {
+      // create new list in db, return it's id
+      try {
+        const result = await axios.post('/lists', { name: listname });
+        return result.data.content.id;
+      } catch (err) {
+        // alert(err.response.data.msg);
+        console.log(err);
+      }
+    }
+    // return list.id;
+  };
+
+  getListName = (listid) => {
+    let lists = [...this.state.lists];
+    const list = lists.find((item) => {
+      return item.id === listid;
+    });
+    return list.name;
+  };
+
+  handleSubmit = async (todo) => {
     let todos = [...this.state.todos];
+    let lists = [...this.state.lists];
     let collapsibleStates = [...this.state.collapsibleStates];
+    // If editing
     if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
       const indexOfEditedTodo = todos.findIndex(
         (element) => element.id === todo.id
       );
       todos[indexOfEditedTodo] = todo;
     } else {
-      const obj = { id: todo.id, isOpen: false };
-      collapsibleStates = collapsibleStates.concat(obj);
-      todos = todos.concat(todo);
+      // If adding
+      try {
+        const listid = await this.getListId(todo.list);
+        const todoBackendContext = {
+          date_deadline: todo.date !== '' ? todo.date : null,
+          name: todo.name,
+          description: todo.description,
+          priority: +todo.priority,
+          is_done: todo.isdone,
+          listid: listid,
+        };
+
+        const postResult = await axios.post('/todos', todoBackendContext);
+        const addedTodoId = postResult.data.content.id;
+        const obj = { id: addedTodoId, isOpen: false };
+        collapsibleStates = collapsibleStates.concat(obj);
+        const getResult = await axios.get(`/todos/${addedTodoId}`);
+        // console.log(getResult.data);
+        // console.log(lists);
+        if (
+          !lists.includes({
+            id: todoBackendContext.listid,
+            name: todo.list,
+          })
+        ) {
+          const getListsResult = await axios.get('/lists');
+          this.setState({ lists: getListsResult.data });
+        }
+        const tmp = getResult.data[0];
+        const todoContext = {
+          id: tmp.id,
+          name: tmp.name,
+          date: tmp.date_deadline,
+          priority: tmp.priority,
+          listid: tmp.listid,
+          list: this.getListName(tmp.listid),
+          description: tmp.description,
+          isdone: tmp.is_done,
+          created: tmp.date_created,
+        };
+        todos = todos.concat(todoContext);
+      } catch (err) {
+        // alert(err.response.data.msg);
+        console.log(err);
+      }
     }
     this.setState({
       todos: todos,
@@ -128,7 +211,11 @@ class App extends React.Component {
         collapsibleStates = collapsibleStates.concat(collapsibleStateObject);
       }
 
-      this.setState({ todos: todos, collapsibleStates: collapsibleStates });
+      this.setState({
+        todos: todos,
+        lists: lists,
+        collapsibleStates: collapsibleStates,
+      });
     },
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
