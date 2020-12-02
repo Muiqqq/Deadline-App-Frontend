@@ -49,6 +49,10 @@ class App extends React.Component {
     };
   }
 
+  // TODO: REMOVE DUPLICATE CODE, MOVE INITIAL FETCHING AXIOS
+  // STUFF FROM LISTCOMPONENT TO THIS FILE!!! half done
+  // and fix spaghett, or enjoy it with some bolognese sauce
+  // on the side
   componentDidMount() {
     // Get lists from api
     axios
@@ -134,9 +138,6 @@ class App extends React.Component {
     });
   };
 
-  // TODO: REMOVE DUPLICATE CODE, MOVE INITIAL FETCHING AXIOS
-  // STUFF FROM LISTCOMPONENT TO THIS FILE!!!
-  // and fix spaghett
   getListId = async (listname) => {
     let lists = [...this.state.lists];
     const list = lists.find((item) => {
