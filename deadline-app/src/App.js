@@ -43,7 +43,6 @@ class App extends React.Component {
         list: '',
         descritpion: '',
         isdone: false,
-        id: Math.random() * 1000,
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
       collapsibleStates: [],
@@ -113,7 +112,7 @@ class App extends React.Component {
       });
   }
 
-  componentDidUpdate(prevState) {
+  componentDidUpdate() {
     if (
       this.state.areTodosLoaded &&
       this.state.areListsLoaded &&
@@ -250,7 +249,6 @@ class App extends React.Component {
     todoformstate.list = '';
     todoformstate.description = '';
     todoformstate.isdone = false;
-    todoformstate.id = Math.random() * 1000;
     return todoformstate;
   };
 
