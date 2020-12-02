@@ -30,6 +30,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      areListsLoaded: false,
+      areTodosLoaded: false,
+      isLoaded: false,
+      statusMessage: 'Fetching data...',
       todos: [],
       lists: [],
       todoFormState: {
@@ -44,6 +48,79 @@ class App extends React.Component {
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
       collapsibleStates: [],
     };
+  }
+
+  componentDidMount() {
+    // Get lists from api
+    axios
+      .get('/lists')
+      .then((res) => {
+        if (res.hasOwnProperty('data')) {
+          this.setState({ lists: res.data, areListsLoaded: true });
+        } else {
+          throw new Error('Data fetching failed.');
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.setState({ lists: err.response.data, areListsLoaded: true });
+        } else {
+          this.setState({ statusMessage: 'ERROR: Could not reach the api' });
+        }
+      });
+
+    // Get todos from api
+    axios
+      .get('/todos')
+      .then((res) => {
+        if (res.hasOwnProperty('data')) {
+          const tmp = res.data.map((item) => {
+            item = {
+              id: item.id,
+              name: item.name,
+              date: item.date_deadline,
+              priority: item.priority,
+              listid: item.listid,
+              list: this.getListName(item.listid),
+              description: item.description,
+              isdone: item.is_done,
+              created: item.date_created,
+            };
+            return item;
+          });
+          let collapsibleStates = [...this.state.collapsibleStates];
+          for (const element of tmp) {
+            const collapsibleStateObject = { id: element.id, isOpen: false };
+            collapsibleStates = collapsibleStates.concat(
+              collapsibleStateObject
+            );
+          }
+          this.setState({
+            todos: tmp,
+            collapsibleStates: collapsibleStates,
+            areTodosLoaded: true,
+          });
+        } else {
+          throw new Error('Data fetching failed');
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          this.setState({ todos: err.response.data, areTodosLoaded: true });
+        } else {
+          this.setState({ statusMessage: 'ERROR: Could not reach the api' });
+        }
+      });
+  }
+
+  componentDidUpdate(prevState) {
+    if (
+      this.state.areTodosLoaded &&
+      this.state.areListsLoaded &&
+      !this.state.isLoaded
+    ) {
+      this.setState({ isLoaded: true });
+    }
   }
 
   handleTodoFormInputChange = (event) => {
@@ -182,41 +259,6 @@ class App extends React.Component {
   };
 
   todoHandler = {
-    fetch: (lists, tasks) => {
-      // console.log({ lists, tasks });
-      const getListName = (listid) => {
-        const list = lists.find((item) => {
-          return item.id === listid;
-        });
-        return list.name;
-      };
-
-      const todos = tasks.map((item) => {
-        item = {
-          id: item.id,
-          name: item.name,
-          date: item.date_deadline,
-          priority: item.priority,
-          listid: item.listid,
-          list: getListName(item.listid),
-          description: item.description,
-          isdone: item.is_done,
-          created: item.date_created,
-        };
-        return item;
-      });
-      let collapsibleStates = [...this.state.collapsibleStates];
-      for (const element of todos) {
-        const collapsibleStateObject = { id: element.id, isOpen: false };
-        collapsibleStates = collapsibleStates.concat(collapsibleStateObject);
-      }
-
-      this.setState({
-        todos: todos,
-        lists: lists,
-        collapsibleStates: collapsibleStates,
-      });
-    },
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
       collapsibleStates.forEach((element) => {
@@ -284,6 +326,8 @@ class App extends React.Component {
               todos={this.state.todos}
               todoHandler={this.todoHandler}
               collapsibleStates={this.state.collapsibleStates}
+              isLoaded={this.state.isLoaded}
+              statusMessage={this.state.statusMessage}
             />
           </div>
         </div>
