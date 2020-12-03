@@ -50,7 +50,7 @@ class App extends React.Component {
   }
 
   // One function for all potential resources that need
-  // fetching from the api.
+  // fetching from the api at startup.
   handleInitialFetch = (resource, success) => {
     axios
       .get('/'.concat(resource))
