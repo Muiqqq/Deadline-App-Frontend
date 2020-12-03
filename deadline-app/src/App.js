@@ -297,7 +297,7 @@ class App extends React.Component {
   };
 
   resetTodoFormState = () => {
-    let todoformstate = { ...this.state.todoFormState };
+    let todoformstate = {};
     todoformstate.name = '';
     todoformstate.date = '';
     todoformstate.priority = '';
