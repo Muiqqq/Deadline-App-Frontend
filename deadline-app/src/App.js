@@ -259,7 +259,7 @@ class App extends React.Component {
             todo.list = DEFAULT_LIST;
           }
           todos[indexOfEditedTodo] = todo;
-          console.log(todo);
+          // console.log(todo);
         } else {
           throw new Error('ERROR: Could not update entry in db.');
         }
