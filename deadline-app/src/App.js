@@ -81,7 +81,7 @@ class App extends React.Component {
     }
   };
 
-  // Used for fetching.
+  // Used for fetching resources.
   componentDidMount() {
     const resources = ['lists', 'todos'];
     for (const resource of resources) {
@@ -173,6 +173,9 @@ class App extends React.Component {
     return todo;
   };
 
+  // Looks up the ID of a list based on the lists name.
+  // Lists are stored in the state, and fetched from the api
+  // before first render.
   getListId = async (listname) => {
     let lists = [...this.state.lists];
     if (listname === '') {
@@ -197,6 +200,11 @@ class App extends React.Component {
     // return list.id;
   };
 
+  // Todo objects returned from api wont have a list name by default,
+  // so its necessary to check which list name belongs to which list id.
+  // Looks up the name of a list based on an id.
+  // Lists are stored in the state, and fetched from the api
+  // before first render.
   getListName = (listid) => {
     let lists = [...this.state.lists];
     const list = lists.find((item) => {
@@ -221,14 +229,14 @@ class App extends React.Component {
     let todos = [...this.state.todos];
     let lists = [...this.state.lists];
     let collapsibleStates = [...this.state.collapsibleStates];
-    // If editing
+    // If editing a todo
     if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
       const indexOfEditedTodo = todos.findIndex(
         (element) => element.id === todo.id
       );
       todos[indexOfEditedTodo] = todo;
     } else {
-      // If adding
+      // If adding a new todo
       try {
         const listid = await this.getListId(todo.list);
         const todoBackendContext = {
