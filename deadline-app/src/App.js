@@ -49,6 +49,8 @@ class App extends React.Component {
     };
   }
 
+  // One function for all potential resources that need
+  // fetching from the api.
   handleInitialFetch = (resource, success) => {
     axios
       .get('/'.concat(resource))
@@ -66,6 +68,64 @@ class App extends React.Component {
         });
       });
   };
+
+  // A response will be returned if the backend service
+  // is up and running, in which case the db is reachable.
+  // 404 here would just mean the db tables are empty, so operation
+  // can be continued normally.
+  handleFetchError = (err, cb) => {
+    if (err.response && err.response.status === 404) {
+      cb();
+    } else {
+      this.setState({ statusMessage: 'ERROR: Could not reach the api' });
+    }
+  };
+
+  // Used for fetching.
+  componentDidMount() {
+    const resources = ['lists', 'todos'];
+    for (const resource of resources) {
+      this.handleInitialFetch(resource, (res) => {
+        switch (resource) {
+          case 'lists':
+            this.setState({ lists: res.data, isLoaded_lists: true });
+            break;
+          case 'todos':
+            const todos = res.data.map((item) => {
+              return this.convertTodoContext(item);
+            });
+            let collapsibleStates = [...this.state.collapsibleStates];
+            for (const element of todos) {
+              const collapsibleStateObject = { id: element.id, isOpen: false };
+              collapsibleStates = collapsibleStates.concat(
+                collapsibleStateObject
+              );
+            }
+            this.setState({
+              todos: todos,
+              collapsibleStates: collapsibleStates,
+              isLoaded_todos: true,
+            });
+            break;
+          default:
+            console.log('Something went wrong.');
+        }
+      });
+    }
+  }
+
+  // Check that resources are loaded
+  componentDidUpdate() {
+    // If data has initially been fetched successfully,
+    // flip isLoaded to true, so todos can be rendered.
+    if (
+      this.state.isLoaded_todos &&
+      this.state.isLoaded_lists &&
+      !this.state.isLoaded
+    ) {
+      this.setState({ isLoaded: true });
+    }
+  }
 
   // move this to its own file?
   // or maybe refactor so that no conversion needs be made
@@ -113,80 +173,6 @@ class App extends React.Component {
     return todo;
   };
 
-  // TODO: REMOVE DUPLICATE CODE, MOVE INITIAL FETCHING AXIOS
-  // STUFF FROM LISTCOMPONENT TO THIS FILE!!! half done
-  // and fix spaghett, or enjoy it with some bolognese sauce
-  // on the side
-  // Used for fetching.
-  componentDidMount() {
-    const resources = ['lists', 'todos'];
-    for (const resource of resources) {
-      this.handleInitialFetch(resource, (res) => {
-        switch (resource) {
-          case 'lists':
-            this.setState({ lists: res.data, isLoaded_lists: true });
-            break;
-          case 'todos':
-            const todos = res.data.map((item) => {
-              return this.convertTodoContext(item);
-            });
-            let collapsibleStates = [...this.state.collapsibleStates];
-            for (const element of todos) {
-              const collapsibleStateObject = { id: element.id, isOpen: false };
-              collapsibleStates = collapsibleStates.concat(
-                collapsibleStateObject
-              );
-            }
-            this.setState({
-              todos: todos,
-              collapsibleStates: collapsibleStates,
-              isLoaded_todos: true,
-            });
-            break;
-          default:
-            console.log('Something went wrong.');
-        }
-      });
-    }
-  }
-
-  // A response will be returned if the backend service
-  // is up and running, in which case the db is reachable.
-  // 404 here would just mean the db tables are empty, so operation
-  // can be continued normally.
-  handleFetchError = (err, cb) => {
-    if (err.response && err.response.status === 404) {
-      cb();
-    } else {
-      this.setState({ statusMessage: 'ERROR: Could not reach the api' });
-    }
-  };
-
-  // Check that resources are loaded
-  componentDidUpdate() {
-    // If data has initially been fetched successfully,
-    // flip isLoaded to true, so todos can be rendered.
-    if (
-      this.state.isLoaded_todos &&
-      this.state.isLoaded_lists &&
-      !this.state.isLoaded
-    ) {
-      this.setState({ isLoaded: true });
-    }
-  }
-
-  handleTodoFormInputChange = (event) => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    let todoFormState = { ...this.state.todoFormState };
-    todoFormState[name] = value;
-    this.setState({
-      todoFormState: todoFormState,
-    });
-  };
-
   getListId = async (listname) => {
     let lists = [...this.state.lists];
     if (listname === '') {
@@ -217,6 +203,18 @@ class App extends React.Component {
       return item.id === listid;
     });
     return list.name;
+  };
+
+  handleTodoFormInputChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    let todoFormState = { ...this.state.todoFormState };
+    todoFormState[name] = value;
+    this.setState({
+      todoFormState: todoFormState,
+    });
   };
 
   handleSubmit = async (todo) => {
