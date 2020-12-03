@@ -253,6 +253,11 @@ class App extends React.Component {
         // If updated successfully, apply changes
         // to state so the new info gets rendered.
         if (putTodoResponse.status === 200) {
+          // workaround for default list not rendering properly
+          // for edited todos which have empty task list field.
+          if (todo.list === '') {
+            todo.list = DEFAULT_LIST;
+          }
           todos[indexOfEditedTodo] = todo;
           console.log(todo);
         } else {
