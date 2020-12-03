@@ -240,17 +240,23 @@ class App extends React.Component {
     } else {
       // If adding a new todo
       try {
+        // Get a list id for the todo which is to be added.
         const listid = await this.getListId(todo.list);
         const todoBackendContext = this.convertTodoContext(todo);
         todoBackendContext.listid = listid;
 
+        // Post the todo object to the api in the correct context.
         const postResponse = await axios.post('/todos', todoBackendContext);
         const addedTodoId = postResponse.data.content.id;
+
+        // Create a collapsible context object for the new todo.
         const collapsibleContext = { id: addedTodoId, isOpen: false };
         collapsibleStates = collapsibleStates.concat(collapsibleContext);
-        const getTodoResponse = await axios.get(`/todos/${addedTodoId}`);
         // console.log(getResult.data);
         // console.log(lists);
+
+        // Check if a new list was added, if yes, then
+        // fetch the lists from api again.
         if (
           !lists.includes({
             id: todoBackendContext.listid,
@@ -260,6 +266,13 @@ class App extends React.Component {
           const getListsResult = await axios.get('/lists');
           this.setState({ lists: getListsResult.data });
         }
+
+        // Finally, fetch the newly added todo and convert it into
+        // correct context. If the post request was successful, we could
+        // just concat the same object to todos, but this way all the
+        // info added/changed by the backend service will always be
+        // included in what is stored here in the frontend app.
+        const getTodoResponse = await axios.get(`/todos/${addedTodoId}`);
         const tmp = getTodoResponse.data[0];
         const todoFrontendContext = this.convertTodoContext(tmp);
         todos = todos.concat(todoFrontendContext);
