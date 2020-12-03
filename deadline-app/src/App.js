@@ -341,14 +341,26 @@ class App extends React.Component {
 
     // Filtering happens here where we have access to whole list
     // of todos
-    delete: (todoId) => {
-      const temp = this.state.todos.filter((el) => {
-        // console.log(el);
-        return el.id !== todoId;
-      });
-      this.setState({
-        todos: temp,
-      });
+    delete: async (todoId) => {
+      try {
+        const deleteResponse = await axios.delete(`todos/${todoId}`);
+        if (deleteResponse.status === 204) {
+          const temp = this.state.todos.filter((el) => {
+            // console.log(el);
+            return el.id !== todoId;
+          });
+          this.setState({
+            todos: temp,
+          });
+        } else {
+          throw new Error(
+            `ERROR: Could not delete todo with id: ${todoId} from db.`
+          );
+        }
+      } catch (err) {
+        console.log(err);
+        // console.log(err.response);
+      }
     },
 
     // Filtering happens here where we have access to whole list
