@@ -134,30 +134,32 @@ class App extends React.Component {
   convertTodoContext = (todo) => {
     const context = todo.hasOwnProperty('date') ? 'frontend' : 'backend';
     if (context === 'frontend') {
-      const tmp = {
+      const backendContext = {
         date_deadline: todo.date !== '' ? todo.date : null,
         name: todo.name,
         description: todo.description,
         priority: +todo.priority,
         is_done: todo.isdone,
-        listid: this.getListId(todo.list),
       };
+      if (todo.listid) {
+        backendContext.listid = todo.listid;
+      }
       // When adding new todo, these are assigned by the backend service,
       // so they won't be there before the added todo has been
       // fetched back from the api.
       // When editing a todo, these keys would've been added by the
       // backend, and need to be sent there.
       if (todo.created) {
-        tmp.date_created = todo.created;
+        backendContext.date_created = todo.created;
       }
       if (todo.id) {
-        tmp.id = todo.id;
+        backendContext.id = todo.id;
       }
-      return tmp;
+      return backendContext;
     }
     if (context === 'backend') {
       // Backend will always return all fields
-      const tmp = {
+      const frontendContext = {
         id: todo.id,
         name: todo.name,
         date: todo.date_deadline,
@@ -168,7 +170,7 @@ class App extends React.Component {
         isdone: todo.is_done,
         created: todo.date_created,
       };
-      return tmp;
+      return frontendContext;
     }
     return todo;
   };
@@ -239,20 +241,14 @@ class App extends React.Component {
       // If adding a new todo
       try {
         const listid = await this.getListId(todo.list);
-        const todoBackendContext = {
-          date_deadline: todo.date !== '' ? todo.date : null,
-          name: todo.name,
-          description: todo.description,
-          priority: +todo.priority,
-          is_done: todo.isdone,
-          listid: listid,
-        };
+        const todoBackendContext = this.convertTodoContext(todo);
+        todoBackendContext.listid = listid;
 
-        const postResult = await axios.post('/todos', todoBackendContext);
-        const addedTodoId = postResult.data.content.id;
-        const obj = { id: addedTodoId, isOpen: false };
-        collapsibleStates = collapsibleStates.concat(obj);
-        const getResult = await axios.get(`/todos/${addedTodoId}`);
+        const postResponse = await axios.post('/todos', todoBackendContext);
+        const addedTodoId = postResponse.data.content.id;
+        const collapsibleContext = { id: addedTodoId, isOpen: false };
+        collapsibleStates = collapsibleStates.concat(collapsibleContext);
+        const getTodoResponse = await axios.get(`/todos/${addedTodoId}`);
         // console.log(getResult.data);
         // console.log(lists);
         if (
@@ -264,19 +260,9 @@ class App extends React.Component {
           const getListsResult = await axios.get('/lists');
           this.setState({ lists: getListsResult.data });
         }
-        const tmp = getResult.data[0];
-        const todoContext = {
-          id: tmp.id,
-          name: tmp.name,
-          date: tmp.date_deadline,
-          priority: tmp.priority,
-          listid: tmp.listid,
-          list: this.getListName(tmp.listid),
-          description: tmp.description,
-          isdone: tmp.is_done,
-          created: tmp.date_created,
-        };
-        todos = todos.concat(todoContext);
+        const tmp = getTodoResponse.data[0];
+        const todoFrontendContext = this.convertTodoContext(tmp);
+        todos = todos.concat(todoFrontendContext);
       } catch (err) {
         // alert(err.response.data.msg);
         console.log(err.response);
