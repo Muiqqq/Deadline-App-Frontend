@@ -231,19 +231,31 @@ class App extends React.Component {
     let todos = [...this.state.todos];
     let lists = [...this.state.lists];
     let collapsibleStates = [...this.state.collapsibleStates];
-    // If editing a todo
-    if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
-      const indexOfEditedTodo = todos.findIndex(
-        (element) => element.id === todo.id
-      );
-      todos[indexOfEditedTodo] = todo;
-    } else {
-      // If adding a new todo
-      try {
-        // Get a list id for the todo which is to be added.
-        const listid = await this.getListId(todo.list);
-        const todoBackendContext = this.convertTodoContext(todo);
-        todoBackendContext.listid = listid;
+
+    try {
+      // Get a list id for the todo which is being added/edited
+      const listid = await this.getListId(todo.list);
+      const todoBackendContext = this.convertTodoContext(todo);
+      todoBackendContext.listid = listid;
+
+      // If editing a todo
+      if (this.state.todoFormSubmitButtonLabel === todoFormButtonLabel.EDIT) {
+        const indexOfEditedTodo = todos.findIndex(
+          (element) => element.id === todo.id
+        );
+        const putTodoResponse = await axios.put(
+          `/todos/${todo.id}`,
+          todoBackendContext
+        );
+        // console.log(putTodoResponse)
+        if (putTodoResponse.status === 200) {
+          todos[indexOfEditedTodo] = todo;
+          console.log(todo);
+        } else {
+          throw new Error('ERROR: Could not update entry in db.');
+        }
+      } else {
+        // If adding a new todo
 
         // Post the todo object to the api in the correct context.
         const postResponse = await axios.post('/todos', todoBackendContext);
@@ -276,11 +288,14 @@ class App extends React.Component {
         const tmp = getTodoResponse.data[0];
         const todoFrontendContext = this.convertTodoContext(tmp);
         todos = todos.concat(todoFrontendContext);
-      } catch (err) {
-        // alert(err.response.data.msg);
-        console.log(err.response);
+        console.log(todoFrontendContext);
       }
+    } catch (err) {
+      // alert(err.response.data.msg);
+      console.log(err);
+      console.log(err.response);
     }
+
     this.setState({
       todos: todos,
       todoFormState: this.resetTodoFormState(),
