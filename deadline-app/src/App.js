@@ -243,11 +243,15 @@ class App extends React.Component {
         const indexOfEditedTodo = todos.findIndex(
           (element) => element.id === todo.id
         );
+        // Put (update) the todo object in db with new info
         const putTodoResponse = await axios.put(
           `/todos/${todo.id}`,
           todoBackendContext
         );
         // console.log(putTodoResponse)
+
+        // If updated successfully, apply changes
+        // to state so the new info gets rendered.
         if (putTodoResponse.status === 200) {
           todos[indexOfEditedTodo] = todo;
           console.log(todo);
