@@ -53,6 +53,7 @@ class App extends React.Component {
   // STUFF FROM LISTCOMPONENT TO THIS FILE!!! half done
   // and fix spaghett, or enjoy it with some bolognese sauce
   // on the side
+  // Used for fetching.
   componentDidMount() {
     // Get lists from api
     axios
@@ -66,13 +67,9 @@ class App extends React.Component {
       })
       .catch((err) => {
         // console.log(err.response);
-        if (err.response && err.response.status === 404) {
-          this.setState({
-            areListsLoaded: true,
-          });
-        } else {
-          this.setState({ statusMessage: 'ERROR: Could not reach the api' });
-        }
+        this.handleFetchError(err, () => {
+          this.setState({ areListsLoaded: true });
+        });
       });
 
     // Get todos from api
@@ -112,16 +109,25 @@ class App extends React.Component {
       })
       .catch((err) => {
         // console.log(err.response);
-        if (err.response && err.response.status === 404) {
-          this.setState({
-            areTodosLoaded: true,
-          });
-        } else {
-          this.setState({ statusMessage: 'ERROR: Could not reach the api' });
-        }
+        this.handleFetchError(err, () => {
+          this.setState({ areTodosLoaded: true });
+        });
       });
   }
 
+  // A response will be returned if the backend service
+  // is up and running, in which case the db is reachable.
+  // 404 here would just mean the db tables are empty, so operation
+  // can be continued normally.
+  handleFetchError(err, cb) {
+    if (err.response && err.response.status === 404) {
+      cb();
+    } else {
+      this.setState({ statusMessage: 'ERROR: Could not reach the api' });
+    }
+  }
+
+  // Check that resources are loaded
   componentDidUpdate() {
     // If data has initially been fetched successfully,
     // flip isLoaded to true, so todos can be rendered.
