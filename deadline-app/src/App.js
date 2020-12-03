@@ -30,8 +30,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      areListsLoaded: false,
-      areTodosLoaded: false,
+      isLoaded_lists: false,
+      isLoaded_todos: false,
       isLoaded: false,
       statusMessage: 'Fetching data...',
       todos: [],
@@ -49,91 +49,126 @@ class App extends React.Component {
     };
   }
 
+  handleInitialFetch = (resource, success) => {
+    axios
+      .get('/'.concat(resource))
+      .then((res) => {
+        if (res.hasOwnProperty('data')) {
+          success(res);
+        } else {
+          throw new Error('Data fetching failed.');
+        }
+      })
+      .catch((err) => {
+        this.handleFetchError(err, () => {
+          const key = 'isLoaded_'.concat(resource);
+          this.setState({ [key]: true });
+        });
+      });
+  };
+
+  // move this to its own file?
+  // or maybe refactor so that no conversion needs be made
+  // as i had originally planned, that the object would be
+  // identical across both front and back
+  convertTodoContext = (todo) => {
+    const context = todo.hasOwnProperty('date') ? 'frontend' : 'backend';
+    if (context === 'frontend') {
+      const tmp = {
+        date_deadline: todo.date !== '' ? todo.date : null,
+        name: todo.name,
+        description: todo.description,
+        priority: +todo.priority,
+        is_done: todo.isdone,
+        listid: this.getListId(todo.list),
+      };
+      // When adding new todo, these are assigned by the backend service,
+      // so they won't be there before the added todo has been
+      // fetched back from the api.
+      // When editing a todo, these keys would've been added by the
+      // backend, and need to be sent there.
+      if (todo.created) {
+        tmp.date_created = todo.created;
+      }
+      if (todo.id) {
+        tmp.id = todo.id;
+      }
+      return tmp;
+    }
+    if (context === 'backend') {
+      // Backend will always return all fields
+      const tmp = {
+        id: todo.id,
+        name: todo.name,
+        date: todo.date_deadline,
+        priority: todo.priority,
+        listid: todo.listid,
+        list: this.getListName(todo.listid),
+        description: todo.description,
+        isdone: todo.is_done,
+        created: todo.date_created,
+      };
+      return tmp;
+    }
+    return todo;
+  };
+
   // TODO: REMOVE DUPLICATE CODE, MOVE INITIAL FETCHING AXIOS
   // STUFF FROM LISTCOMPONENT TO THIS FILE!!! half done
   // and fix spaghett, or enjoy it with some bolognese sauce
   // on the side
   // Used for fetching.
   componentDidMount() {
-    // Get lists from api
-    axios
-      .get('/lists')
-      .then((res) => {
-        if (res.hasOwnProperty('data')) {
-          this.setState({ lists: res.data, areListsLoaded: true });
-        } else {
-          throw new Error('Data fetching failed.');
+    const resources = ['lists', 'todos'];
+    for (const resource of resources) {
+      this.handleInitialFetch(resource, (res) => {
+        switch (resource) {
+          case 'lists':
+            this.setState({ lists: res.data, isLoaded_lists: true });
+            break;
+          case 'todos':
+            const todos = res.data.map((item) => {
+              return this.convertTodoContext(item);
+            });
+            let collapsibleStates = [...this.state.collapsibleStates];
+            for (const element of todos) {
+              const collapsibleStateObject = { id: element.id, isOpen: false };
+              collapsibleStates = collapsibleStates.concat(
+                collapsibleStateObject
+              );
+            }
+            this.setState({
+              todos: todos,
+              collapsibleStates: collapsibleStates,
+              isLoaded_todos: true,
+            });
+            break;
+          default:
+            console.log('Something went wrong.');
         }
-      })
-      .catch((err) => {
-        // console.log(err.response);
-        this.handleFetchError(err, () => {
-          this.setState({ areListsLoaded: true });
-        });
       });
-
-    // Get todos from api
-    axios
-      .get('/todos')
-      .then((res) => {
-        if (res.hasOwnProperty('data')) {
-          const tmp = res.data.map((item) => {
-            item = {
-              id: item.id,
-              name: item.name,
-              date: item.date_deadline,
-              priority: item.priority,
-              listid: item.listid,
-              list: this.getListName(item.listid),
-              description: item.description,
-              isdone: item.is_done,
-              created: item.date_created,
-            };
-            return item;
-          });
-          let collapsibleStates = [...this.state.collapsibleStates];
-          for (const element of tmp) {
-            const collapsibleStateObject = { id: element.id, isOpen: false };
-            collapsibleStates = collapsibleStates.concat(
-              collapsibleStateObject
-            );
-          }
-          this.setState({
-            todos: tmp,
-            collapsibleStates: collapsibleStates,
-            areTodosLoaded: true,
-          });
-        } else {
-          throw new Error('Data fetching failed');
-        }
-      })
-      .catch((err) => {
-        // console.log(err.response);
-        this.handleFetchError(err, () => {
-          this.setState({ areTodosLoaded: true });
-        });
-      });
+    }
   }
 
   // A response will be returned if the backend service
   // is up and running, in which case the db is reachable.
   // 404 here would just mean the db tables are empty, so operation
   // can be continued normally.
-  handleFetchError(err, cb) {
+  handleFetchError = (err, cb) => {
     if (err.response && err.response.status === 404) {
       cb();
     } else {
       this.setState({ statusMessage: 'ERROR: Could not reach the api' });
     }
-  }
+  };
 
   // Check that resources are loaded
   componentDidUpdate() {
     // If data has initially been fetched successfully,
     // flip isLoaded to true, so todos can be rendered.
     if (
-      this.state.areTodosLoaded &&
-      this.state.areListsLoaded &&
+      this.state.isLoaded_todos &&
+      this.state.isLoaded_lists &&
       !this.state.isLoaded
     ) {
       this.setState({ isLoaded: true });
@@ -154,10 +189,10 @@ class App extends React.Component {
 
   getListId = async (listname) => {
     let lists = [...this.state.lists];
+    if (listname === '') {
+      listname = DEFAULT_LIST;
+    }
     const list = lists.find((item) => {
-      if (listname === '') {
-        listname = DEFAULT_LIST;
-      }
       return item.name.toLowerCase() === listname.toLowerCase();
     });
     if (list) {
@@ -170,7 +205,7 @@ class App extends React.Component {
         return result.data.content.id;
       } catch (err) {
         // alert(err.response.data.msg);
-        console.log(err);
+        console.log(err.response);
       }
     }
     // return list.id;
@@ -238,7 +273,7 @@ class App extends React.Component {
         todos = todos.concat(todoContext);
       } catch (err) {
         // alert(err.response.data.msg);
-        console.log(err);
+        console.log(err.response);
       }
     }
     this.setState({
