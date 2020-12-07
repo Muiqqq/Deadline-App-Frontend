@@ -67,6 +67,9 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
           <p>Description:</p>
           <p className='todo-description'>{todo.description}</p>
         </div>
+        <div>
+          <p className='todo-datecreated'>Date added: {todo.created}</p>
+        </div>
       </Collapsible>
     </li>
   );

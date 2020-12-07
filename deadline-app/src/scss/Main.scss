@@ -319,6 +319,10 @@ ul {
           padding: 1rem;
           overflow: hidden;
         }
+
+        .todo-datecreated {
+          text-align: right;
+        }
       }
       .collapsible-content.collapsed {
         max-height: 0;
