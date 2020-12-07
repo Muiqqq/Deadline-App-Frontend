@@ -413,6 +413,7 @@ class App extends React.Component {
             />
             <ListComponent
               todos={this.state.todos}
+              lists={this.state.lists}
               todoHandler={this.todoHandler}
               collapsibleStates={this.state.collapsibleStates}
               isLoaded={this.state.isLoaded}
