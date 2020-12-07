@@ -30,21 +30,6 @@ ul {
   background-color: $btn-red;
 }
 
-// Global collapsible styling
-// Makes it so that the header and content
-// are their own rows.
-.collapsible {
-  display: flex;
-  flex-flow: row wrap;
-
-  &-header {
-    width: 100%;
-  }
-  &-content {
-    width: 100%;
-  }
-}
-
 // Custom components
 .btn {
   color: #fff;
@@ -248,7 +233,7 @@ ul {
 // TodoList component styling
 .todo-list {
   margin: 2rem 2rem;
-  width: 400px;
+  width: 500px;
 
   .list {
     margin-top: 1rem;
@@ -277,7 +262,7 @@ ul {
         }
 
         .todo-name {
-          max-width: 55%;
+          width: 55%;
           overflow-wrap: break-word;
           margin-right: auto;
           margin-left: 0;
