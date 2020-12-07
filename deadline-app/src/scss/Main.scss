@@ -293,7 +293,7 @@ ul {
           display: flex;
 
           p {
-            padding: 0.5rem;
+            padding: 0.5rem 0;
           }
 
           #edit {
@@ -321,6 +321,7 @@ ul {
         }
 
         .todo-datecreated {
+          margin-top: 0.5rem;
           text-align: right;
         }
       }
