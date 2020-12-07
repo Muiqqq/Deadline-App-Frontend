@@ -12,6 +12,7 @@ const ListComponent = ({
   statusMessage,
 }) => {
   const [collapsedListStates, setCollapsedListStates] = useState([]);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   // Populate collapsedListStates with relevant objects.
   useEffect(() => {
@@ -47,6 +48,26 @@ const ListComponent = ({
     setCollapsedListStates(tmp);
   };
 
+  const handleExpandAll = (e) => {
+    let tmp = [...collapsedListStates];
+    tmp.forEach((element) => {
+      element.isOpen = true;
+    });
+    setCollapsedListStates(tmp);
+  };
+
+  const handleCollapseAll = (e) => {
+    let tmp = [...collapsedListStates];
+    tmp.forEach((element) => {
+      element.isOpen = false;
+    });
+    setCollapsedListStates(tmp);
+  };
+
+  const handleCheckboxInputChange = (e) => {
+    setHideCompleted(e.target.checked);
+  };
+
   const setCollapsed = (listItem) => {
     let collapsibleState = collapsedListStates.find(
       ({ id }) => id === getListId(listItem)
@@ -55,8 +76,10 @@ const ListComponent = ({
   };
 
   const generateLists = list.map((listItem) => {
-    const filtered = todos.filter((todo) => todo.list === listItem);
-
+    let filtered = todos.filter((todo) => todo.list === listItem);
+    if (hideCompleted) {
+      filtered = filtered.filter((todo) => todo.isdone !== true);
+    }
     return (
       <ul key={getListId(listItem)}>
         <Collapsible
@@ -78,7 +101,34 @@ const ListComponent = ({
   if (!isLoaded) {
     return <div className='list'>{statusMessage}</div>;
   } else {
-    return <div className='list'>{generateLists}</div>;
+    return (
+      <>
+        <div className='list-toolbar'>
+          <button className='btn-alt' onClick={handleExpandAll}>
+            Expand all lists
+          </button>
+          <button className='btn-alt' onClick={handleCollapseAll}>
+            Collapse all lists
+          </button>
+          <div className='hide-completed-toggle'>
+            <label className='checbox-wrapper'>
+              <i
+                className={
+                  hideCompleted ? 'fas fa-check-square' : 'fas fa-square'
+                }
+              ></i>
+              <input
+                type='checkbox'
+                checked={hideCompleted}
+                onChange={handleCheckboxInputChange}
+              />
+              Hide completed
+            </label>
+          </div>
+        </div>
+        <div className='list'>{generateLists}</div>
+      </>
+    );
   }
 };
 
