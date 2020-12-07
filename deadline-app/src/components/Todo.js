@@ -41,6 +41,8 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         } else {
           return `You are ${-calculateRemainingDays()} days late!`;
         }
+      } else {
+        return 'You are in no hurry';
       }
     } else {
       return 'Task completed';
