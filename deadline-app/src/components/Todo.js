@@ -83,10 +83,12 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
             icon='fas fa-trash'
           />
         </div>
-        <div>
-          <p>Description:</p>
-          <p className='todo-description'>{todo.description}</p>
-        </div>
+        {todo.description === '' ? null : (
+          <div>
+            <p>Description:</p>
+            <p className='todo-description'>{todo.description}</p>
+          </div>
+        )}
         <div>
           <p className='todo-datecreated'>Date added: {todo.created}</p>
         </div>
