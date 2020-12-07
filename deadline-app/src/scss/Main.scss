@@ -230,13 +230,43 @@ ul {
   }
 }
 
+@mixin collapsible-transition-maxheight($max-height, $duration) {
+  display: block;
+  height: auto;
+  max-height: $max-height;
+  transition: max-height $duration linear;
+  overflow: hidden;
+}
+
+@mixin reset-collapsed {
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+}
+
 // TodoList component styling
 .todo-list {
   margin: 2rem 2rem;
   width: 500px;
 
+  .list > ul {
+    margin: 1rem 0;
+  }
+
   .list {
     margin-top: 1rem;
+
+    .collapsible-header {
+      display: flex;
+      cursor: pointer;
+    }
+    .collapsible-content {
+      @include collapsible-transition-maxheight(2000px, 0.6s);
+      margin-left: 1rem;
+    }
+    .collapsible-content.collapsed {
+      @include reset-collapsed();
+    }
     li {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
@@ -247,6 +277,7 @@ ul {
       .collapsible-header {
         $gapBetween: 5%;
         display: flex;
+        cursor: pointer;
         justify-content: unset;
 
         .todo-priority {
@@ -275,16 +306,12 @@ ul {
         }
       }
 
-      // How collapsible content is shown
+      // How collapsible todos are shown
       .collapsible-content {
+        @include collapsible-transition-maxheight(300px, 0.4s);
         background-color: #24333a;
         margin-top: 0.5rem;
         padding-bottom: 0.5rem;
-        display: block;
-        height: auto;
-        max-height: 300px;
-        transition: max-height 0.3s linear;
-        overflow: hidden;
 
         > * {
           margin-right: 1rem;
@@ -329,9 +356,7 @@ ul {
         }
       }
       .collapsible-content.collapsed {
-        margin: 0;
-        padding: 0;
-        max-height: 0;
+        @include reset-collapsed();
       }
     }
   }
