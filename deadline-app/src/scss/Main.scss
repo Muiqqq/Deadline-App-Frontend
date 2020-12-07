@@ -277,6 +277,9 @@ ul {
 
       // How collapsible content is shown
       .collapsible-content {
+        background-color: #24333a;
+        margin-top: 0.5rem;
+        padding-bottom: 0.5rem;
         display: block;
         height: auto;
         max-height: 300px;
@@ -299,7 +302,7 @@ ul {
           #edit {
             margin-right: 0;
             margin-left: auto;
-            background-color: #3e5a66;
+            background-color: $btn-green;
             i {
               margin-left: 0.5rem;
             }
@@ -307,7 +310,7 @@ ul {
 
           #delete {
             margin-left: 1rem;
-            background-color: #3e5a66;
+            background-color: $btn-red;
             i {
               margin-left: 0.5rem;
             }
@@ -315,7 +318,7 @@ ul {
         }
 
         .todo-description {
-          background-color: #3e5a66;
+          background-color: #354d57;
           padding: 1rem;
           overflow: hidden;
         }
@@ -326,6 +329,8 @@ ul {
         }
       }
       .collapsible-content.collapsed {
+        margin: 0;
+        padding: 0;
         max-height: 0;
       }
     }
