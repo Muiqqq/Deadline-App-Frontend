@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import Collapsible from './Collapsible';
 
 const Todo = ({ todo, todoHandler, collapsibleStates }) => {
@@ -27,6 +28,25 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
     return collapsibleState.isOpen;
   };
 
+  const calculateRemainingDays = () => {
+    const diffInDays = moment(todo.date).diff(moment(new Date()), 'days');
+    return diffInDays;
+  };
+
+  const checkTimeUntilDeadline = () => {
+    if (!todo.isdone) {
+      if (todo.date) {
+        if (calculateRemainingDays() >= 0) {
+          return `Time remaining: ${calculateRemainingDays()} days`;
+        } else {
+          return `You are ${-calculateRemainingDays()} days late!`;
+        }
+      }
+    } else {
+      return 'Task completed';
+    }
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
@@ -47,7 +67,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         }
       >
         <div className='toolbar'>
-          <p>This needs serious work</p>
+          <p>{checkTimeUntilDeadline()}</p>
           <CustomButton
             id='edit'
             className='btn py-05'
