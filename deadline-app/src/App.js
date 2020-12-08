@@ -367,7 +367,7 @@ class App extends React.Component {
 
     // Filtering happens here where we have access to whole list
     // of todos
-    // NOTE: unmarking marked todos doesn't work for some reason
+
     complete: (todoId) => {
       console.log(todoId);
       const temp = [...this.state.todos];
