@@ -212,6 +212,8 @@ class App extends React.Component {
     return list.name;
   };
 
+  checkIfLastTodoFromList = (todo) => {};
+
   handleTodoFormInputChange = (event) => {
     const target = event.target;
     const value = target.value;
@@ -332,6 +334,11 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
+  getTodoObject = (todoId) => {
+    const todo = this.state.todos.filter((x) => x.id === todoId);
+    return todo[0];
+  };
+
   todoHandler = {
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
@@ -354,6 +361,7 @@ class App extends React.Component {
           this.setState({
             todos: temp,
           });
+          this.checkIfLastTodoFromList();
         } else {
           throw new Error(
             `ERROR: Could not delete todo with id: ${todoId} from db.`
@@ -369,9 +377,9 @@ class App extends React.Component {
     // of todos
     complete: async (todoId) => {
       // Check if todo is done or not before updating is_done value
-      const todoState = this.state.todos.filter((x) => x.id === todoId);
+      const todo = this.getTodoObject(todoId);
       let todoBackendContext = {};
-      todoState[0].isdone
+      todo.isdone
         ? (todoBackendContext.is_done = false)
         : (todoBackendContext.is_done = true);
       try {
