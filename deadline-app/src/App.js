@@ -184,7 +184,6 @@ class App extends React.Component {
       return item.name.toLowerCase() === listname.toLowerCase();
     });
     if (list) {
-      // console.log(list.id);
       return list.id;
     } else {
       // create new list in db, return it's id
@@ -212,7 +211,18 @@ class App extends React.Component {
     return list.name;
   };
 
-  checkIfLastTodoFromList = (todo) => {};
+  isLastTodoFromList = (todo) => {
+    let todosFound = 0;
+    this.state.lists.forEach((el) => {
+      if (el.name === todo.list) {
+        todosFound++;
+      }
+    });
+    if (todosFound === 1) {
+      return true;
+    }
+    return false;
+  };
 
   handleTodoFormInputChange = (event) => {
     const target = event.target;
@@ -335,7 +345,8 @@ class App extends React.Component {
   };
 
   getTodoObject = (todoId) => {
-    const todo = this.state.todos.filter((x) => x.id === todoId);
+    const todo = this.state.todos.filter((el) => el.id === todoId);
+    console.log(todo);
     return todo[0];
   };
 
@@ -351,6 +362,7 @@ class App extends React.Component {
     // Filtering happens here where we have access to whole list
     // of todos
     delete: async (todoId) => {
+      const todo = this.getTodoObject(todoId);
       try {
         const deleteResponse = await axios.delete(`todos/${todoId}`);
         if (deleteResponse.status === 204) {
@@ -361,7 +373,23 @@ class App extends React.Component {
           this.setState({
             todos: temp,
           });
-          this.checkIfLastTodoFromList();
+          // If last item on list delete list
+          if (this.isLastTodoFromList(todo)) {
+            const listId = await this.getListId(todo.list);
+            const deleteListRes = await axios.delete(`lists/${listId}`);
+            if (deleteListRes.status === 204) {
+              const temp = this.state.lists.filter((el) => {
+                return el.id !== listId;
+              });
+              this.setState({
+                lists: temp,
+              });
+            } else {
+              throw new Error(
+                `ERROR: Could not delete list with id: ${listId} from db.`
+              );
+            }
+          }
         } else {
           throw new Error(
             `ERROR: Could not delete todo with id: ${todoId} from db.`
@@ -377,6 +405,7 @@ class App extends React.Component {
     // of todos
     complete: async (todoId) => {
       // Check if todo is done or not before updating is_done value
+      console.log(todoId);
       const todo = this.getTodoObject(todoId);
       let todoBackendContext = {};
       todo.isdone
