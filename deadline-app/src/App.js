@@ -367,19 +367,34 @@ class App extends React.Component {
 
     // Filtering happens here where we have access to whole list
     // of todos
-
-    complete: (todoId) => {
+    complete: async (todoId) => {
       console.log(todoId);
-      const temp = [...this.state.todos];
-      let idx = temp.findIndex((x) => x.id === todoId);
-      temp[idx] = {
-        ...temp[idx],
-        isdone: !temp[idx].isdone,
-      };
-      console.log(temp);
-      this.setState({
-        todos: temp,
-      });
+      const todoBackendContext = { is_done: true };
+      try {
+        const updateResponse = await axios.put(
+          `todos/${todoId}`,
+          todoBackendContext
+        );
+        if (updateResponse.status === 200) {
+          const temp = [...this.state.todos];
+          let idx = temp.findIndex((x) => x.id === todoId);
+          temp[idx] = {
+            ...temp[idx],
+            isdone: !temp[idx].isdone,
+          };
+          console.log(temp);
+          this.setState({
+            todos: temp,
+          });
+        } else {
+          throw new Error(
+            `Error: Could not mark todo done with id: ${todoId} in db.`
+          );
+        }
+      } catch (err) {
+        console.log(err);
+        // console.log(err.response);
+      }
     },
 
     edit: (todoToEdit) => {
