@@ -368,8 +368,12 @@ class App extends React.Component {
     // Filtering happens here where we have access to whole list
     // of todos
     complete: async (todoId) => {
-      console.log(todoId);
-      const todoBackendContext = { is_done: true };
+      // Check if todo is done or not before updating is_done value
+      const todoState = this.state.todos.filter((x) => x.id === todoId);
+      let todoBackendContext = {};
+      todoState[0].isdone
+        ? (todoBackendContext.is_done = false)
+        : (todoBackendContext.is_done = true);
       try {
         const updateResponse = await axios.put(
           `todos/${todoId}`,
