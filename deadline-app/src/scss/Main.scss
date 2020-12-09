@@ -97,6 +97,14 @@ ul {
       font-weight: 200;
     }
 
+    .list-input-off {
+      display: none;
+    }
+
+    .list-input-on {
+      display: block;
+    }
+
     // Animation of the input fields
     .input-animation {
       width: 500px;
