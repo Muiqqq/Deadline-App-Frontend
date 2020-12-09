@@ -343,6 +343,7 @@ ul {
 
         .task-completed {
           margin-left: $gapBetween;
+          cursor: pointer;
           //background-color: #3e5a66;
         }
       }
@@ -431,6 +432,9 @@ ul {
   }
 
   li {
+    i {
+      padding-left: 0.5rem;
+    }
     &.todo-item {
       border-bottom: none;
       border-top: 3px solid $bg-color;
