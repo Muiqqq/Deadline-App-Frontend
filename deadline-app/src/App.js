@@ -184,7 +184,6 @@ class App extends React.Component {
       return item.name.toLowerCase() === listname.toLowerCase();
     });
     if (list) {
-      // console.log(list.id);
       return list.id;
     } else {
       // create new list in db, return it's id
@@ -210,6 +209,19 @@ class App extends React.Component {
       return item.id === listid;
     });
     return list.name;
+  };
+
+  isLastTodoFromList = (todo) => {
+    let todosFound = 0;
+    this.state.lists.forEach((el) => {
+      if (el.name === todo.list) {
+        todosFound++;
+      }
+    });
+    if (todosFound === 1) {
+      return true;
+    }
+    return false;
   };
 
   handleTodoFormInputChange = (event) => {
@@ -332,6 +344,12 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
+  getTodoObject = (todoId) => {
+    const todo = this.state.todos.filter((el) => el.id === todoId);
+    console.log(todo);
+    return todo[0];
+  };
+
   todoHandler = {
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
@@ -344,6 +362,7 @@ class App extends React.Component {
     // Filtering happens here where we have access to whole list
     // of todos
     delete: async (todoId) => {
+      const todo = this.getTodoObject(todoId);
       try {
         const deleteResponse = await axios.delete(`todos/${todoId}`);
         if (deleteResponse.status === 204) {
@@ -354,6 +373,23 @@ class App extends React.Component {
           this.setState({
             todos: temp,
           });
+          // If last item on list delete list
+          if (this.isLastTodoFromList(todo)) {
+            const listId = await this.getListId(todo.list);
+            const deleteListRes = await axios.delete(`lists/${listId}`);
+            if (deleteListRes.status === 204) {
+              const temp = this.state.lists.filter((el) => {
+                return el.id !== listId;
+              });
+              this.setState({
+                lists: temp,
+              });
+            } else {
+              throw new Error(
+                `ERROR: Could not delete list with id: ${listId} from db.`
+              );
+            }
+          }
         } else {
           throw new Error(
             `ERROR: Could not delete todo with id: ${todoId} from db.`
@@ -367,19 +403,37 @@ class App extends React.Component {
 
     // Filtering happens here where we have access to whole list
     // of todos
-    // NOTE: unmarking marked todos doesn't work for some reason
-    complete: (todoId) => {
-      console.log(todoId);
-      const temp = [...this.state.todos];
-      let idx = temp.findIndex((x) => x.id === todoId);
-      temp[idx] = {
-        ...temp[idx],
-        isdone: !temp[idx].isdone,
-      };
-      console.log(temp);
-      this.setState({
-        todos: temp,
-      });
+    complete: async (todoId) => {
+      // Check if todo is done or not before updating is_done value
+      const todo = this.getTodoObject(todoId);
+      let todoBackendContext = {};
+      todo.isdone
+        ? (todoBackendContext.is_done = false)
+        : (todoBackendContext.is_done = true);
+      try {
+        const updateResponse = await axios.put(
+          `todos/${todoId}`,
+          todoBackendContext
+        );
+        if (updateResponse.status === 200) {
+          const temp = [...this.state.todos];
+          let idx = temp.findIndex((x) => x.id === todoId);
+          temp[idx] = {
+            ...temp[idx],
+            isdone: !temp[idx].isdone,
+          };
+          this.setState({
+            todos: temp,
+          });
+        } else {
+          throw new Error(
+            `Error: Could not mark todo done with id: ${todoId} in db.`
+          );
+        }
+      } catch (err) {
+        console.log(err);
+        // console.log(err.response);
+      }
     },
 
     edit: (todoToEdit) => {
