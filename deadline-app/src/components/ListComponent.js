@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // Import components
 import TodoList from './Todolist';
 import Collapsible from './Collapsible';
+import Deadline from './Deadline';
 
 const ListComponent = ({
   todos,
@@ -76,26 +77,31 @@ const ListComponent = ({
   };
 
   const generateLists = list.map((listItem) => {
-    let filtered = todos.filter((todo) => todo.list === listItem);
-    if (hideCompleted) {
-      filtered = filtered.filter((todo) => todo.isdone !== true);
+    if (listItem !== 'deadlines') {
+      let filtered = todos.filter(
+        (todo) => todo.list === listItem && todo.list !== 'deadlines'
+      );
+      if (hideCompleted) {
+        filtered = filtered.filter((todo) => todo.isdone !== true);
+      }
+      return (
+        <ul key={getListId(listItem)}>
+          <Collapsible
+            id={getListId(listItem)}
+            header={<h3>{listItem}</h3>}
+            onClick={handleCollapse}
+            isOpen={setCollapsed(listItem)}
+          >
+            <TodoList
+              todos={filtered}
+              todoHandler={todoHandler}
+              collapsibleStates={collapsibleStates}
+            />
+          </Collapsible>
+        </ul>
+      );
     }
-    return (
-      <ul key={getListId(listItem)}>
-        <Collapsible
-          id={getListId(listItem)}
-          header={<h3>{listItem}</h3>}
-          onClick={handleCollapse}
-          isOpen={setCollapsed(listItem)}
-        >
-          <TodoList
-            todos={filtered}
-            todoHandler={todoHandler}
-            collapsibleStates={collapsibleStates}
-          />
-        </Collapsible>
-      </ul>
-    );
+    return '';
   });
 
   if (!isLoaded) {
@@ -126,7 +132,21 @@ const ListComponent = ({
             </label>
           </div>
         </div>
-        <div className='list'>{generateLists}</div>
+
+        <div className='list'>
+          <div className='deadlines'>
+            <h3>Deadlines</h3>
+            <Deadline
+              // FIX THIS PADAWAN IT IS DISGUSTING
+              deadlines={todos.filter(
+                (todo) => todo.list === 'deadline' || todo.list === 'deadlines'
+              )}
+              todoHandler={todoHandler}
+              collapsibleStates={collapsibleStates}
+            />
+          </div>
+          {generateLists}
+        </div>
       </>
     );
   }
