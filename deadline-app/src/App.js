@@ -373,21 +373,23 @@ class App extends React.Component {
           this.setState({
             todos: temp,
           });
-          // If last item on list delete list
-          if (this.isLastTodoFromList(todo)) {
-            const listId = await this.getListId(todo.list);
-            const deleteListRes = await axios.delete(`lists/${listId}`);
-            if (deleteListRes.status === 204) {
-              const temp = this.state.lists.filter((el) => {
-                return el.id !== listId;
-              });
-              this.setState({
-                lists: temp,
-              });
-            } else {
-              throw new Error(
-                `ERROR: Could not delete list with id: ${listId} from db.`
-              );
+          // If last item on list delete list (if list is not deadlines i.e. default)
+          if (todo.list !== 'deadlines') {
+            if (this.isLastTodoFromList(todo)) {
+              const listId = await this.getListId(todo.list);
+              const deleteListRes = await axios.delete(`lists/${listId}`);
+              if (deleteListRes.status === 204) {
+                const temp = this.state.lists.filter((el) => {
+                  return el.id !== listId;
+                });
+                this.setState({
+                  lists: temp,
+                });
+              } else {
+                throw new Error(
+                  `ERROR: Could not delete list with id: ${listId} from db.`
+                );
+              }
             }
           }
         } else {
