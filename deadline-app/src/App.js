@@ -42,6 +42,7 @@ class App extends React.Component {
         isdone: false,
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      listItemState: false,
       collapsibleStates: [],
     };
   }
@@ -222,6 +223,13 @@ class App extends React.Component {
       return true;
     }
     return false;
+  };
+
+  handleListClick = () => {
+    console.log(this.listItemState);
+    this.setState((prevState) => ({
+      listItemState: !prevState.listItemState,
+    }));
   };
 
   handleTodoFormInputChange = (event) => {
@@ -452,6 +460,8 @@ class App extends React.Component {
         <div className='app'>
           <div className='form'>
             <TodoForm
+              handleListClick={this.handleListClick}
+              listItemState={this.state.listItemState}
               submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
               onInputChange={this.handleTodoFormInputChange}
