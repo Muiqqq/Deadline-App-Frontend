@@ -226,7 +226,6 @@ class App extends React.Component {
   };
 
   handleListClick = () => {
-    console.log(this.listItemState);
     this.setState((prevState) => ({
       listItemState: !prevState.listItemState,
     }));
