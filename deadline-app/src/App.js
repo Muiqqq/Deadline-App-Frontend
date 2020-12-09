@@ -405,7 +405,6 @@ class App extends React.Component {
     // of todos
     complete: async (todoId) => {
       // Check if todo is done or not before updating is_done value
-      console.log(todoId);
       const todo = this.getTodoObject(todoId);
       let todoBackendContext = {};
       todo.isdone
@@ -423,7 +422,6 @@ class App extends React.Component {
             ...temp[idx],
             isdone: !temp[idx].isdone,
           };
-          console.log(temp);
           this.setState({
             todos: temp,
           });
