@@ -1,7 +1,10 @@
 // Variables
 $bg-color: #2a3c44;
+$bg-color-shadow: #1f2c31;
 $btn-green: #21a06d;
+$btn-green-hover: #1d8d60;
 $btn-red: #e73d3d;
+$btn-red-hover: #d13434;
 $light-grey: rgb(207, 207, 207);
 
 // Global reset
@@ -24,10 +27,16 @@ ul {
 
 #submit {
   background-color: $btn-green;
+  &:hover {
+    background-color: $btn-green-hover;
+  }
 }
 
 #cancel {
   background-color: $btn-red;
+  &:hover {
+    background-color: $btn-red-hover;
+  }
 }
 
 // Custom components
@@ -35,12 +44,22 @@ ul {
   color: #fff;
   border: none;
   background-color: $btn-green;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $btn-green-hover;
+  }
 }
 .btn-flat {
   background-color: $bg-color;
   border: none;
   color: #fff;
   outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $btn-green-hover;
+  }
 }
 
 .btn-alt {
@@ -382,6 +401,9 @@ ul {
             i {
               margin-left: 0.5rem;
             }
+            &:hover {
+              background-color: $btn-green-hover;
+            }
           }
 
           #delete {
@@ -389,6 +411,9 @@ ul {
             background-color: $btn-red;
             i {
               margin-left: 0.5rem;
+            }
+            &:hover {
+              background-color: $btn-red-hover;
             }
           }
         }
@@ -535,6 +560,11 @@ ul {
     // Same as setting origin to center
     transform: translate(50%, 50%);
     cursor: pointer;
+    box-shadow: 0px 5px 6px $bg-color-shadow;
+
+    &:hover {
+      background-color: $btn-green-hover;
+    }
 
     // Centering the plus icon on the button
     i {
