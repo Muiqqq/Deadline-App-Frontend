@@ -212,13 +212,14 @@ class App extends React.Component {
   };
 
   isLastTodoFromList = (todo) => {
-    let todosFound = 0;
-    this.state.lists.forEach((el) => {
-      if (el.name === todo.list) {
-        todosFound++;
-      }
+    // Get all todos in the same list as
+    // the todo given as an arg to this function.
+    let temp = this.state.todos.filter((item) => {
+      return item.list === todo.list;
     });
-    if (todosFound === 1) {
+    let todosLeft = temp.length;
+
+    if (todosLeft === 0) {
       return true;
     }
     return false;
