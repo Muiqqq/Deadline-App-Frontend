@@ -13,6 +13,10 @@ const todoFormButtonLabel = {
 
 const DEFAULT_LIST = 'deadlines';
 
+// Screen size at which it's too small to fit both the form
+// and the list side by side.
+const MOBILE_WIDTH_THRESHOLD = 1050;
+
 // Todo:
 // Cleanup
 // Rename a bunch of functions and variables for clarity?
@@ -43,6 +47,7 @@ class App extends React.Component {
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
       collapsibleStates: [],
+      isFormVisibleWhenScreenSmall: false,
     };
   }
 
@@ -241,6 +246,10 @@ class App extends React.Component {
     let lists = [...this.state.lists];
     let collapsibleStates = [...this.state.collapsibleStates];
 
+    if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
+      this.setState({ isFormVisibleWhenScreenSmall: false });
+    }
+
     try {
       // Get a list id for the todo which is being added/edited
       const listid = await this.getListId(todo.list);
@@ -323,6 +332,9 @@ class App extends React.Component {
   };
 
   handleCancel = () => {
+    if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
+      this.setState({ isFormVisibleWhenScreenSmall: false });
+    }
     this.setState({
       todoFormState: this.resetTodoFormState(),
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
@@ -439,6 +451,9 @@ class App extends React.Component {
     },
 
     edit: (todoToEdit) => {
+      if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
+        this.setState({ isFormVisibleWhenScreenSmall: true });
+      }
       this.setState({
         todoFormState: todoToEdit,
         todoFormSubmitButtonLabel: todoFormButtonLabel.EDIT,
@@ -450,7 +465,25 @@ class App extends React.Component {
     return (
       <div className='container'>
         <div className='app'>
-          <div className='form'>
+          <button
+            className={
+              this.state.isFormVisibleWhenScreenSmall
+                ? 'floating-action-button fab-hidden'
+                : 'floating-action-button fab-visible'
+            }
+            onClick={() => {
+              this.setState({ isFormVisibleWhenScreenSmall: true });
+            }}
+          >
+            <i className='fas fa-plus' />
+          </button>
+          <div
+            className={
+              this.state.isFormVisibleWhenScreenSmall
+                ? 'form form-visible'
+                : 'form form-hidden'
+            }
+          >
             <TodoForm
               submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
@@ -459,7 +492,13 @@ class App extends React.Component {
               onFormCancel={this.handleCancel}
             />
           </div>
-          <div className='todo-list'>
+          <div
+            className={
+              this.state.isFormVisibleWhenScreenSmall
+                ? 'todo-list list-hidden'
+                : 'todo-list list-visible'
+            }
+          >
             <SortComponent
               tasklist={this.state.todos}
               updateTasklist={this.handleSort}
