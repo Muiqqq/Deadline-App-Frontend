@@ -82,7 +82,7 @@ const ListComponent = ({
         (todo) => todo.list === listItem && todo.list !== 'deadlines'
       );
       if (hideCompleted) {
-        filtered = filtered.filter((todo) => todo.isdone !== true);
+        filtered = filtered.filter((todo) => !todo.isdone);
       }
       return (
         <ul key={getListId(listItem)}>

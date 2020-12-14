@@ -55,7 +55,7 @@ class App extends React.Component {
   // fetching from the api at startup.
   handleInitialFetch = (resource, success) => {
     axios
-      .get('/'.concat(resource))
+      .get('/'.concat(`${resource}?apikey=${process.env.REACT_APP_APIKEY}`))
       .then((res) => {
         if (res.hasOwnProperty('data')) {
           success(res);
@@ -193,7 +193,10 @@ class App extends React.Component {
     } else {
       // create new list in db, return it's id
       try {
-        const result = await axios.post('/lists', { name: listname });
+        const result = await axios.post(
+          `/lists?apikey=${process.env.REACT_APP_APIKEY}`,
+          { name: listname }
+        );
         return result.data.content.id;
       } catch (err) {
         // alert(err.response.data.msg);
@@ -264,7 +267,7 @@ class App extends React.Component {
         );
         // Put (update) the todo object in db with new info
         const putTodoResponse = await axios.put(
-          `/todos/${todo.id}`,
+          `/todos/${todo.id}?apikey=${process.env.REACT_APP_APIKEY}`,
           todoBackendContext
         );
         // console.log(putTodoResponse)
@@ -277,6 +280,20 @@ class App extends React.Component {
           if (todo.list === '') {
             todo.list = DEFAULT_LIST;
           }
+
+          // Check if a new list was added, if yes, then
+          // fetch the lists from api again.
+          if (
+            !lists.includes({
+              id: todoBackendContext.listid,
+              name: todo.list,
+            })
+          ) {
+            const getListsResult = await axios.get(
+              `/lists?apikey=${process.env.REACT_APP_APIKEY}`
+            );
+            this.setState({ lists: getListsResult.data });
+          }
           todos[indexOfEditedTodo] = todo;
           // console.log(todo);
         } else {
@@ -286,7 +303,10 @@ class App extends React.Component {
         // If adding a new todo
 
         // Post the todo object to the api in the correct context.
-        const postResponse = await axios.post('/todos', todoBackendContext);
+        const postResponse = await axios.post(
+          `/todos?apikey=${process.env.REACT_APP_APIKEY}`,
+          todoBackendContext
+        );
         const addedTodoId = postResponse.data.content.id;
 
         // Create a collapsible context object for the new todo.
@@ -303,7 +323,9 @@ class App extends React.Component {
             name: todo.list,
           })
         ) {
-          const getListsResult = await axios.get('/lists');
+          const getListsResult = await axios.get(
+            `/lists?apikey=${process.env.REACT_APP_APIKEY}`
+          );
           this.setState({ lists: getListsResult.data });
         }
 
@@ -312,7 +334,9 @@ class App extends React.Component {
         // just concat the same object to todos, but this way all the
         // info added/changed by the backend service will always be
         // included in what is stored here in the frontend app.
-        const getTodoResponse = await axios.get(`/todos/${addedTodoId}`);
+        const getTodoResponse = await axios.get(
+          `/todos/${addedTodoId}?apikey=${process.env.REACT_APP_APIKEY}`
+        );
         const tmp = getTodoResponse.data[0];
         const todoFrontendContext = this.convertTodoContext(tmp);
         todos = todos.concat(todoFrontendContext);
@@ -377,7 +401,9 @@ class App extends React.Component {
     delete: async (todoId) => {
       const todo = this.getTodoObject(todoId);
       try {
-        const deleteResponse = await axios.delete(`todos/${todoId}`);
+        const deleteResponse = await axios.delete(
+          `todos/${todoId}?apikey=${process.env.REACT_APP_APIKEY}`
+        );
         if (deleteResponse.status === 204) {
           const temp = this.state.todos.filter((el) => {
             // console.log(el);
@@ -390,7 +416,9 @@ class App extends React.Component {
           if (todo.list !== 'deadlines') {
             if (this.isLastTodoFromList(todo)) {
               const listId = await this.getListId(todo.list);
-              const deleteListRes = await axios.delete(`lists/${listId}`);
+              const deleteListRes = await axios.delete(
+                `lists/${listId}?apikey=${process.env.REACT_APP_APIKEY}`
+              );
               if (deleteListRes.status === 204) {
                 const temp = this.state.lists.filter((el) => {
                   return el.id !== listId;
@@ -427,7 +455,7 @@ class App extends React.Component {
         : (todoBackendContext.is_done = true);
       try {
         const updateResponse = await axios.put(
-          `todos/${todoId}`,
+          `todos/${todoId}?apikey=${process.env.REACT_APP_APIKEY}`,
           todoBackendContext
         );
         if (updateResponse.status === 200) {
