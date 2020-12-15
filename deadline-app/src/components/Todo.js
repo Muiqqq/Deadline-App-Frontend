@@ -49,6 +49,19 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
     }
   };
 
+  const setPriorityColor = () => {
+    switch (todo.priority) {
+      case 1:
+        return 'priority-color priority-color-high';
+      case 2:
+        return 'priority-color priority-color-medium';
+      case 3:
+        return 'priority-color priority-color-low';
+      default:
+        return 'priority-color priority-color-default';
+    }
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
@@ -57,6 +70,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         onClick={todoHandler.collapse}
         header={
           <>
+            <div className={setPriorityColor()}></div>
             <p className='todo-priority'>{todo.priority}</p>
             <p className='todo-date'>{todo.date}</p>
             <p className='todo-name'>{todo.name}</p>
