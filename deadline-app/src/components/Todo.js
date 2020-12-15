@@ -52,11 +52,11 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
   const setPriorityColor = () => {
     switch (todo.priority) {
       case 1:
-        return 'priority-color priority-color-low';
+        return 'priority-color priority-color-high';
       case 2:
         return 'priority-color priority-color-medium';
       case 3:
-        return 'priority-color priority-color-high';
+        return 'priority-color priority-color-low';
       default:
         return 'priority-color priority-color-default';
     }
