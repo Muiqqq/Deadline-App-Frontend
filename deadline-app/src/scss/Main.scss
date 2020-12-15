@@ -124,6 +124,14 @@ ul {
       font-weight: 200;
     }
 
+    .list-input-off {
+      display: none;
+    }
+
+    .list-input-on {
+      display: block;
+    }
+
     // Animation of the input fields
     .input-animation {
       width: 500px;
@@ -555,10 +563,6 @@ ul {
   input:checked + label:after {
     left: calc(100% - 2px);
     transform: translateX(-100%);
-  }
-
-  label:active:after {
-    width: 130px;
   }
 }
 
