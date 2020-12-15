@@ -234,6 +234,9 @@ class App extends React.Component {
     return false;
   };
 
+  // Handles thje deadlineToggle button click
+  // list input is visible (true) or invisible (false)
+  // and is dependant on deadline toggle
   handleListClick = () => {
     this.setState((prevState) => ({
       listItemState: !prevState.listItemState,
@@ -388,6 +391,7 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
+  // Gets todo object based on id.
   getTodoObject = (todoId) => {
     const todo = this.state.todos.filter((el) => el.id === todoId);
     console.log(todo);
