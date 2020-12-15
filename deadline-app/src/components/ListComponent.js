@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 // Import components
 import TodoList from './Todolist';
 import Collapsible from './Collapsible';
-import Deadline from './Deadline';
 
 const ListComponent = ({
   todos,
@@ -136,9 +135,8 @@ const ListComponent = ({
         <div className='list'>
           <div className='deadlines'>
             <h3>Deadlines</h3>
-            <Deadline
-              // FIX THIS PADAWAN IT IS DISGUSTING
-              deadlines={todos.filter(
+            <TodoList
+              todos={todos.filter(
                 (todo) => todo.list === 'deadline' || todo.list === 'deadlines'
               )}
               todoHandler={todoHandler}
