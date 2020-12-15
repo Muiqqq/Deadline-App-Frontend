@@ -62,6 +62,13 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
     }
   };
 
+  const setPriorityNumber = () => {
+    if (todo.priority > 0) {
+      return todo.priority;
+    }
+    return '';
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
@@ -71,7 +78,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         header={
           <>
             <div className={setPriorityColor()}></div>
-            <p className='todo-priority'>{todo.priority}</p>
+            <p className='todo-priority'>{setPriorityNumber()}</p>
             <p className='todo-date'>{todo.date}</p>
             <p className='todo-name'>{todo.name}</p>
             <CustomButton
