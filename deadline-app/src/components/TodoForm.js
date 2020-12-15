@@ -26,7 +26,8 @@ function TodoForm(props) {
     return props.todoFormState.priority.toString() === value;
   };
 
-  const handleClick = (e) => {
+  // Handles deadline toggle switch.
+  const handleToggle = (e) => {
     props.handleListClick();
   };
 
@@ -103,7 +104,7 @@ function TodoForm(props) {
         <input
           type='checkbox'
           id='switch'
-          onClick={handleClick}
+          onClick={handleToggle}
           defaultChecked={!props.listItemState}
         />
         <label htmlFor='switch'>Deadline</label>

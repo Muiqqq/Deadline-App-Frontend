@@ -234,7 +234,7 @@ class App extends React.Component {
     return false;
   };
 
-  // Handles thje deadlineToggle button click
+  // Handles the deadlineToggle button click
   // list input is visible (true) or invisible (false)
   // and is dependant on deadline toggle
   handleListClick = () => {
