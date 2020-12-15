@@ -352,6 +352,7 @@ ul {
         // Priority colorizing
         .priority-color {
           width: 20px;
+          margin-right: 0.3rem;
 
           &-low {
             background-color: $low;
@@ -361,6 +362,10 @@ ul {
           }
           &-high {
             background-color: $high;
+          }
+          &-default {
+            width: 0;
+            background-color: $bg-color;
           }
         }
 
