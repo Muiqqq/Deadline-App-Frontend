@@ -57,6 +57,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         onClick={todoHandler.collapse}
         header={
           <>
+            <div className='priority-color'></div>
             <p className='todo-priority'>{todo.priority}</p>
             <p className='todo-date'>{todo.date}</p>
             <p className='todo-name'>{todo.name}</p>

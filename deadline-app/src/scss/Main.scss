@@ -6,7 +6,9 @@ $btn-green-hover: #1d8d60;
 $btn-red: #e73d3d;
 $btn-red-hover: #d13434;
 $light-grey: rgb(207, 207, 207);
-
+$low: rgb(15, 177, 0);
+$medium: rgb(190, 115, 1);
+$high: rgb(153, 0, 0);
 // Global reset
 * {
   margin: 0;
@@ -346,6 +348,21 @@ ul {
         display: flex;
         cursor: pointer;
         justify-content: unset;
+
+        // Priority colorizing
+        .priority-color {
+          width: 20px;
+
+          &-low {
+            background-color: $low;
+          }
+          &-medium {
+            background-color: $medium;
+          }
+          &-high {
+            background-color: $high;
+          }
+        }
 
         .todo-priority {
           width: 5%;
