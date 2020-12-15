@@ -71,7 +71,7 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='low' className='radio'>
-              Low
+              Low (3)
             </label>
             <input
               type='radio'
@@ -82,7 +82,7 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='medium' className='radio'>
-              Medium
+              Medium (2)
             </label>
             <input
               type='radio'
@@ -93,7 +93,7 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='high' className='radio'>
-              High
+              High (3)
             </label>
           </div>
         </label>
