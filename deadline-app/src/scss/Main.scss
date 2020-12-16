@@ -633,6 +633,21 @@ ul {
     opacity: 0;
   }
 
+  .sortbuttonlist {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  .list {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  .list-toolbar {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
   // fab is shorthand for floating-action-button
   .fab-visible {
     opacity: 1;
@@ -640,5 +655,56 @@ ul {
 
   .fab-hidden {
     opacity: 0;
+  }
+}
+
+@media (max-width: 415px) {
+  .sortbuttonlist {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list {
+    width: 85%;
+    margin-left: 2.5rem;
+  }
+
+  .list-toolbar {
+    width: 85%;
+    margin-left: 2.5rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .sortbuttonlist {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list-toolbar {
+    width: 85%;
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .sortbuttonlist {
+    width: 80%;
+    margin-left: 4rem;
+  }
+
+  .list {
+    width: 80%;
+    margin-left: 4rem;
+  }
+
+  .list-toolbar {
+    width: 80%;
+    margin-left: 4rem;
   }
 }
