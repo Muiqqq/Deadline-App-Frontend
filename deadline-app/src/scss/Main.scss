@@ -60,9 +60,9 @@ ul {
   outline: none;
   cursor: pointer;
 
-  &:hover {
-    background-color: $btn-green-hover;
-  }
+  // &:hover {
+  //   background-color: $btn-green-hover;
+  // }
 }
 
 .btn-alt {
@@ -374,6 +374,9 @@ ul {
           }
           &-default {
             background-color: $bg-color;
+          }
+          &-completed {
+            background-color: grey;
           }
         }
 
