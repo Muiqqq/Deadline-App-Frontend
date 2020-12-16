@@ -50,6 +50,9 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
   };
 
   const setPriorityColor = () => {
+    if (todo.isdone && todo.priority > 0) {
+      return 'priority-color priority-color-completed';
+    }
     switch (todo.priority) {
       case 1:
         return 'priority-color priority-color-high';
@@ -58,6 +61,9 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
       case 3:
         return 'priority-color priority-color-low';
       default:
+        if (todo.list === 'deadline' || todo.list === 'deadlines') {
+          return 'priority-color priority-color-deadline';
+        }
         return 'priority-color priority-color-default';
     }
   };

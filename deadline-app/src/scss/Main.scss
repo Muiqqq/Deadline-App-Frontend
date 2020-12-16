@@ -9,6 +9,7 @@ $light-grey: rgb(207, 207, 207);
 $low: rgb(15, 177, 0);
 $medium: rgb(190, 115, 1);
 $high: rgb(153, 0, 0);
+$deadline-bg: #1c292e;
 
 // Global reset
 * {
@@ -60,9 +61,9 @@ ul {
   outline: none;
   cursor: pointer;
 
-  &:hover {
-    background-color: $btn-green-hover;
-  }
+  // &:hover {
+  //   background-color: $btn-green-hover;
+  // }
 }
 
 .btn-alt {
@@ -372,8 +373,14 @@ ul {
           &-high {
             background-color: $high;
           }
+          &-deadline {
+            background-color: $deadline-bg;
+          }
           &-default {
             background-color: $bg-color;
+          }
+          &-completed {
+            background-color: grey;
           }
         }
 
@@ -484,7 +491,7 @@ ul {
 
 // Deadline component styling
 .deadlines {
-  background-color: #1c292e;
+  background-color: $deadline-bg;
   margin-bottom: 3rem;
   margin-top: 2rem;
 
@@ -573,6 +580,9 @@ ul {
 
 // OOF this is nasty
 @media (max-width: 1050px) {
+  .form form {
+    width: 350px;
+  }
   // Floating button styling
   .floating-action-button {
     display: block;
@@ -633,6 +643,21 @@ ul {
     opacity: 0;
   }
 
+  .sortbuttonlist {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  .list {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  .list-toolbar {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
   // fab is shorthand for floating-action-button
   .fab-visible {
     opacity: 1;
@@ -640,5 +665,56 @@ ul {
 
   .fab-hidden {
     opacity: 0;
+  }
+}
+
+@media (max-width: 415px) {
+  .sortbuttonlist {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list {
+    width: 85%;
+    margin-left: 2.5rem;
+  }
+
+  .list-toolbar {
+    width: 85%;
+    margin-left: 2.5rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .sortbuttonlist {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list {
+    width: 85%;
+    margin-left: 2rem;
+  }
+
+  .list-toolbar {
+    width: 85%;
+    margin-left: 2rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .sortbuttonlist {
+    width: 80%;
+    margin-left: 4rem;
+  }
+
+  .list {
+    width: 80%;
+    margin-left: 4rem;
+  }
+
+  .list-toolbar {
+    width: 80%;
+    margin-left: 4rem;
   }
 }
