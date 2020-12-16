@@ -9,6 +9,7 @@ $light-grey: rgb(207, 207, 207);
 $low: rgb(15, 177, 0);
 $medium: rgb(190, 115, 1);
 $high: rgb(153, 0, 0);
+$deadline-bg: #1c292e;
 
 // Global reset
 * {
@@ -372,6 +373,9 @@ ul {
           &-high {
             background-color: $high;
           }
+          &-deadline {
+            background-color: $deadline-bg;
+          }
           &-default {
             background-color: $bg-color;
           }
@@ -487,7 +491,7 @@ ul {
 
 // Deadline component styling
 .deadlines {
-  background-color: #1c292e;
+  background-color: $deadline-bg;
   margin-bottom: 3rem;
   margin-top: 2rem;
 

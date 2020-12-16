@@ -61,6 +61,9 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
       case 3:
         return 'priority-color priority-color-low';
       default:
+        if (todo.list === 'deadline' || todo.list === 'deadlines') {
+          return 'priority-color priority-color-deadline';
+        }
         return 'priority-color priority-color-default';
     }
   };
