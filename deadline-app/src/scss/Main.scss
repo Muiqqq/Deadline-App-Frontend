@@ -573,6 +573,9 @@ ul {
 
 // OOF this is nasty
 @media (max-width: 1050px) {
+  .form form {
+    width: 350px;
+  }
   // Floating button styling
   .floating-action-button {
     display: block;
