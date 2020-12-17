@@ -34,6 +34,7 @@ const ListComponent = ({
     }
   });
 
+  // Find a lists id by its name
   const getListId = (listname) => {
     const list = lists.find((item) => {
       return item.name.toLowerCase() === listname.toLowerCase();
@@ -77,13 +78,13 @@ const ListComponent = ({
 
   // Generate lists. Filter out all todos associated with deadlines list.
   const generateLists = list.map((listItem) => {
+    if (hideCompleted) {
+      todos = todos.filter((todo) => !todo.isdone);
+    }
     if (listItem !== 'deadlines') {
       let filtered = todos.filter(
         (todo) => todo.list === listItem && todo.list !== 'deadlines'
       );
-      if (hideCompleted) {
-        filtered = filtered.filter((todo) => !todo.isdone);
-      }
       return (
         <ul key={getListId(listItem)}>
           <Collapsible
