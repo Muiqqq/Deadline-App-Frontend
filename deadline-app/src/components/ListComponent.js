@@ -34,6 +34,7 @@ const ListComponent = ({
     }
   });
 
+  // Find a lists id by its name
   const getListId = (listname) => {
     const list = lists.find((item) => {
       return item.name.toLowerCase() === listname.toLowerCase();
