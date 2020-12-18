@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../config/axiosconfig';
 // Import components
 import TodoList from './Todolist';
+import Collapsible from './Collapsible';
+import Deadline from './Deadline';
 
-const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
-  const [isLoaded, setIsLoaded] = useState(null);
-  const [statusMessage, setStatusMessage] = useState('Fetching data...');
-  const [lists, setLists] = useState({});
-  const [tasks, setTasks] = useState({});
+const ListComponent = ({
+  todos,
+  lists,
+  todoHandler,
+  collapsibleStates,
+  isLoaded,
+  statusMessage,
+}) => {
+  const [collapsedListStates, setCollapsedListStates] = useState([]);
+  const [hideCompleted, setHideCompleted] = useState(false);
+
+  // Populate collapsedListStates with relevant objects.
+  useEffect(() => {
+    let array = [];
+    array = lists.map((item) => {
+      item = {
+        id: item.id,
+        isOpen: false,
+      };
+      return item;
+    });
+    setCollapsedListStates(array);
+  }, [lists]);
+
   const list = [];
   todos.forEach((todo) => {
     if (!list.includes(todo.list)) {
@@ -15,65 +35,120 @@ const ListComponent = ({ todos, todoHandler, collapsibleStates }) => {
     }
   });
 
-  // Fetch todos and lists
-  useEffect(() => {
-    axios
-      .get('/lists')
-      .then((res) => {
-        setLists(res);
-      })
-      .catch((err) => {
-        if (err.response) {
-          setLists(err.response.data);
-        } else {
-          setStatusMessage('ERROR: Could not reach the API.');
-          throw err;
-        }
-      });
+  const getListId = (listname) => {
+    const list = lists.find((item) => {
+      return item.name.toLowerCase() === listname.toLowerCase();
+    });
+    return list.id;
+  };
 
-    axios
-      .get('/todos')
-      .then((res) => {
-        setTasks(res);
-      })
-      .catch((err) => {
-        if (err.response) {
-          setTasks(err.response.data);
-        } else {
-          setStatusMessage('ERROR: Could not reach the API.');
-          throw err;
-        }
-      });
-  }, []);
+  const handleCollapse = (listId) => {
+    let tmp = [...collapsedListStates];
+    let clickedIndex = tmp.findIndex((item) => item.id === listId);
+    tmp[clickedIndex].isOpen = !tmp[clickedIndex].isOpen;
+    setCollapsedListStates(tmp);
+  };
 
-  // Send fetched todos and lists to parent
-  useEffect(() => {
-    // Only run this if both lists and tasks have been fetched successfully.
-    if (lists.hasOwnProperty('data') && tasks.hasOwnProperty('data')) {
-      setIsLoaded(true);
-      todoHandler.fetch(lists.data, tasks.data);
-    }
-  }, [todoHandler, lists, tasks]);
+  const handleExpandAll = (e) => {
+    let tmp = [...collapsedListStates];
+    tmp.forEach((element) => {
+      element.isOpen = true;
+    });
+    setCollapsedListStates(tmp);
+  };
+
+  const handleCollapseAll = (e) => {
+    let tmp = [...collapsedListStates];
+    tmp.forEach((element) => {
+      element.isOpen = false;
+    });
+    setCollapsedListStates(tmp);
+  };
+
+  const handleCheckboxInputChange = (e) => {
+    setHideCompleted(e.target.checked);
+  };
+
+  const setCollapsed = (listItem) => {
+    let collapsibleState = collapsedListStates.find(
+      ({ id }) => id === getListId(listItem)
+    );
+    return collapsibleState.isOpen;
+  };
 
   const generateLists = list.map((listItem) => {
-    const filtered = todos.filter((todo) => todo.list === listItem);
-    // Change key to listid once refactored
-    return (
-      <ul key={listItem}>
-        <h3>{listItem}</h3>
-        <TodoList
-          todos={filtered}
-          todoHandler={todoHandler}
-          collapsibleStates={collapsibleStates}
-        />
-      </ul>
-    );
+    if (listItem !== 'deadlines') {
+      let filtered = todos.filter(
+        (todo) => todo.list === listItem && todo.list !== 'deadlines'
+      );
+      if (hideCompleted) {
+        filtered = filtered.filter((todo) => !todo.isdone);
+      }
+      return (
+        <ul key={getListId(listItem)}>
+          <Collapsible
+            id={getListId(listItem)}
+            header={<h3>{listItem}</h3>}
+            onClick={handleCollapse}
+            isOpen={setCollapsed(listItem)}
+          >
+            <TodoList
+              todos={filtered}
+              todoHandler={todoHandler}
+              collapsibleStates={collapsibleStates}
+            />
+          </Collapsible>
+        </ul>
+      );
+    }
+    return '';
   });
 
   if (!isLoaded) {
     return <div className='list'>{statusMessage}</div>;
   } else {
-    return <div className='list'>{generateLists}</div>;
+    return (
+      <>
+        <div className='list-toolbar'>
+          <button className='btn-alt' onClick={handleExpandAll}>
+            Expand all lists
+          </button>
+          <button className='btn-alt' onClick={handleCollapseAll}>
+            Collapse all lists
+          </button>
+          <div className='hide-completed-toggle'>
+            <label className='checbox-wrapper'>
+              <i
+                className={
+                  hideCompleted ? 'fas fa-check-square' : 'fas fa-square'
+                }
+              ></i>
+              <input
+                type='checkbox'
+                checked={hideCompleted}
+                onChange={handleCheckboxInputChange}
+              />
+              Hide completed
+            </label>
+          </div>
+        </div>
+
+        <div className='list'>
+          <div className='deadlines'>
+            <h3>Deadlines</h3>
+            <Deadline
+              // FIX THIS PADAWAN IT IS DISGUSTING
+              deadlines={todos.filter(
+                (todo) => todo.list === 'deadline' || todo.list === 'deadlines'
+              )}
+              todoHandler={todoHandler}
+              collapsibleStates={collapsibleStates}
+            />
+          </div>
+          {generateLists}
+        </div>
+      </>
+    );
   }
 };
 

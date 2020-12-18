@@ -1,7 +1,10 @@
 // Variables
 $bg-color: #2a3c44;
+$bg-color-shadow: #1f2c31;
 $btn-green: #21a06d;
+$btn-green-hover: #1d8d60;
 $btn-red: #e73d3d;
+$btn-red-hover: #d13434;
 $light-grey: rgb(207, 207, 207);
 
 // Global reset
@@ -24,24 +27,15 @@ ul {
 
 #submit {
   background-color: $btn-green;
+  &:hover {
+    background-color: $btn-green-hover;
+  }
 }
 
 #cancel {
   background-color: $btn-red;
-}
-
-// Global collapsible styling
-// Makes it so that the header and content
-// are their own rows.
-.collapsible {
-  display: flex;
-  flex-flow: row wrap;
-
-  &-header {
-    width: 100%;
-  }
-  &-content {
-    width: 100%;
+  &:hover {
+    background-color: $btn-red-hover;
   }
 }
 
@@ -50,12 +44,32 @@ ul {
   color: #fff;
   border: none;
   background-color: $btn-green;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $btn-green-hover;
+  }
 }
 .btn-flat {
   background-color: $bg-color;
   border: none;
   color: #fff;
   outline: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $btn-green-hover;
+  }
+}
+
+.btn-alt {
+  cursor: pointer;
+  background-color: $bg-color;
+  color: #fff;
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  padding: 0.5rem 0;
 }
 
 .container {
@@ -70,6 +84,12 @@ ul {
 // App styling
 .app {
   display: flex;
+  justify-content: center;
+}
+
+// Hide action button when screen is big enough for the form
+.floating-action-button {
+  display: none;
 }
 
 // Form component styling
@@ -245,13 +265,75 @@ ul {
   }
 }
 
+@mixin collapsible-transition-maxheight($max-height, $duration) {
+  display: block;
+  height: auto;
+  max-height: $max-height;
+  transition: max-height $duration linear;
+  overflow: hidden;
+}
+
+@mixin reset-collapsed {
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+}
+
+.list-toolbar {
+  margin-top: 0.5rem;
+  display: flex;
+  button {
+    margin-right: 1rem;
+  }
+  .hide-completed-toggle {
+    padding-top: 0.5rem;
+    margin-right: 0;
+    margin-left: auto;
+
+    .checbox-wrapper {
+      cursor: pointer;
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      i {
+        margin-right: 0.5rem;
+      }
+
+      &:hover {
+        i {
+          color: #e7e7e7;
+        }
+      }
+    }
+  }
+}
+
 // TodoList component styling
 .todo-list {
   margin: 2rem 2rem;
-  width: 400px;
+  width: 500px;
+  min-width: 430px;
+
+  .list > ul {
+    margin: 1rem 0;
+  }
 
   .list {
     margin-top: 1rem;
+
+    .collapsible-header {
+      display: flex;
+      cursor: pointer;
+    }
+    .collapsible-content {
+      @include collapsible-transition-maxheight(2000px, 0.6s);
+      margin-left: 1rem;
+    }
+    .collapsible-content.collapsed {
+      @include reset-collapsed();
+    }
     li {
       padding-bottom: 0.5rem;
       padding-top: 0.5rem;
@@ -262,6 +344,7 @@ ul {
       .collapsible-header {
         $gapBetween: 5%;
         display: flex;
+        cursor: pointer;
         justify-content: unset;
 
         .todo-priority {
@@ -277,7 +360,7 @@ ul {
         }
 
         .todo-name {
-          max-width: 55%;
+          width: 55%;
           overflow-wrap: break-word;
           margin-right: auto;
           margin-left: 0;
@@ -286,17 +369,17 @@ ul {
 
         .task-completed {
           margin-left: $gapBetween;
+          cursor: pointer;
           //background-color: #3e5a66;
         }
       }
 
-      // How collapsible content is shown
+      // How collapsible todos are shown
       .collapsible-content {
-        display: block;
-        height: auto;
-        max-height: 200px;
-        transition: max-height 0.3s linear;
-        overflow: hidden;
+        @include collapsible-transition-maxheight(300px, 0.4s);
+        background-color: #24333a;
+        margin-top: 0.5rem;
+        padding-bottom: 0.5rem;
 
         > * {
           margin-right: 1rem;
@@ -308,35 +391,46 @@ ul {
           display: flex;
 
           p {
-            padding: 0.5rem;
+            padding: 0.5rem 0;
           }
 
           #edit {
             margin-right: 0;
             margin-left: auto;
-            background-color: #3e5a66;
+            background-color: $btn-green;
             i {
               margin-left: 0.5rem;
+            }
+            &:hover {
+              background-color: $btn-green-hover;
             }
           }
 
           #delete {
             margin-left: 1rem;
-            background-color: #3e5a66;
+            background-color: $btn-red;
             i {
               margin-left: 0.5rem;
+            }
+            &:hover {
+              background-color: $btn-red-hover;
             }
           }
         }
 
         .todo-description {
-          background-color: #3e5a66;
+          background-color: #354d57;
           padding: 1rem;
           overflow: hidden;
         }
+
+        .todo-datecreated {
+          margin-top: 0.5rem;
+          text-align: right;
+        }
       }
       .collapsible-content.collapsed {
-        max-height: 0;
+        @include reset-collapsed();
       }
     }
   }
@@ -355,5 +449,166 @@ ul {
 
   li {
     padding-left: 1rem;
+  }
+}
+
+// Deadline component styling
+.deadlines {
+  background-color: #1c292e;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+
+  h3 {
+    padding: 1rem;
+    background-color: #131b1f;
+  }
+
+  li {
+    i {
+      padding-left: 0.5rem;
+    }
+    &.todo-item {
+      border-bottom: none;
+      border-top: 3px solid $bg-color;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    &.todo-item {
+      list-style: none;
+    }
+
+    .btn-flat {
+      color: #fff;
+      background-color: #1c292e;
+      margin-right: 0.5rem;
+    }
+    .todo-priority {
+      margin-left: 0.3rem;
+    }
+  }
+}
+
+.toggle {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  h4 {
+    margin-right: 1rem;
+    color: $light-grey;
+  }
+  input[type='checkbox'] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+  }
+
+  label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 60px;
+    height: 30px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+  }
+
+  label:after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+  }
+
+  input:checked + label {
+    background: $btn-green;
+  }
+
+  input:checked + label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+  }
+
+  label:active:after {
+    width: 130px;
+  }
+}
+
+// OOF this is nasty
+@media (max-width: 1050px) {
+  // Floating button styling
+  .floating-action-button {
+    display: block;
+    z-index: 2;
+    font-size: 24px;
+    width: 72px;
+    height: 72px;
+    position: fixed;
+    outline: none;
+    border: none;
+    border-radius: 50%;
+    background-color: $btn-green;
+    bottom: 15vh;
+    right: 50vw;
+    // Same as setting origin to center
+    transform: translate(50%, 50%);
+    cursor: pointer;
+    box-shadow: 0px 5px 6px $bg-color-shadow;
+
+    &:hover {
+      background-color: $btn-green-hover;
+    }
+
+    // Centering the plus icon on the button
+    i {
+      position: absolute;
+      color: #fff;
+      top: 24px;
+      left: 26px;
+    }
+  }
+
+  .todo-list {
+    z-index: 1;
+  }
+
+  .form-hidden {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  .form-visible {
+    z-index: 998;
+    position: absolute;
+    transform-origin: 0 0;
+    transform: none;
+    transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+  }
+
+  .list-visible {
+    z-index: 1;
+    opacity: 1;
+  }
+
+  .list-hidden {
+    opacity: 0;
+  }
+
+  // fab is shorthand for floating-action-button
+  .fab-visible {
+    opacity: 1;
+  }
+
+  .fab-hidden {
+    opacity: 0;
   }
 }
