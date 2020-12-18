@@ -11,7 +11,10 @@ const todoFormButtonLabel = {
   EDIT: 'Edit',
 };
 
-const DEFAULT_LIST = 'Other tasks';
+const default_lists = {
+  DEADLINE: 'Deadlines',
+  OTHER: 'Other tasks',
+};
 
 // Screen size at which it's too small to fit both the form
 // and the list side by side.
@@ -44,6 +47,7 @@ class App extends React.Component {
       listItemState: false,
       collapsibleStates: [],
       isFormVisibleWhenScreenSmall: false,
+      default_list: default_lists.DEADLINE,
     };
   }
 
@@ -181,7 +185,7 @@ class App extends React.Component {
   getListId = async (listname) => {
     let lists = [...this.state.lists];
     if (listname === '') {
-      listname = DEFAULT_LIST;
+      listname = this.state.default_list;
     }
     const list = lists.find((item) => {
       return item.name.toLowerCase() === listname.toLowerCase();
@@ -234,6 +238,14 @@ class App extends React.Component {
   // list input is visible (true) or invisible (false)
   // and is dependant on deadline toggle
   handleListClick = () => {
+    // bandaid fix so that tasks go to correct list when no list
+    // specified.
+    // had to do it, no time to do properly
+    if (this.state.listItemState) {
+      this.setState({ default_list: default_lists.DEADLINE });
+    } else {
+      this.setState({ default_list: default_lists.OTHER });
+    }
     this.setState((prevState) => ({
       listItemState: !prevState.listItemState,
     }));
@@ -287,7 +299,7 @@ class App extends React.Component {
           // workaround for default list not rendering properly
           // for edited todos which have empty task list field.
           if (todo.list === '') {
-            todo.list = DEFAULT_LIST;
+            todo.list = this.state.default_list;
           }
 
           // Check if a new list was added, if yes, then
