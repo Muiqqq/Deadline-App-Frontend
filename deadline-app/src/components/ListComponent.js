@@ -76,7 +76,7 @@ const ListComponent = ({
     return collapsibleState.isOpen;
   };
 
-  // Generate lists. Filter out all todos associated with deadlines list.
+  // Generate all lists. Filter out all todos associated with deadlines list.
   const generateLists = list.map((listItem) => {
     if (hideCompleted) {
       todos = todos.filter((todo) => !todo.isdone);

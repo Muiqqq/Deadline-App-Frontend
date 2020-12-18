@@ -197,8 +197,7 @@ class App extends React.Component {
         );
         return result.data.content.id;
       } catch (err) {
-        // alert(err.response.data.msg);
-        console.log(err.response);
+        console.log(err);
       }
     }
     // return list.id;
@@ -305,7 +304,6 @@ class App extends React.Component {
             this.setState({ lists: getListsResult.data });
           }
           todos[indexOfEditedTodo] = todo;
-          // console.log(todo);
         } else {
           throw new Error('ERROR: Could not update entry in db.');
         }
@@ -350,12 +348,9 @@ class App extends React.Component {
         const tmp = getTodoResponse.data[0];
         const todoFrontendContext = this.convertTodoContext(tmp);
         todos = todos.concat(todoFrontendContext);
-        // console.log(todoFrontendContext);
       }
     } catch (err) {
-      // alert(err.response.data.msg);
       console.log(err);
-      console.log(err.response);
     }
 
     this.setState({
@@ -458,7 +453,6 @@ class App extends React.Component {
         }
       } catch (err) {
         console.log(err);
-        // console.log(err.response);
       }
     },
 
@@ -491,7 +485,6 @@ class App extends React.Component {
         }
       } catch (err) {
         console.log(err);
-        // console.log(err.response);
       }
     },
 
