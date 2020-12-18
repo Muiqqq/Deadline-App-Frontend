@@ -49,6 +49,33 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
     }
   };
 
+  const setPriorityColor = () => {
+    if (todo.isdone && todo.priority > 0) {
+      return 'priority-color priority-color-completed';
+    }
+    switch (todo.priority) {
+      case 1:
+        return 'priority-color priority-color-high';
+      case 2:
+        return 'priority-color priority-color-medium';
+      case 3:
+        return 'priority-color priority-color-low';
+      default:
+        if (todo.list === 'deadline' || todo.list === 'deadlines') {
+          return 'priority-color priority-color-deadline';
+        }
+        return 'priority-color priority-color-default';
+    }
+  };
+
+  // If todo has no priority return '' so zero is not shown
+  const setPriorityNumber = () => {
+    if (todo.priority > 0) {
+      return todo.priority;
+    }
+    return '';
+  };
+
   return (
     <li className={setClassNameDependingOnIsDoneStatus()}>
       <Collapsible
@@ -57,7 +84,8 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
         onClick={todoHandler.collapse}
         header={
           <>
-            <p className='todo-priority'>{todo.priority}</p>
+            <div className={setPriorityColor()}></div>
+            <p className='todo-priority'>{setPriorityNumber()}</p>
             <p className='todo-date'>{todo.date}</p>
             <p className='todo-name'>{todo.name}</p>
             <CustomButton

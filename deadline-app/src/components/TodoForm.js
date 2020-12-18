@@ -26,6 +26,11 @@ function TodoForm(props) {
     return props.todoFormState.priority.toString() === value;
   };
 
+  // Handles deadline toggle switch.
+  const handleToggle = (e) => {
+    props.handleListClick();
+  };
+
   return (
     <form>
       <h3>Add Deadline</h3>
@@ -67,7 +72,7 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='low' className='radio'>
-              Low
+              Low ({priorityValues.LOW})
             </label>
             <input
               type='radio'
@@ -78,7 +83,7 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='medium' className='radio'>
-              Medium
+              Medium ({priorityValues.MEDIUM})
             </label>
             <input
               type='radio'
@@ -89,22 +94,34 @@ function TodoForm(props) {
               onChange={inputChange}
             />
             <label htmlFor='high' className='radio'>
-              High
+              High ({priorityValues.HIGH})
             </label>
           </div>
         </label>
       </div>
-      <div className='input-animation'>
+      <div className='toggle'>
+        <h4>Is deadline</h4>
         <input
-          onChange={inputChange}
-          name='list'
-          type='text'
-          value={props.todoFormState.list}
-          required
+          type='checkbox'
+          id='switch'
+          onClick={handleToggle}
+          defaultChecked={!props.listItemState}
         />
-        <label htmlFor='list' className='label-name'>
-          <span className='content-name'>Task List</span>
-        </label>
+        <label htmlFor='switch'>Deadline</label>
+      </div>
+      <div className={props.listItemState ? 'list-input-on' : 'list-input-off'}>
+        <div className='input-animation'>
+          <input
+            onChange={inputChange}
+            name='list'
+            type='text'
+            value={props.todoFormState.list}
+            required
+          />
+          <label htmlFor='list' className='label-name'>
+            <span className='content-name'>Task List</span>
+          </label>
+        </div>
       </div>
       <div className='input-animation'>
         <input

@@ -11,7 +11,7 @@ const todoFormButtonLabel = {
   EDIT: 'Edit',
 };
 
-const DEFAULT_LIST = 'deadlines';
+const DEFAULT_LIST = 'Other tasks';
 
 // Screen size at which it's too small to fit both the form
 // and the list side by side.
@@ -22,11 +22,6 @@ const MOBILE_WIDTH_THRESHOLD = 1050;
 // Rename a bunch of functions and variables for clarity?
 // Start extracting components where necessary, again for clarity.
 // Confirmation dialog for delete button?
-// Add collapse/expand all buttons for lists!
-
-// NOTE! todoFormState now generates random id for added items for
-// item removal to work.
-// Refactor this when using database.
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +41,7 @@ class App extends React.Component {
         isdone: false,
       },
       todoFormSubmitButtonLabel: todoFormButtonLabel.ADD,
+      listItemState: false,
       collapsibleStates: [],
       isFormVisibleWhenScreenSmall: false,
     };
@@ -133,6 +129,8 @@ class App extends React.Component {
   // or maybe refactor so that no conversion needs be made
   // as i had originally planned, that the object would be
   // identical across both front and back
+  // Objects used by the backend service look slightly different
+  // is why this function is necessary for now.
   convertTodoContext = (todo) => {
     const context = todo.hasOwnProperty('date') ? 'frontend' : 'backend';
     if (context === 'frontend') {
@@ -146,8 +144,8 @@ class App extends React.Component {
       if (todo.listid) {
         backendContext.listid = todo.listid;
       }
-      // When adding new todo, these are assigned by the backend service,
-      // so they won't be there before the added todo has been
+      // When adding new todo, these keys are assigned by the backend
+      // service, so they won't be there before the added todo has been
       // fetched back from the api.
       // When editing a todo, these keys would've been added by the
       // backend, and need to be sent there.
@@ -199,8 +197,7 @@ class App extends React.Component {
         );
         return result.data.content.id;
       } catch (err) {
-        // alert(err.response.data.msg);
-        console.log(err.response);
+        console.log(err);
       }
     }
     // return list.id;
@@ -233,6 +230,15 @@ class App extends React.Component {
     return false;
   };
 
+  // Handles the deadlineToggle button click
+  // list input is visible (true) or invisible (false)
+  // and is dependant on deadline toggle
+  handleListClick = () => {
+    this.setState((prevState) => ({
+      listItemState: !prevState.listItemState,
+    }));
+  };
+
   handleTodoFormInputChange = (event) => {
     const target = event.target;
     const value = target.value;
@@ -245,11 +251,15 @@ class App extends React.Component {
     });
   };
 
+  // Handles what happens when user presses the (Add/Edit) button
+  // in the TodoForm.
   handleSubmit = async (todo) => {
     let todos = [...this.state.todos];
     let lists = [...this.state.lists];
     let collapsibleStates = [...this.state.collapsibleStates];
 
+    // When submitting the form, and the screen size is
+    // small, flip a flag so the form is hidden.
     if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
       this.setState({ isFormVisibleWhenScreenSmall: false });
     }
@@ -270,7 +280,6 @@ class App extends React.Component {
           `/todos/${todo.id}?apikey=${process.env.REACT_APP_APIKEY}`,
           todoBackendContext
         );
-        // console.log(putTodoResponse)
 
         // If updated successfully, apply changes
         // to state so the new info gets rendered.
@@ -295,7 +304,6 @@ class App extends React.Component {
             this.setState({ lists: getListsResult.data });
           }
           todos[indexOfEditedTodo] = todo;
-          // console.log(todo);
         } else {
           throw new Error('ERROR: Could not update entry in db.');
         }
@@ -312,11 +320,11 @@ class App extends React.Component {
         // Create a collapsible context object for the new todo.
         const collapsibleContext = { id: addedTodoId, isOpen: false };
         collapsibleStates = collapsibleStates.concat(collapsibleContext);
-        // console.log(getResult.data);
-        // console.log(lists);
 
         // Check if a new list was added, if yes, then
         // fetch the lists from api again.
+        // note to self: this should be a function as it's duplicated
+        // somewhere above >:(
         if (
           !lists.includes({
             id: todoBackendContext.listid,
@@ -340,12 +348,9 @@ class App extends React.Component {
         const tmp = getTodoResponse.data[0];
         const todoFrontendContext = this.convertTodoContext(tmp);
         todos = todos.concat(todoFrontendContext);
-        console.log(todoFrontendContext);
       }
     } catch (err) {
-      // alert(err.response.data.msg);
       console.log(err);
-      console.log(err.response);
     }
 
     this.setState({
@@ -356,7 +361,10 @@ class App extends React.Component {
     });
   };
 
+  // Functionality for TodoForms cancel button
   handleCancel = () => {
+    // When canceling the submit of the form, and the screen size is
+    // small, flip a flag so the form is hidden.
     if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
       this.setState({ isFormVisibleWhenScreenSmall: false });
     }
@@ -381,13 +389,17 @@ class App extends React.Component {
     this.setState({ todos: sortedTodos });
   };
 
+  // Gets todo object based on id.
   getTodoObject = (todoId) => {
     const todo = this.state.todos.filter((el) => el.id === todoId);
     console.log(todo);
     return todo[0];
   };
 
+  // Functions related to the todo items.
   todoHandler = {
+    // Handles expand/collapse of todo items, only one
+    // can be expanded at a time!
     collapse: (todoId) => {
       let collapsibleStates = [...this.state.collapsibleStates];
       collapsibleStates.forEach((element) => {
@@ -396,6 +408,7 @@ class App extends React.Component {
       this.setState({ collapsibleStates: collapsibleStates });
     },
 
+    // Handles deletion of todo items
     // Filtering happens here where we have access to whole list
     // of todos
     delete: async (todoId) => {
@@ -440,19 +453,16 @@ class App extends React.Component {
         }
       } catch (err) {
         console.log(err);
-        // console.log(err.response);
       }
     },
 
+    // Handles completion of todo items
     // Filtering happens here where we have access to whole list
     // of todos
     complete: async (todoId) => {
       // Check if todo is done or not before updating is_done value
       const todo = this.getTodoObject(todoId);
-      let todoBackendContext = {};
-      todo.isdone
-        ? (todoBackendContext.is_done = false)
-        : (todoBackendContext.is_done = true);
+      let todoBackendContext = { is_done: !todo.isdone };
       try {
         const updateResponse = await axios.put(
           `todos/${todoId}?apikey=${process.env.REACT_APP_APIKEY}`,
@@ -475,10 +485,12 @@ class App extends React.Component {
         }
       } catch (err) {
         console.log(err);
-        // console.log(err.response);
       }
     },
 
+    // Handles todo items' edit button functionality.
+    // (The one in the todo item itself, can be seen
+    //  when it's expanded)
     edit: (todoToEdit) => {
       if (window.innerWidth < MOBILE_WIDTH_THRESHOLD) {
         this.setState({ isFormVisibleWhenScreenSmall: true });
@@ -514,6 +526,8 @@ class App extends React.Component {
             }
           >
             <TodoForm
+              handleListClick={this.handleListClick}
+              listItemState={this.state.listItemState}
               submitButtonLabel={this.state.todoFormSubmitButtonLabel}
               todoFormState={this.state.todoFormState}
               onInputChange={this.handleTodoFormInputChange}

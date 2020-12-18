@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 // Import components
 import TodoList from './Todolist';
 import Collapsible from './Collapsible';
-import Deadline from './Deadline';
 
 const ListComponent = ({
   todos,
@@ -35,6 +34,7 @@ const ListComponent = ({
     }
   });
 
+  // Find a lists id by its name
   const getListId = (listname) => {
     const list = lists.find((item) => {
       return item.name.toLowerCase() === listname.toLowerCase();
@@ -76,14 +76,15 @@ const ListComponent = ({
     return collapsibleState.isOpen;
   };
 
+  // Generate all lists. Filter out all todos associated with deadlines list.
   const generateLists = list.map((listItem) => {
+    if (hideCompleted) {
+      todos = todos.filter((todo) => !todo.isdone);
+    }
     if (listItem !== 'deadlines') {
       let filtered = todos.filter(
         (todo) => todo.list === listItem && todo.list !== 'deadlines'
       );
-      if (hideCompleted) {
-        filtered = filtered.filter((todo) => !todo.isdone);
-      }
       return (
         <ul key={getListId(listItem)}>
           <Collapsible
@@ -136,9 +137,8 @@ const ListComponent = ({
         <div className='list'>
           <div className='deadlines'>
             <h3>Deadlines</h3>
-            <Deadline
-              // FIX THIS PADAWAN IT IS DISGUSTING
-              deadlines={todos.filter(
+            <TodoList
+              todos={todos.filter(
                 (todo) => todo.list === 'deadline' || todo.list === 'deadlines'
               )}
               todoHandler={todoHandler}
