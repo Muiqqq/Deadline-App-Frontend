@@ -68,6 +68,7 @@ const Todo = ({ todo, todoHandler, collapsibleStates }) => {
     }
   };
 
+  // If todo has no priority return '' so zero is not shown
   const setPriorityNumber = () => {
     if (todo.priority > 0) {
       return todo.priority;
