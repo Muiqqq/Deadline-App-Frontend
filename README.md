@@ -4,7 +4,7 @@ Deadline App was created with React framework as a project for TAMK software pro
 
 ## Features
 
-Student can add deadlines to the deadline list and at a quick glance see upcoming deadlines. User can also add custom lists to use the application like a traditional to-do application. As the focus is on deadlines, deadline list is always visible.
+Student can add deadlines to the deadline list and at a quick glance see upcoming deadlines. User can also add custom lists to use the application like a traditional to-do application. As the focus is on deadlines, deadline list is always visible. Form also has a deadline toggle. If toggle is on to-dos go to deadline list. If user toggles it off a new input field pops up so user can create a custom list.
 
 Main features:
 - Add deadlines to a default visible deadline list
@@ -18,8 +18,14 @@ Main features:
 
 ## Screenshots
 
-![alt text](https://prnt.sc/w6elfq)
+The Form
 
-![alt text](https://prnt.sc/w6elfq)
+![The form](form.PNG)
 
-![alt text](https://prnt.sc/w6elfq)
+The List
+
+![The lists](list.PNG)
+
+The App
+
+![The App](app.PNG)
